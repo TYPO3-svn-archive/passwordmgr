@@ -42,19 +42,19 @@ class tx_passwordmgr_view_initializeKeyPair extends tx_passwordmgr_view_default 
 		$content .= '
 			<table border=0 cellpadding=2 cellspacing=1>
 				<tr>
-					<td class="bgColor4"><strong>New Password:</strong><br />Minimum 6 Characters</td>
+					<td class="bgColor4"><strong>New master password:</strong><br />Minimum 6 Characters</td>
 					<td class="bgColor4">
 						<input type="password" name="DATA[tx_passwordmgr_password1]" onkeyup="testPassword(this.value);" />
 					</td>
 				</tr>
 				<tr>
-					<td class="bgColor4"><strong>Confirm Password:</strong></td>
+					<td class="bgColor4"><strong>Confirm master password:</strong></td>
 					<td class="bgColor4">
 						<input type="password" name="DATA[tx_passwordmgr_password2]" />
 					</td>
 				</tr>
 				<tr>
-					<td class="bgColor4"><strong>Password Strength:</strong></td>
+					<td class="bgColor4"><strong>Password strength:</strong></td>
 					<td class="bgColor4">
 						<p id="pwStrength"></p>
 					</td>
@@ -62,14 +62,14 @@ class tx_passwordmgr_view_initializeKeyPair extends tx_passwordmgr_view_default 
 				<tr>
 					<td class="bgColor4"></td>
 					<td class="bgColor4" align="right">
-						<input type="submit" name="mysubmit" value="Create new key pair" onclick="setAction(\'initializeKeyPair\');" />
+						<input type="submit" name="mysubmit" value="Create your master password" onclick="setAction(\'initializeKeyPair\');" />
 					</td>
 				</tr>
 			</table>
 			<input type="hidden" name="DATA[tx_passwordmgr_action]" value="" />
 		';
 
-		return($this->doc->section('Create New Key Pair',$content,0,1));
+		return($this->doc->section('Create your master password',$content,0,1));
 	}
 }
 ?>

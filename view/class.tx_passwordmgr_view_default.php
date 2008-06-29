@@ -118,7 +118,7 @@ class tx_passwordmgr_view_default {
 		$this->doc->JScode = '
 			<script language="javascript" type="text/javascript">
 				function passphrasePopUp() {
-					window.open(\'../res/passphrasepopup.html\',\'Passphrase Popup\',\'height=300,width=500,status=0,menubar=0,scrollbars=1\');
+					window.open(\'../res/passphrasepopup.html\',\'Enter master password popup\',\'height=300,width=500,status=0,menubar=0,scrollbars=1\');
 				}
 				function setAction(action) {
 					document.forms["passwordmgr"].elements["DATA[tx_passwordmgr_action]"].value = action;

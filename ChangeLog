@@ -1,5 +1,8 @@
 08-06-29 Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Changed view name "Initialize certificate" to "Initialize master password"
+	* Changed string "passphrase" to "master password" in views
+	* Fixed bug "Add password" to "Add member" in add member view
 	* Added new extension and module icon based on kde crystal gpg.png
 	* Added manual
 	* Added development warning

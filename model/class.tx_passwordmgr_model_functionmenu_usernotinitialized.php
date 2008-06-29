@@ -34,7 +34,7 @@ class tx_passwordmgr_model_functionMenu_userNotInitialized extends tx_passwordmg
 	 * @var array Define possible views if user is not initialized (no valid key pair existing)
 	 */
 	protected $data = array(
-		'initializeKeyPair' => 'Initialize Certificate'
+		'initializeKeyPair' => 'Initialize master password'
 	);
 }
 ?>
