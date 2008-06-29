@@ -68,6 +68,7 @@ class tx_passwordmgr_view_default {
 
 		// Compile doc body made of a header row, a log content if existing and the main content
 		$bodyContent = $this->doc->header($GLOBALS['LANG']->getLL('title'));
+		$bodyContent.= $this->developmentWarning();
 		$bodyContent.= $this->logContent();
 		$bodyContent.= $this->innerContent();
 
@@ -178,6 +179,16 @@ class tx_passwordmgr_view_default {
 		} else {
 			return('');
 		}
+	}
+
+	/**
+	 * Add a warning about development state of extension
+	 *
+	 * @return string html
+	 */
+	protected function developmentWarning() {
+		$content = '<p style="color:red;">WARNING: This extension is in early development state. DO NOT ADD IMPORTANT OR REAL DATA!</p>';
+		return($this->doc->section('Development warning',$content,0,1));
 	}
 
 	/**
