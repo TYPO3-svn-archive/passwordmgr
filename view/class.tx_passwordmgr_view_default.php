@@ -81,7 +81,7 @@ class tx_passwordmgr_view_default {
 		$this->doc->docType='xhtml_trans';
 
 		// Default form tag
-		$this->doc->form = '<form action="" method="POST" name="passwordmgr">';
+		$this->doc->form = '<form action="" method="post" name="passwordmgr">';
 
 		// Template
 		$this->doc->setModuleTemplate(t3lib_extMgm::extRelPath(tx_passwordmgr_module1::extKey).'res/passwordmgr.html');
