@@ -40,7 +40,7 @@ class tx_passwordmgr_view_initializeKeyPair extends tx_passwordmgr_view_default 
 		// Add password strength check js-function
 		$content = '<script src="'.$GLOBALS['BACK_PATH'].$GLOBALS['temp_modPath'].'../res/password_strength.js" type="text/javascript"></script>';
 		$content .= '
-			<table border=0 cellpadding=2 cellspacing=1>
+			<table border="0" cellpadding="2" cellspacing="1">
 				<tr>
 					<td class="bgColor4"><strong>New master password:</strong><br />Minimum 6 Characters</td>
 					<td class="bgColor4">

@@ -85,7 +85,7 @@ class tx_passwordmgr_view_addEditPassword extends tx_passwordmgr_view_default {
 		}
 
 		$content = '
-			<table border=0 cellpadding=2 cellspacing=1>
+			<table border="0" cellpadding="2" cellspacing="1">
 				<tr>
 					<td>Group</td>
 					<td>'.$groupSelectContent.'</td>

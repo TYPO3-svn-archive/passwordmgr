@@ -63,7 +63,7 @@ class tx_passwordmgr_view_overview extends tx_passwordmgr_view_default {
 						</td>
 						<td class="bgColor5" colspan="2">Member: '.count($memberList).'</td>
 						<td class="bgColor5">
-							<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/new_el.gif').' onclick="setFieldValue(\'groupUid\', \''.$group['uid'].'\'); setFieldValue(\'view\', \'addGroupMember\'); document.passwordmgr.submit();" />
+							<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/new_el.gif').' onclick="setFieldValue(\'groupUid\', \''.$group['uid'].'\'); setFieldValue(\'view\', \'addGroupMember\'); document.passwordmgr.submit();" alt="Add new member" title="Add new member" />
 						</td>
 					</tr>
 				';
@@ -75,7 +75,7 @@ class tx_passwordmgr_view_overview extends tx_passwordmgr_view_default {
 								<td colspan="2"></td>
 								<td class="'.$bgColor.'" colspan="2">'.$member['name'].'</td>
 								<td class="'.$bgColor.'">
-									<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/garbage.gif').' onclick="setAction(\'deleteGroupMember\'); setFieldValue(\'groupUid\', \''.$group['uid'].'\'); setFieldValue(\'groupMemberUid\', \''.$member['beUserUid'].'\'); document.passwordmgr.submit();" />
+									<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/garbage.gif').' onclick="setAction(\'deleteGroupMember\'); setFieldValue(\'groupUid\', \''.$group['uid'].'\'); setFieldValue(\'groupMemberUid\', \''.$member['beUserUid'].'\'); document.passwordmgr.submit();" alt="Delete member" title="Delete member" />
 								</td>
 							</tr>
 						';
@@ -94,7 +94,7 @@ class tx_passwordmgr_view_overview extends tx_passwordmgr_view_default {
 						</td>
 						<td class="bgColor5" colspan="2">Passwords: '.count($passwordList).'</td>
 						<td class="bgColor5">
-							<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/new_el.gif').' onclick="setFieldValue(\'groupUid\', \''.$group['uid'].'\'); setFieldValue(\'view\', \'addEditPassword\'); document.passwordmgr.submit();" />
+							<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/new_el.gif').' onclick="setFieldValue(\'groupUid\', \''.$group['uid'].'\'); setFieldValue(\'view\', \'addEditPassword\'); document.passwordmgr.submit();" alt="Add new password" title="Add new password" />
 						</td>
 					</tr>
 				';
@@ -116,9 +116,9 @@ class tx_passwordmgr_view_overview extends tx_passwordmgr_view_default {
 								<td class="'.$bgColor.'">'.$nameAndLinkContent.'</td>
 								<td class="'.$bgColor.'">'.$userAndPasswordContent.'</td>
 								<td class="'.$bgColor.'">
-									<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/edit2.gif').' onclick="setFieldValue(\'view\', \'addEditPassword\'); setFieldValue(\'groupUid\', \''.$group['uid'].'\'); setFieldValue(\'passwordUid\', \''.$password['uid'].'\'); document.passwordmgr.submit();" />
-									<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/garbage.gif').' onclick="setAction(\'deletePassword\'); setFieldValue(\'passwordUid\', \''.$password['uid'].'\'); document.passwordmgr.submit();" />
-									<img style="cursor: pointer;" src="../res/decrypted.png" onclick="setAction(\'decryptPassword\'); setFieldValue(\'passwordUid\', \''.$password['uid'].'\'); passphrasePopUp();" />
+									<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/edit2.gif').' onclick="setFieldValue(\'view\', \'addEditPassword\'); setFieldValue(\'groupUid\', \''.$group['uid'].'\'); setFieldValue(\'passwordUid\', \''.$password['uid'].'\'); document.passwordmgr.submit();" alt="Edit password" title="Edit password" />
+									<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/garbage.gif').' onclick="setAction(\'deletePassword\'); setFieldValue(\'passwordUid\', \''.$password['uid'].'\'); document.passwordmgr.submit();" alt="Delete password" title="Delete passwod" />
+									<img style="cursor: pointer;" src="../res/decrypted.png" onclick="setAction(\'decryptPassword\'); setFieldValue(\'passwordUid\', \''.$password['uid'].'\'); passphrasePopUp();" alt="Decrypt password" title="Decrypt password" />
 								</td>
 							</tr>
 						';
@@ -135,8 +135,8 @@ class tx_passwordmgr_view_overview extends tx_passwordmgr_view_default {
 					</td>
 					<td class="bgColor2" colspan="3">Group: '.$group['name'].'</td>
 					<td class="bgColor2">
-						<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/edit2.gif').' onclick="setFieldValue(\'view\', \'addEditGroup\'); setFieldValue(\'groupUid\', \''.$group['uid'].'\'); document.passwordmgr.submit();" />
-						<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/garbage.gif').' onclick="setAction(\'deleteGroup\'); setFieldValue(\'groupUid\', \''.$group['uid'].'\'); document.passwordmgr.submit();" />
+						<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/edit2.gif').' onclick="setFieldValue(\'view\', \'addEditGroup\'); setFieldValue(\'groupUid\', \''.$group['uid'].'\'); document.passwordmgr.submit();" alt="Edit group" title="Edit group" />
+						<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/garbage.gif').' onclick="setAction(\'deleteGroup\'); setFieldValue(\'groupUid\', \''.$group['uid'].'\'); document.passwordmgr.submit();" alt="Delete group" title="Delete group" />
 						'.$this->addNewGroupIcon().'
 					</td>
 				</tr>
@@ -187,6 +187,7 @@ class tx_passwordmgr_view_overview extends tx_passwordmgr_view_default {
 	protected function foldIcon($groupUid, $type, $isOpen) {
 		$foldImage = $isOpen ? 'gfx/selectnone.gif' : 'gfx/selectall.gif';
 		$newFoldState = $isOpen ? '0' : '1';
+		$foldText = $isOpen ? 'Collapse' : 'Expand';
 		$imageTag = '<img
 			style="cursor: pointer;"
 			'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], $foldImage).'
@@ -196,6 +197,8 @@ class tx_passwordmgr_view_overview extends tx_passwordmgr_view_default {
 				setFieldValue(\'foldState\', \''.$newFoldState.'\');
 				setFieldValue(\'groupUid\', \''.$groupUid.'\');
 				document.passwordmgr.submit();"
+			alt="'.$foldText.'"
+			title="'.$foldText.'"
 			/>
 		';
 		return ($imageTag);				
@@ -211,8 +214,11 @@ class tx_passwordmgr_view_overview extends tx_passwordmgr_view_default {
 		$imageTag = '<img
 			style="cursor: pointer;"
 			'.t3lib_iconWorks::skinImg($backPath, 'gfx/new_el.gif').'
-			onclick="setFieldValue(\'view\', \'addEditGroup\');
-			document.passwordmgr.submit();"
+			onclick="
+				setFieldValue(\'view\', \'addEditGroup\');
+				document.passwordmgr.submit();"
+			alt="Add new group"
+			title="Add new group"
 			/>';
 		return ($imageTag);
 	}
