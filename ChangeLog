@@ -1,5 +1,6 @@
 08-06-29 Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Added manual
 	* Added development warning
 	* Added code documentation
 	* Corrected form attribute method to lowercase post
