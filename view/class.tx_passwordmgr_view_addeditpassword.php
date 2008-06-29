@@ -84,7 +84,11 @@ class tx_passwordmgr_view_addEditPassword extends tx_passwordmgr_view_default {
 			$password->init($GLOBALS['moduleData']['passwordUid']);
 		}
 
-		$content = '
+		// Add password strenth inicator
+		$this->doc->bodyTagAdditions = 'onload="testPassword(\'\')"';
+		$content = '<script src="'.$GLOBALS['BACK_PATH'].$GLOBALS['temp_modPath'].'../res/password_strength.js" type="text/javascript"></script>';
+
+		$content.= '
 			<table border="0" cellpadding="2" cellspacing="1">
 				<tr>
 					<td>Group</td>
@@ -108,11 +112,17 @@ class tx_passwordmgr_view_addEditPassword extends tx_passwordmgr_view_default {
 				</tr>
 				<tr>
 					<td>Password'.($addMode ? '' : '<br />Leave blank if not changed').'</td>
-					<td><input type="text" value="" name="DATA[tx_passwordmgr_password1]" size="30" /></td>
+					<td><input type="text" value="" name="DATA[tx_passwordmgr_password1]" size="30" onkeyup="testPassword(this.value);" /></td>
 				</tr>
 				<tr>
 					<td>Retype Password</td>
 					<td><input type="text" value="" name="DATA[tx_passwordmgr_password2]" size="30" /></td>
+				</tr>
+				<tr>
+					<td>Password strength</td>
+					<td>
+						<p id="pwStrength"></p>
+					</td>
 				</tr>
 				<tr>
 					<td><input type="submit" name="mysubmit" value="'.($addMode ? 'Add password' : 'Update password').'" onclick="setAction(\''.($addMode ? 'addPassword' : 'editPassword').'\');" /></td>
