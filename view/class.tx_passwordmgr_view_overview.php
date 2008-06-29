@@ -137,7 +137,7 @@ class tx_passwordmgr_view_overview extends tx_passwordmgr_view_default {
 					<td class="bgColor2">
 						<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/edit2.gif').' onclick="setFieldValue(\'view\', \'addEditGroup\'); setFieldValue(\'groupUid\', \''.$group['uid'].'\'); document.passwordmgr.submit();" />
 						<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/garbage.gif').' onclick="setAction(\'deleteGroup\'); setFieldValue(\'groupUid\', \''.$group['uid'].'\'); document.passwordmgr.submit();" />
-						<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/new_el.gif').' onclick="setFieldValue(\'view\', \'addEditGroup\'); document.passwordmgr.submit();" />
+						'.$this->addNewGroupIcon().'
 					</td>
 				</tr>
 				'.implode($memberContent).'
@@ -165,6 +165,18 @@ class tx_passwordmgr_view_overview extends tx_passwordmgr_view_default {
 	}
 
 	/**
+	 * Add "new group" icon to docheader
+	 * Overwrites default view method
+	 *
+	 * @return array Markers and content in the docheader
+	 */
+	protected function getDocHeaderButtons() {
+		$docHeaderButtons = parent::getDocHeaderButtons();
+		$docHeaderButtons['NEWGROUP'] = $this->addNewGroupIcon();
+		return($docHeaderButtons);
+	}
+
+	/**
 	 * Helper method to build a + / - icon to fold / unfold a group, memberlist or passwordlist
 	 *
 	 * @param integer uid of group
@@ -187,6 +199,22 @@ class tx_passwordmgr_view_overview extends tx_passwordmgr_view_default {
 			/>
 		';
 		return ($imageTag);				
+	}
+
+	/**
+	 * Helper method to return html code for a new group icon
+	 *
+	 * @return string html
+	 */
+	protected function addNewGroupIcon() {
+		$backPath = $GLOBALS['BACK_PATH'];
+		$imageTag = '<img
+			style="cursor: pointer;"
+			'.t3lib_iconWorks::skinImg($backPath, 'gfx/new_el.gif').'
+			onclick="setFieldValue(\'view\', \'addEditGroup\');
+			document.passwordmgr.submit();"
+			/>';
+		return ($imageTag);
 	}
 }
 ?>

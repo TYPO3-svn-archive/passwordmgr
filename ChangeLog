@@ -1,5 +1,7 @@
 08-06-29 Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Added shortcut icon to docheader
+	* Added "add new group icon" to docheader in overview view
 	* Changed view name "Initialize certificate" to "Initialize master password"
 	* Changed string "passphrase" to "master password" in views
 	* Fixed bug "Add password" to "Add member" in add member view

@@ -72,10 +72,8 @@ class tx_passwordmgr_view_default {
 		$bodyContent.= $this->logContent();
 		$bodyContent.= $this->innerContent();
 
-		// Set shortcut item in docHeader
-		$docHeaderButtons = array(
-			'SHORTCUT' => ''
-		);
+		// Buttons for the doc header
+		$docHeaderButtons = $this->getDocHeaderButtons();
 
 		// Substitute these markers in template
 		$markers = array(
@@ -128,6 +126,26 @@ class tx_passwordmgr_view_default {
 				}
 			</script>
 		';
+	}
+
+	/**
+	 * Helper method to set possible icons in the doc header
+	 * Overwritten by eg. overview class
+	 *
+	 * @return array Markers and content in the docheader
+	 */
+	protected function getDocHeaderButtons() {
+		$docHeaderButtons = array(
+			'NEWGROUP' => '',
+			'SHORTCUT' => ''
+		);
+
+		// Shortcut icon
+		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
+			$docHeaderButtons['SHORTCUT'] = $this->doc->makeShortcutIcon('','', 'user_txpasswordmgrM1');
+		}
+
+		return($docHeaderButtons);
 	}
 
 	/**
