@@ -1,0 +1,24 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+	<head>
+		<title>Enter Passphrase</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script type="text/javascript">
+			<!--
+			function sendFormData(form_object) {
+				remoteForm = opener.document.passwordmgr;
+				remoteForm.elements['DATA[tx_passwordmgr_passphrase]'].value = form_object.passphrase.value;
+				remoteForm.submit();
+				window.close();
+			}
+			-->
+		</script>
+	</head>
+	<body>
+		<form name="tx_passwordmgr_passphrase">
+			<p>Please enter your passphrase:</p>
+			<p><input type="text" name="passphrase" size="25" value=""></p>
+			<p><input type="button" value="Send Passphrase" onClick="sendFormData(window.document.tx_passwordmgr_passphrase);"></p>
+		</form>
+	</body>
+</html>
