@@ -23,13 +23,16 @@
 ***************************************************************/
 
 /**
- * Class 'functionmenu' for the 'passwordmgr' extension.
+ * Class 'functionmenu_allItems' for the 'passwordmgr' extension.
  *
  * @author	Christian Kuhn <lolli@schwarzbu.ch>
  * @package	TYPO3
  * @subpackage	tx_passwordmgr
  */
 class tx_passwordmgr_model_functionMenu_allItems extends tx_passwordmgr_model_data {
+	/**
+	 * @var array Define possible views if user is initialized
+	 */
 	protected $data = array(
 		'overview' => 'Password Overview',
 		'addEditPassword' => 'Add / edit password',

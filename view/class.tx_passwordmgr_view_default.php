@@ -30,52 +30,79 @@
  * @subpackage	tx_passwordmgr
  */
 class tx_passwordmgr_view_default {
-	// Holds the module html
+	/**
+	 * @var string Holds the module html
+	 */
 	protected $content = '';
 
-	// Instance of template
+	/**
+	 * @var template Instance of default typo3 template object
+	 */
 	protected $doc;
 
-	// Holds all data given from controller
+	/**
+	 * @var array Holds all data given from controller
+	 */
 	protected $data;
 
-	// Different table layouts
-/*
-	protected $tableLayouts = array(
-		$
-	);
- */
+	/**
+	 * Default constructor to initialize template object
+	 *
+	 * @return void
+	 */
 	public function __construct() {
 		$this->doc = t3lib_div::makeInstance('template');
 	}
 
+	/**
+	 * Compile content
+	 *
+	 * @param array Data given from controller
+	 */
 	public function render( $data ) {
+		// Set data in class variable
 		$this->data = $data;
+
+		// Initialize doc object
 		$this->setDocDefaults();
 
+		// Compile doc body made of a header row, a log content if existing and the main content
 		$bodyContent = $this->doc->header($GLOBALS['LANG']->getLL('title'));
 		$bodyContent.= $this->logContent();
 		$bodyContent.= $this->innerContent();
 
+		// Set shortcut item in docHeader
 		$docHeaderButtons = array(
 			'SHORTCUT' => ''
 		);
 
+		// Substitute these markers in template
 		$markers = array(
 			'VIEW_MENU' => $this->viewMenuContent(),
 			'CONTENT' => $bodyContent
 		);
 
+		// Compile
 		$this->content = $this->doc->startPage($GLOBALS['LANG']->getLL('title'));
 		$this->content.= $this->doc->moduleBody($pageinfo, $docHeaderButtons, $markers);
 		$this->content.= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 	}
 
+	/**
+	 * Echo out module content
+	 *
+	 * @return void
+	 */
 	public function printContent() {
 		echo($this->content);
 	}
 
+	/**
+	 * Set doc object defaults
+	 *
+	 * @return void
+	 */
 	protected function setDocDefaults() {
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->docType='xhtml_trans';
@@ -86,7 +113,7 @@ class tx_passwordmgr_view_default {
 		// Template
 		$this->doc->setModuleTemplate(t3lib_extMgm::extRelPath(tx_passwordmgr_module1::extKey).'res/passwordmgr.html');
 
-		// JavaScript for post var settings and passphrase popup
+		// JavaScript to set post var data and to open passphrase popup
 		$this->doc->JScode = '
 			<script language="javascript" type="text/javascript">
 				function passphrasePopUp() {
@@ -100,11 +127,14 @@ class tx_passwordmgr_view_default {
 				}
 			</script>
 		';
-
-		// Default table layouts
-//		$this->doc-> 
 	}
 
+	/**
+	 * Content for the view selector in the top left. This is the main function menu
+	 * Items of this menu are set from controller in data['functionmenu']
+	 *
+	 * @return string Selector html
+	 */
 	protected function viewMenuContent() {
 		$menuItems = array();
 		foreach ( $this->data['functionMenu']['items'] as $funcKey => $funcValue ) {
@@ -121,6 +151,12 @@ class tx_passwordmgr_view_default {
 		return($content);
 	}
 
+	/**
+	 * Content for log
+	 * Iterates over all log objects in log list
+	 *
+	 * @return string log html
+	 */
 	protected function logContent() {
 		if ( count($GLOBALS['logList']) ) {
 			$content = array();
@@ -144,6 +180,12 @@ class tx_passwordmgr_view_default {
 		}
 	}
 
+	/**
+	 * Main content method
+	 * Depending view classes overwrite this method
+	 *
+	 * @return string html
+	 */
 	protected function innerContent() {
 		return('<p>Inner content</p>');
 	}

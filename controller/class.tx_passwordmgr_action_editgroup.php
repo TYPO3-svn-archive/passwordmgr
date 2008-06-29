@@ -30,6 +30,11 @@
  * @subpackage	tx_passwordmgr
  */
 class tx_passwordmgr_action_editGroup extends tx_passwordmgr_action_default {
+	/**
+	 * Update group data
+	 *
+	 * @return void
+	 */
 	public function execute() {
 		try {
 			// Input checks

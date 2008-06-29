@@ -30,6 +30,11 @@
  * @subpackage	tx_passwordmgr
  */
 class tx_passwordmgr_view_addGroupMember extends tx_passwordmgr_view_default {
+	/**
+	 * Build content for the add a member to a group page
+	 *
+	 * @return string html
+	 */
 	protected function innerContent() {
 		$selectedGroupUid = $GLOBALS['moduleData']['groupUid'];
 		if ( strlen($selectedGroupUid)>0 ) {

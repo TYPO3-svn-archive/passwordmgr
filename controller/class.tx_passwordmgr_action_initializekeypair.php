@@ -30,6 +30,16 @@
  * @subpackage	tx_passwordmgr
  */
 class tx_passwordmgr_action_initializeKeyPair extends tx_passwordmgr_action_default {
+	/**
+	 * Initialize a be users key pair
+	 * - Check valid input
+	 * - Create a certificate (that includes the public key)
+	 * - Create a private key
+	 * - Update certificate and private key in be user record
+	 * - Set view to addGroup, to add a first group next
+	 *
+	 * @return void
+	 */
 	public function execute() {
 		// Instantiate user object
 		$user =  t3lib_div::makeInstance('tx_passwordmgr_model_user');

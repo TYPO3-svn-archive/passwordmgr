@@ -31,19 +31,34 @@
  */
 class tx_passwordmgr_action_default implements tx_passwordmgr_action_interface {
 	/**
-	 * Default view object
+	 * @var tx_passwordmgr_view_* view object
 	 */
 	protected $view;
 
-	/*
-	 * Holds data that is given to the view
+	/**
+	 * @var array Holds data that can be accessed from view object
 	 */
 	protected $data = array();
 
+	/**
+	 * Call default view
+	 *
+	 * @return void
+	 */
 	public function execute() {
 		$this->defaultView();
 	}
 
+	/**
+	 * Instantiate and call view
+	 * - Determine if user is initialized and call initialize view if not
+	 * - Check for view selection in post data and call
+	 * - Use be user uc view setting if no past value found
+	 * - Use default view 'overview' if no be user uc value found
+	 *
+	 * @throws Exception if view no view found
+	 * @return void
+	 */
 	protected function defaultView() {
 		$user =  t3lib_div::makeInstance('tx_passwordmgr_model_user');
 		$user->init($GLOBALS['BE_USER']->user['uid']);
@@ -90,6 +105,11 @@ class tx_passwordmgr_action_default implements tx_passwordmgr_action_interface {
 		}
 	}
 
+	/**
+	 * Print out the module content
+	 *
+	 * @return void
+	 */
 	public function printContent() {
 		$this->view->printContent();
 	}

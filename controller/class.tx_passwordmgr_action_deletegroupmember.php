@@ -30,6 +30,11 @@
  * @subpackage	tx_passwordmgr
  */
 class tx_passwordmgr_action_deleteGroupMember extends tx_passwordmgr_action_default {
+	/**
+	 * Delete a member and his ssl data for all passwords from a group
+	 *
+	 * @return void
+	 */
 	public function execute() {
 		$groupMemberUid = $GLOBALS['moduleData']['groupMemberUid'];
 

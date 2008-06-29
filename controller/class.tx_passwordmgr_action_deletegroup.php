@@ -30,6 +30,15 @@
  * @subpackage	tx_passwordmgr
  */
 class tx_passwordmgr_action_deleteGroup extends tx_passwordmgr_action_default {
+	/**
+	 * Delete a group
+	 * - Delete all ssldata of this group
+	 * - Delete all passwords
+	 * - Delete all member
+	 * - Delete group
+	 *
+	 * @return void
+	 */
 	public function execute() {
 		// Instantiate group object and set its uid
 		$group = t3lib_div::makeInstance('tx_passwordmgr_model_group');

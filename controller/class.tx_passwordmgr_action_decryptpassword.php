@@ -30,6 +30,12 @@
  * @subpackage	tx_passwordmgr
  */
 class tx_passwordmgr_action_decryptPassword extends tx_passwordmgr_action_default {
+	/**
+	 * Decrypt ssl data of a password with a users private key and his passphrase
+	 * Sets plaintext password in $this->data['passwordUid']
+	 *
+	 * @return void
+	 */
 	public function execute() {
 		$passwordUid = $GLOBALS['moduleData']['passwordUid'];
 

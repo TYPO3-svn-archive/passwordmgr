@@ -30,14 +30,26 @@
  * @subpackage	tx_passwordmgr
  */
 class tx_passwordmgr_model_sslDataList extends tx_passwordmgr_model_list {
-	// Password uid
+	/**
+	 * @var integer id of password for this list
+	 */
 	protected $passwordUid;
 
+	/**
+	 * Initialize list
+	 *
+	 * @var integer id of password of this list
+	 */
 	public function init($passwordUid) {
 		$this->passwordUid = $passwordUid;
 		$this->fetchList();
 	}
 
+	/**
+	 * Fetch ssl data items and build list
+	 *
+	 * @return void
+	 */
 	protected function fetchList() {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'password_uid, be_users_uid, sslkey, ssldata',

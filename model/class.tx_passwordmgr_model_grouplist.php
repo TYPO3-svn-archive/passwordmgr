@@ -25,21 +25,34 @@
 //require_once('../class.tx_passwordmgr_group.php');
 
 /**
- * Class 'grouplist' for the 'passwordmgr' extension.
+ * Class 'groupList' for the 'passwordmgr' extension.
  *
  * @author	Christian Kuhn <lolli@schwarzbu.ch>
  * @package	TYPO3
  * @subpackage	tx_passwordmgr
  */
 class tx_passwordmgr_model_groupList extends tx_passwordmgr_model_list {
-	// id of user
+	/**
+	 * @var integer id of be user
+	 */
 	protected $userUid;
 
+	/**
+	 * Initialize object
+	 *
+	 * @param integer id of be user
+	 * @return void
+	 */
 	public function init($userUid) {
 		$this->userUid = $userUid;
 		$this->fetchList();
 	}
 
+	/**
+	 * Fetch list group objects and initialize list
+	 *
+	 * @return void
+	 */
 	protected function fetchList() {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'DISTINCT tx_passwordmgr_group.uid AS uid, tx_passwordmgr_group.name AS name',

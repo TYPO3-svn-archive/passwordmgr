@@ -30,16 +30,26 @@
  * @subpackage	tx_passwordmgr
  */
 class tx_passwordmgr_model_passwordList extends tx_passwordmgr_model_list {
-	// Group uid
+	/**
+	 * @var integer id of group for this passwordlist
+	 */
 	protected $groupUid;
 
+	/**
+	 * Initialize object
+	 *
+	 * @param integer id of group
+	 * @return void
+	 */
 	public function init($groupUid) {
 		$this->groupUid = $groupUid;
 		$this->fetchList();
 	}
 
 	/**
-	 * Fetch all passwords of a group of a single user
+	 * Fetch all passwords of a group
+	 *
+	 * @return void
 	 */
 	protected function fetchList() {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(

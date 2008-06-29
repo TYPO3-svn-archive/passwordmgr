@@ -30,6 +30,11 @@
  * @subpackage	tx_passwordmgr
  */
 class tx_passwordmgr_model_logList extends tx_passwordmgr_model_list {
+	/**
+	 * Add entry to log list
+	 *
+	 * @param tx_passwordmgr_model_log Log object
+	 */
 	public function add(tx_passwordmgr_model_log $node) {
 		$this->list[] = $node;
 	}

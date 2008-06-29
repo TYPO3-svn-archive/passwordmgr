@@ -30,6 +30,9 @@
  * @subpackage	tx_passwordmgr
  */
 class tx_passwordmgr_model_sslData extends tx_passwordmgr_model_data {
+	/**
+	 * @var array ssl data details
+	 */
 	protected $data = array(
 		'passwordUid' => integer,
 		'beUserUid' => integer,
@@ -39,12 +42,24 @@ class tx_passwordmgr_model_sslData extends tx_passwordmgr_model_data {
 		'data' => string
 	);
 
+	/**
+	 * Initialize object
+	 *
+	 * @param integer id of password for this ssl data
+	 * @param integer id of be user
+	 * @return void
+	 */
 	public function init($passwordUid,$beUserUid) {
 		$this['passwordUid'] = $passwordUid;
 		$this['beUserUid'] = $beUserUid;
 		$this->fetchDetails();
 	}
 
+	/**
+	 * Fetch ssl data details an set in data array
+	 *
+	 * @return void
+	 */
 	protected function fetchDetails() {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'crdate, tstamp, sslkey, ssldata',
@@ -59,6 +74,12 @@ class tx_passwordmgr_model_sslData extends tx_passwordmgr_model_data {
 		$this['data'] = $row['ssldata'];
 	}
 
+	/**
+	 * Add ssl data to db
+	 *
+	 * @throws Exception if add failed
+	 * @return void
+	 */
 	public function add() {
 		$data = array(
 			'password_uid' => $this['passwordUid'],
@@ -108,6 +129,12 @@ class tx_passwordmgr_model_sslData extends tx_passwordmgr_model_data {
 		}
 	}
 
+	/**
+	 * Delete an item from db
+	 *
+	 * @throws Exception if delete failed
+	 * @return void
+	 */
 	public function delete() {
 		$res = $GLOBALS['TYPO3_DB']->exec_DELETEquery(
 			'tx_passwordmgr_ssldata',
@@ -121,7 +148,6 @@ class tx_passwordmgr_model_sslData extends tx_passwordmgr_model_data {
 			tx_passwordmgr_helper::addLogEntry(3, 'deleteSsl', 'Wrong number of affected rows removing ssl data for user '.$this['beUserUid'].', password '.$this['passwordUid']);
 			throw new Exception('Error deleting ssl data for user '.$this['beUserUid'].' and password uid '.$this['passwordUid']);
 		}
-		return(TRUE);
 	}
 }
 ?>

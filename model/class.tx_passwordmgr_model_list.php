@@ -23,17 +23,24 @@
 ***************************************************************/
 
 /**
- * Class 'listiterator' for the 'passwordmgr' extension.
+ * Class 'list' for the 'passwordmgr' extension.
+ * Base class of all list objects
+ * Implements php SPL Iterator to iterate over list objects with foreach
+ * Implements php SPL Countable to return number of list objects with count
  *
  * @author	Christian Kuhn <lolli@schwarzbu.ch>
  * @package	TYPO3
  * @subpackage	tx_passwordmgr
  */
 class tx_passwordmgr_model_list implements Iterator, Countable {
-	// Array of list elements
+	/**
+	 * @var array List elements
+	 */
 	protected $list = array();
 
-	// A switch to keep track of the end of the element array
+	/**
+	 * @var bool Switch to keep track of the end of the element array
+	 */
 	protected $valid = FALSE;
 
 	/**
@@ -49,7 +56,7 @@ class tx_passwordmgr_model_list implements Iterator, Countable {
 	 * Reset the list pointer to the first element
 	 * PHP's reset() returns false if the array has no elements
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function rewind() {
 		$this->valid = (FALSE !== reset($this->list));
@@ -59,20 +66,20 @@ class tx_passwordmgr_model_list implements Iterator, Countable {
 	 * Defined by Iterator Interface
 	 * Return the current list element
 	 *
-	 * @return	mixed	Element
+	 * @return mixed Element
 	 */
 	public function current() {
-		return current($this->list);
+		return(current($this->list));
 	}
 
 	/**
 	 * Defined by Iterator Interface
 	 * Return the key of the current list element
 	 *
-	 * @return	integer	Current element key
+	 * @return integer Current element key
 	 */
 	public function key() {
-		return key($this->list);
+		return(key($this->list));
 	}
 
 	/**
@@ -80,7 +87,7 @@ class tx_passwordmgr_model_list implements Iterator, Countable {
 	 * Move pointer to next list element
 	 * PHP's next() returns false if there are no more elements
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function next() {
 		$this->valid = (FALSE !== next($this->list));
@@ -90,10 +97,10 @@ class tx_passwordmgr_model_list implements Iterator, Countable {
 	 * Defined by Iterator Interface
 	 * Is the current pointer to the list element array valid?
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function valid() {
-		return $this->valid;
+		return($this->valid);
 	}
 
 	/**
@@ -103,13 +110,15 @@ class tx_passwordmgr_model_list implements Iterator, Countable {
 	 * @return integer Number of list items
 	 */
 	public function count() {
-		return (count($this->list));
+		return(count($this->list));
 	}
 
 	/**
-	 * Delete all Items of the List in db
+	 * Delete all Items of the List
+	 * Calls delete() of list items
 	 *
-	 * @return	void
+	 * @throws Exception If delete failed
+	 * @return void
 	 */
 	public function deleteListItems() {
 		foreach ( $this as $item ) {

@@ -23,21 +23,34 @@
 ***************************************************************/
 
 /**
- * Class 'groupmemberlist' for the 'passwordmgr' extension.
+ * Class 'groupmemberList' for the 'passwordmgr' extension.
  *
  * @author	Christian Kuhn <lolli@schwarzbu.ch>
  * @package	TYPO3
  * @subpackage	tx_passwordmgr
  */
 class tx_passwordmgr_model_groupMemberList extends tx_passwordmgr_model_list {
-	// Group uid
+	/**
+	 * @var integer id of group for this memberlist
+	 */
 	protected $groupUid;
 
+	/**
+	 * Initialize object
+	 *
+	 * @param integer id of group
+	 * @return void
+	 */
 	public function init($groupUid) {
 		$this->groupUid = $groupUid;
 		$this->fetchList();
 	}
 
+	/**
+	 * Fetch list group objects and initialize list
+	 *
+	 * @return void
+	 */
 	protected function fetchList() {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'be_users.uid AS uid, be_users.username AS username, be_users.tx_passwordmgr_cert AS cert',

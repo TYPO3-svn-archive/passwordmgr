@@ -30,6 +30,9 @@
  * @subpackage	tx_passwordmgr
  */
 class tx_passwordmgr_model_user extends tx_passwordmgr_model_data {
+	/**
+	 * @var array be user details
+	 */
 	protected $data = array(
 		'uid' => integer,
 		'name' => string,
@@ -38,11 +41,22 @@ class tx_passwordmgr_model_user extends tx_passwordmgr_model_data {
 		'publicKey' => string
 	);
 
+	/**
+	 * Initialize object
+	 *
+	 * @param integer id of be user
+	 * @return void
+	 */
 	public function init($uid) {
 		$this['uid'] = $uid;
 		$this->fetchDetails();
 	}
 
+	/**
+	 * Fetch be user details and set in data array
+	 *
+	 * @return void
+	 */
 	protected function fetchDetails() {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'username, tx_passwordmgr_privkey, tx_passwordmgr_cert',

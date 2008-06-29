@@ -39,19 +39,32 @@ $BE_USER->modAccess($MCONF,1);
  * @subpackage	tx_passwordmgr
  */
 class tx_passwordmgr_module1 {
-	// Extension Key
+	/**
+	 * @const Extension Key
+	 */
 	const extKey = 'passwordmgr';
 
-	// Global log list Object
+	/**
+	 * @var tx_passwordmgr_model_logList Global log list Object
+	 */
 	public $logList = object;
 
-	// Global post / get data Object
+	/**
+	 * @var tx_passwordmgr_model_moduleData Global post / get data Object
+	 */
 	public $moduleData = object;
 
-	// A non used instance of template
-	// This is a hack to make template->getPageInfo() happy
+	/**
+	 * @var template Dummy instance of template
+	 */
 	public $doc;
 
+	/**
+	 * Default constructor
+	 * Load depending module classes and instantiate global objects
+	 *
+	 * @return void
+	 */
 	public function __construct() {
 		//$moduleConfig = $GLOBALS['MCONF'];
 		//$modTSconfig = t3lib_BEfunc::getModTSconfig( 0, 'mod.'.$this->MCONF['name'] );
@@ -65,9 +78,14 @@ class tx_passwordmgr_module1 {
 		// Initialize module Data. This holds the chosen view, the action and all post Data values
 		$GLOBALS['moduleData'] = t3lib_div::makeInstance('tx_passwordmgr_model_moduleData');
 
+		// Create a dummy object of temlpate. This is a hack to make template->getPageInfo() happy
 		$this->doc=t3lib_div::makeInstance('template');
 	}
 
+	/**
+	 * Load all module classes
+	 * @return void
+	 */
 	protected function classLoader() {
 		// Get absolute path of extension directory
 		$extPath = t3lib_extMgm::extPath(tx_passwordmgr_module1::extKey);
@@ -124,8 +142,10 @@ class tx_passwordmgr_module1 {
 
 	/**
 	 * Main Controller action class
+	 * Instantiate requested action class and execute
+	 * Execute default action if no explicit action given
 	 *
-	 * $return	void
+	 * @return void
 	 */
 	public function execute() {
 /*

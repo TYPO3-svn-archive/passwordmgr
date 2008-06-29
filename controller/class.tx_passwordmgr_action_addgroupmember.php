@@ -30,6 +30,11 @@
  * @subpackage	tx_passwordmgr
  */
 class tx_passwordmgr_action_addGroupMember extends tx_passwordmgr_action_default {
+	/**
+	 * Add a be_user to a group
+	 *
+	 * @return void
+	 */
 	public function execute() {
 		// Get input data
 		$groupUid = $GLOBALS['moduleData']['groupUid'];

@@ -30,6 +30,11 @@
  * @subpackage	tx_passwordmgr
  */
 class tx_passwordmgr_view_initializeKeyPair extends tx_passwordmgr_view_default {
+	/**
+	 * Build content for the initialize key pair view
+	 *
+	 * @return string html
+	 */
 	protected function innerContent () {
 		$this->doc->bodyTagAdditions = 'onload="testPassword(\'\')"';
 		// Add password strength check js-function

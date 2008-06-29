@@ -30,6 +30,13 @@
  * @subpackage	tx_passwordmgr
  */
 class tx_passwordmgr_action_addPassword extends tx_passwordmgr_action_default {
+	/**
+	 * Add a password to a group
+	 * - Add password
+	 * - Calculate ssldata for each member of the group and add to db
+	 *
+	 * @return void
+	 */
 	public function execute() {
 		try {
 			// Input checks

@@ -23,13 +23,16 @@
 ***************************************************************/
 
 /**
- * Class 'groupmember' for the 'passwordmgr' extension.
+ * Class 'groupMember' for the 'passwordmgr' extension.
  *
  * @author	Christian Kuhn <lolli@schwarzbu.ch>
  * @package	TYPO3
  * @subpackage	tx_passwordmgr
  */
 class tx_passwordmgr_model_groupMember extends tx_passwordmgr_model_data {
+	/**
+	 * @var array Member details
+	 */
 	protected $data = array(
 		'beUserUid' => integer,
 		'groupUid' => integer,
@@ -38,12 +41,24 @@ class tx_passwordmgr_model_groupMember extends tx_passwordmgr_model_data {
 		'certificate' => string
 	);
 
+	/**
+	 * Initialize group member object
+	 *
+	 * @param integer id of group member
+	 * @param integer id of group
+	 * @return void
+	 */
 	public function init($beUserUid, $groupUid) {
 		$this['beUserUid'] = $beUserUid;
 		$this['groupUid'] = $groupUid;
 		$this->fetchDetails();
 	}
 
+	/**
+	 * Fetch group member details
+	 *
+	 * @return void
+	 */
 	protected function fetchDetails() {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'username, tx_passwordmgr_cert',

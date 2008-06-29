@@ -30,6 +30,9 @@
  * @subpackage	tx_passwordmgr
  */
 class tx_passwordmgr_model_userList extends tx_passwordmgr_model_list {
+	/**
+	 * Initialize object
+	 */
 	public function init() {
 		$this->fetchList();
 	}

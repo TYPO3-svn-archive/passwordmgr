@@ -30,6 +30,11 @@
  * @subpackage	tx_passwordmgr
  */
 class tx_passwordmgr_view_addEditGroup extends tx_passwordmgr_view_default {
+	/**
+	 * Build content for the add / edit group page
+	 *
+	 * @return string html
+	 */
 	protected function innerContent() {
 		// Determine add or edit mode
 		if ( $GLOBALS['moduleData']['groupUid']=='new' || strlen($GLOBALS['moduleData']['groupUid'])==0 ) {

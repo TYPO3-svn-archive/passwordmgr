@@ -30,6 +30,13 @@
  * @subpackage	tx_passwordmgr
  */
 class tx_passwordmgr_action_deletePassword extends tx_passwordmgr_action_default {
+	/**
+	 * Delete a password from a group
+	 * - Delete all ssl data of this password for all group members
+	 * - Delete password
+	 *
+	 * @return void
+	 */
 	public function execute() {
 		try {
 			// Instantiate group object

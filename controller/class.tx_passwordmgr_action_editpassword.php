@@ -30,6 +30,13 @@
  * @subpackage	tx_passwordmgr
  */
 class tx_passwordmgr_action_editPassword extends tx_passwordmgr_action_default {
+	/**
+	 * Edit password data
+	 * - Check if a password field changed an update
+	 * - Check if ssldata changed an update for all group member
+	 *
+	 * @return void
+	 */
 	public function execute() {
 		try {
 			// Input checks

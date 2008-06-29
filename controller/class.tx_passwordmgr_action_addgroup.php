@@ -30,6 +30,11 @@
  * @subpackage	tx_passwordmgr
  */
 class tx_passwordmgr_action_addGroup extends tx_passwordmgr_action_default {
+	/**
+	 * Add a group and set current be user as new member of this group
+	 *
+	 * @return void
+	 */
 	public function execute() {
 		try {
 			// Input check

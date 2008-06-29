@@ -31,7 +31,7 @@
  */
 class tx_passwordmgr_model_group extends tx_passwordmgr_model_data {
 	/**
-	 * @var array Group data array
+	 * @var array Group details
 	 */
 	protected $data = array(
 		'uid' => integer, // uid of this group
@@ -54,7 +54,7 @@ class tx_passwordmgr_model_group extends tx_passwordmgr_model_data {
 	/**
 	 * Initialize group with a groupUid and fetch group details
 	 *
-	 * @param integer Uid of group
+	 * @param integer id of group
 	 * @return void
 	 */
 	public function init($uid) {
@@ -63,7 +63,7 @@ class tx_passwordmgr_model_group extends tx_passwordmgr_model_data {
 	}
 
 	/**
-	 * Fetch details of group and write to data array
+	 * Fetch group details and set in data array
 	 *
 	 * @return void
 	 */
@@ -134,7 +134,7 @@ class tx_passwordmgr_model_group extends tx_passwordmgr_model_data {
 	}
 
 	/**
-	 * Update group in database
+	 * Update group details in database
 	 *
 	 * @throws Exception if update failed
 	 * @return void

@@ -23,13 +23,16 @@
 ***************************************************************/
 
 /**
- * Class 'functionmenu' for the 'passwordmgr' extension.
+ * Class 'functionMenu_userNotInitialized' for the 'passwordmgr' extension.
  *
  * @author	Christian Kuhn <lolli@schwarzbu.ch>
  * @package	TYPO3
  * @subpackage	tx_passwordmgr
  */
 class tx_passwordmgr_model_functionMenu_userNotInitialized extends tx_passwordmgr_model_data {
+	/**
+	 * @var array Define possible views if user is not initialized (no valid key pair existing)
+	 */
 	protected $data = array(
 		'initializeKeyPair' => 'Initialize Certificate'
 	);

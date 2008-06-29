@@ -30,14 +30,25 @@
  * @subpackage	tx_passwordmgr
  */
 class tx_passwordmgr_model_openItems {
+	/**
+	 * @var array User specific module data of passwordmgr extension
+	 */
 	protected $moduleUc = array();
 
+	/**
+	 * @var array List of open / non collapsed items
+	 */
 	protected $open = array(
-		'openGroup' => array(),
-		'openMember' => array(),
-		'openPassword' => array(),
+		'openGroup' => array(), // Open groups
+		'openMember' => array(), // Open member lists
+		'openPassword' => array(), // Open password lists
 	);
 
+	/**
+	 * Get user specific module data
+	 *
+	 * @return void
+	 */
 	public function __construct() {
 		$this->moduleUc = $GLOBALS['BE_USER']->getModuleData('user_txpasswordmgrM1');
 		if ( is_string($this->moduleUc['openGroup']) ) {
@@ -51,6 +62,14 @@ class tx_passwordmgr_model_openItems {
 		}
 	}
 
+	/**
+	 * Mark an item as open and safe in user module data
+	 *
+	 * @param string 'openGroup', 'openMember' or 'openPassword'
+	 * @param integer id of group
+	 * @throws Exception if item open failed
+	 * @return void
+	 */
 	public function open($type, $groupUid) {
 		try {
 			$type = $this->getTypeName($type);
@@ -61,7 +80,15 @@ class tx_passwordmgr_model_openItems {
 			tx_passwordmgr_helper::addLogEntry(3, 'openItems', 'Can not open '.$type);
 		}
 	}
-	
+
+	/**
+	 * Mark an item as closed and safe in user module data
+	 *
+	 * @param string 'group', 'member' or 'password'
+	 * @param integer id of group
+	 * @throws Exception if item close failed
+	 * @return void
+	 */
 	public function close($type, $groupUid) {
 		try {
 			$type = $this->getTypeName($type);
@@ -73,6 +100,13 @@ class tx_passwordmgr_model_openItems {
 		}
 	}
 
+	/**
+	 * Determine if a item is open
+	 *
+	 * @param string 'group', 'member' or 'password'
+	 * @param integer id of group
+	 * @return bool
+	 */
 	public function isOpen($type, $groupUid) {
 		$open = FALSE;
 		try {
@@ -86,6 +120,13 @@ class tx_passwordmgr_model_openItems {
 		return($open);
 	}
 
+	/**
+	 * Helper function to translate $type to corresponding data array name
+	 *
+	 * @param string itemname
+	 * @throws Exception if type not one of 'group', 'member' or 'password'
+	 * @return string data array name
+	 */
 	protected function getTypeName($type) {
 		switch ($type) {
 			case 'group':

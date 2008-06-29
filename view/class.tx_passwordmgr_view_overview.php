@@ -30,6 +30,11 @@
  * @subpackage	tx_passwordmgr
  */
 class tx_passwordmgr_view_overview extends tx_passwordmgr_view_default {
+	/**
+	 * Build overview page
+	 *
+	 * @return string
+	 */
 	protected function innerContent() {
 		// Get data
 		$backPath = $GLOBALS['BACK_PATH'];
@@ -159,6 +164,14 @@ class tx_passwordmgr_view_overview extends tx_passwordmgr_view_default {
 		return($this->doc->section('Groups and passwords',$content,0,1));
 	}
 
+	/**
+	 * Helper method to build a + / - icon to fold / unfold a group, memberlist or passwordlist
+	 *
+	 * @param integer uid of group
+	 * @param string 'group', 'member' or 'password'
+	 * @param bool TRUE if a type is open, minus icon is shown then, plus instead
+	 * @return string icon html
+	 */
 	protected function foldIcon($groupUid, $type, $isOpen) {
 		$foldImage = $isOpen ? 'gfx/selectnone.gif' : 'gfx/selectall.gif';
 		$newFoldState = $isOpen ? '0' : '1';

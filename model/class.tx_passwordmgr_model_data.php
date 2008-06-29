@@ -24,6 +24,9 @@
 
 /**
  * Class 'data' for the 'passwordmgr' extension.
+ * Base class of all data objects
+ * Implements php SPL ArrayAccess to make an object data accessible like an array
+ * Implements php SPL IteratorAggregate to iterate over an object data with foreach
  *
  * @author	Christian Kuhn <lolli@schwarzbu.ch>
  * @package	TYPO3
@@ -50,7 +53,7 @@ class tx_passwordmgr_model_data implements ArrayAccess, IteratorAggregate {
 	 * @param mixed key (string or integer)
 	 * @param mixed value
 	 * @throws Exception if key is not declared
-	 * @return	void
+	 * @return void
 	 */
 	public function offsetSet($key, $value) {
 		if ( array_key_exists($key, $this->data) ) {
@@ -96,7 +99,7 @@ class tx_passwordmgr_model_data implements ArrayAccess, IteratorAggregate {
 
 	/**
 	 * Defined by ArrayAccess interface
-	 * Check key exists
+	 * Check if key exists
 	 *
 	 * @param mixed key (string or integer)
 	 * @throws Exception if key is not declared
@@ -115,7 +118,7 @@ class tx_passwordmgr_model_data implements ArrayAccess, IteratorAggregate {
 	 * Defined by IteratorAggregate interface
 	 * Returns an iterator for $data, for use with foreach
 	 *
-	 * @return	ArrayIterator
+	 * @return ArrayIterator
 	 */
 	public function getIterator() {
 		return( new ArrayIterator($this->data) );

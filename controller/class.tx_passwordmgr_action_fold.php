@@ -30,6 +30,12 @@
  * @subpackage	tx_passwordmgr
  */
 class tx_passwordmgr_action_fold extends tx_passwordmgr_action_default {
+	/**
+	 * Fold or unfold a group, password or member item
+	 * Safe new open items in be user uc
+	 *
+	 * @return void
+	 */
 	public function execute() {
 		$openItems = t3lib_div::makeInstance('tx_passwordmgr_model_openItems');
 		if ( $GLOBALS['moduleData']['foldState'] == 1 ) {
@@ -37,8 +43,6 @@ class tx_passwordmgr_action_fold extends tx_passwordmgr_action_default {
 		} else {
 			$openItems->close($GLOBALS['moduleData']['foldType'], $GLOBALS['moduleData']['groupUid']);
 		}
-
-		$moduleUc = $GLOBALS['BE_USER']->getModuleData('user_txpasswordmgrM1');
 
 		$this->defaultView();
 	}

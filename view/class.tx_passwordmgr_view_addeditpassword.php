@@ -30,6 +30,11 @@
  * @subpackage	tx_passwordmgr
  */
 class tx_passwordmgr_view_addEditPassword extends tx_passwordmgr_view_default {
+	/**
+	 * Build content for the add or edit password page
+	 *
+	 * @return string html
+	 */
 	protected function innerContent() {
 		// Determine view or edit mode
 		if ( $GLOBALS['moduleData']['passwordUid']=='new' || strlen($GLOBALS['moduleData']['passwordUid'])==0 ) {

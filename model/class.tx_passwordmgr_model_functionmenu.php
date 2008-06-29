@@ -23,17 +23,26 @@
 ***************************************************************/
 
 /**
- * Class 'functionmenu' for the 'passwordmgr' extension.
+ * Class 'functionMenu' for the 'passwordmgr' extension.
  *
  * @author	Christian Kuhn <lolli@schwarzbu.ch>
  * @package	TYPO3
  * @subpackage	tx_passwordmgr
  */
 class tx_passwordmgr_model_functionMenu extends tx_passwordmgr_model_data {
+	/**
+	 * @var array View / function menu object
+	 */
 	protected $data = array(
 		'items' => object
 	);
 
+	/**
+	 * Initialize view object for the function menu
+	 *
+	 * @param string 'all' or 'userNotInitialized'
+	 * @return void
+	 */
 	public function init($type) {
 		switch ( $type ) {
 			case 'all':

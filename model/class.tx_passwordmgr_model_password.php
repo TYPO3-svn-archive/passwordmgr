@@ -30,6 +30,9 @@
  * @subpackage	tx_passwordmgr
  */
 class tx_passwordmgr_model_password extends tx_passwordmgr_model_data {
+	/**
+	 * @var array password details
+	 */
 	protected $data = array(
 		'uid' => integer,
 		'groupUid' => integer,
@@ -40,14 +43,26 @@ class tx_passwordmgr_model_password extends tx_passwordmgr_model_data {
 		'user' => string
 	);
 
-	// Ssl data list object
+	/**
+	 * @var tx_passwordmgr_sslList Instance of Ssl data list object
+	 */
 	private $sslList;
 
+	/**
+	 * Initialize password
+	 *
+	 * @param integer id of password
+	 */
 	public function init($uid) {
 		$this['uid'] = $uid;
 		$this->fetchDetails();
 	}
 
+	/**
+	 * Fetch password details and set in data array
+	 *
+	 * @return void
+	 */
 	protected function fetchDetails() {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'tstamp, crdate, group_uid, name, link, user',
@@ -64,10 +79,10 @@ class tx_passwordmgr_model_password extends tx_passwordmgr_model_data {
 	}
 
 	/**
-	 * Add new password to db and set new uid in data array
+	 * Add password to db and set new uid in data array
 	 *
 	 * @throws Exception if db insert failed
-	 * @return integer Uid of new password
+	 * @return integer uid of new password
 	 */
 	public function add() {
 		$data = array (
@@ -121,6 +136,12 @@ class tx_passwordmgr_model_password extends tx_passwordmgr_model_data {
 		}
 	}
 
+	/**
+	 * Delete password in db
+	 *
+	 * @throws Exception if delete failed
+	 * @return void
+	 */
 	public function delete() {
 		$res = $GLOBALS['TYPO3_DB']->exec_DELETEquery(
 			'tx_passwordmgr_password',
@@ -133,9 +154,14 @@ class tx_passwordmgr_model_password extends tx_passwordmgr_model_data {
 			tx_passwordmgr_helper::addLogEntry(3, 'deletePassword', 'Wrong number of affected rows removing password '.$this['uid']);
 			throw new Exception('Error deleting password '.$this['uid']);
 		}
-		return(TRUE);
 	}
 
+	/**
+	 * Get list of ssl data items
+	 * Instantiate list if not already existing first
+	 *
+	 * @return tx_passwordmgr_sslDataList Instance of data list
+	 */
 	public function getSslList() {
 		if ( !is_object($this->sslList) ) {
 			$this->sslList = t3lib_div::makeInstance('tx_passwordmgr_model_sslDataList');
