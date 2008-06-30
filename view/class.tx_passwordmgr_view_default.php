@@ -68,9 +68,15 @@ class tx_passwordmgr_view_default {
 
 		// Compile doc body made of a header row, a log content if existing and the main content
 		$bodyContent = $this->doc->header($GLOBALS['LANG']->getLL('title'));
-		$bodyContent.= $this->developmentWarning();
-		$bodyContent.= $this->logContent();
-		$bodyContent.= $this->innerContent();
+		// Compile inner content only if backend is secured with ssl or if this check is disabled in extension configuration
+		$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['passwordmgr']);
+		if ( t3lib_div::getIndpEnv('TYPO3_SSL') || $extConf['disableHTTPSCheck'] ) {
+			$bodyContent.= $this->developmentWarning();
+			$bodyContent.= $this->logContent();
+			$bodyContent.= $this->innerContent();
+		} else {
+			$bodyContent.= $this->backendNotHttpsEnabledContent();
+		}
 
 		// Buttons for the doc header
 		$docHeaderButtons = $this->getDocHeaderButtons();
@@ -217,6 +223,16 @@ class tx_passwordmgr_view_default {
 	 */
 	protected function innerContent() {
 		return('<p>Inner content</p>');
+	}
+
+	/**
+	 * Content if TYPO3 Backend is not secured with https
+	 *
+	 * @return string html
+	 */
+	protected function backendNotHttpsEnabledContent() {
+		$content = '<p style="color:red;">ERROR: You are using an insecure connection to your TYPO3 backend. This is a major security risk. This extension will not work if the TYPO3 backend is not secured with ssl (https). Please contact your TYPO3 Administrator.</p>';
+		return($this->doc->section('Connection to the backend not secured with ssl', $content, 0, 1));
 	}
 }
 ?>
