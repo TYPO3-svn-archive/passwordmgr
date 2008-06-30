@@ -1,5 +1,6 @@
 08-06-29 Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Bug 914: Added group acces check to addGroupMember controller
 	* Feature 913: Add check for a https enabled backend
 	* View: Added password strength indicator to add edit view
 	* Views: Added alt and title attribute to all img tags, fixed some minor markup issues
