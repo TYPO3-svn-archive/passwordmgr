@@ -36,14 +36,31 @@ class tx_passwordmgr_view_addGroupMember extends tx_passwordmgr_view_default {
 	 * @return string html
 	 */
 	protected function innerContent() {
+		$groupList = t3lib_div::makeInstance('tx_passwordmgr_model_groupList');
+		$groupList->init($GLOBALS['BE_USER']->user['uid']);
+
+		// If group list contains at least one group, render content, else render error page
+		if ( count($groupList) > 0 ) {
+			$content = $this->addGroupMemberContent($groupList);
+		} else { // No group existing for this user
+			$content = $this->noGroupContent();
+		}
+		return($content);
+	}
+
+	/**
+	 * Build add group member content
+	 *
+	 * @param tx_passwordmgr_model_groupList Current group list of be user
+	 * @return string html
+	 */
+	protected function addGroupMemberContent(tx_passwordmgr_model_groupList $groupList) {
 		$selectedGroupUid = $GLOBALS['moduleData']['groupUid'];
 		if ( strlen($selectedGroupUid)>0 ) {
 			$currentGroupUid = $selectedGroupUid;
 		}
 
 		$groupSelectOptions = array();
-		$groupList = t3lib_div::makeInstance('tx_passwordmgr_model_groupList');
-		$groupList->init($GLOBALS['BE_USER']->user['uid']);
 		foreach ( $groupList as $group ) {
 			$selected = ($group['uid']==$selectedGroupUid) ? 'selected="selected"' : '';
 			if ( !isset($currentGroupUid) ) {

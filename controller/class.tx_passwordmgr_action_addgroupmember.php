@@ -43,7 +43,7 @@ class tx_passwordmgr_action_addGroupMember extends tx_passwordmgr_action_default
 
 		try {
 			// Check if be user has access to group
-			tx_passwordmgr_helper::checkUserAccessToGroup($groupUid, $newMemberUid);
+			tx_passwordmgr_helper::checkUserAccessToGroup($groupUid, $GLOBALS['BE_USER']->user['uid']);
 			// Check if new member is not already member of group
 			tx_passwordmgr_helper::checkUserNotMemberOfGroup($groupUid, $newMemberUid);
 

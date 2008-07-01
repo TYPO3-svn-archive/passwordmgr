@@ -234,5 +234,22 @@ class tx_passwordmgr_view_default {
 		$content = '<p style="color:red;">ERROR: You are using an insecure connection to your TYPO3 backend. This is a major security risk. This extension will not work if the TYPO3 backend is not secured with ssl (https). Please contact your TYPO3 Administrator.</p>';
 		return($this->doc->section('Connection to the backend not secured with ssl', $content, 0, 1));
 	}
+
+	/**
+	 * Content if no group is existing for this user
+	 * This is used in the addGroupMember and addEditPassword Views
+	 *
+	 * @return string html
+	 */
+	protected function noGroupContent() {
+		$content = '
+			<p style="color:red;">ERROR: Add a group first</p>
+			<input type="hidden" name="DATA[tx_passwordmgr_action]" value="" />
+			<input type="hidden" name="DATA[tx_passwordmgr_passwordUid]" value="" />
+			<input type="hidden" name="DATA[tx_passwordmgr_groupUid]" value="" />
+			<input type="submit" name="mysubmit" value="Add group" onclick="setFieldValue(\'view\', \'addEditGroup\'); document.passwordmgr.submit(); return false;" />
+		';
+		return($this->doc->section('No group found', $content, 0, 1));
+	}
 }
 ?>

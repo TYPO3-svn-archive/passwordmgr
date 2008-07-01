@@ -36,6 +36,25 @@ class tx_passwordmgr_view_addEditPassword extends tx_passwordmgr_view_default {
 	 * @return string html
 	 */
 	protected function innerContent() {
+		$groupList = t3lib_div::makeInstance('tx_passwordmgr_model_grouplist');
+		$groupList->init($GLOBALS['BE_USER']->user['uid']);
+
+		// If group contains at least one group, render content, else render error page
+		if ( count($groupList) > 0 ) {
+			$content = $this->addEditPasswordContent($groupList);
+		} else { // No group existing for this user
+			$content = $this->noGroupContent();
+		}
+		return($content);
+	}
+
+	/**
+	 * Build add edit password content
+	 *
+	 * @param tx_passwordmgr_model_groupList Current group list of be user
+	 * @return string html
+	 */
+	protected function addEditPasswordContent(tx_passwordmgr_model_grouplist $groupList) {
 		// Determine view or edit mode
 		if ( $GLOBALS['moduleData']['passwordUid']=='new' || strlen($GLOBALS['moduleData']['passwordUid'])==0 ) {
 			$addMode = TRUE;
@@ -46,8 +65,6 @@ class tx_passwordmgr_view_addEditPassword extends tx_passwordmgr_view_default {
 		// Compile group selector
 		$selectedGroupUid = $GLOBALS['moduleData']['groupUid'];
 		$groupSelectOptions = array();
-		$groupList = t3lib_div::makeInstance('tx_passwordmgr_model_grouplist');
-		$groupList->init($GLOBALS['BE_USER']->user['uid']);
 		foreach ( $groupList as $group ) {
 			if ( strlen($selectedGroupUid)==0 ) {
 				$selectedGroupUid = $group['uid'];
