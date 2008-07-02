@@ -75,7 +75,7 @@ class tx_passwordmgr_view_overview extends tx_passwordmgr_view_default {
 								<td colspan="2"></td>
 								<td class="'.$bgColor.'" colspan="2">'.$member['name'].'</td>
 								<td class="'.$bgColor.'">
-									<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/garbage.gif').' onclick="setAction(\'deleteGroupMember\'); setFieldValue(\'groupUid\', \''.$group['uid'].'\'); setFieldValue(\'groupMemberUid\', \''.$member['beUserUid'].'\'); document.passwordmgr.submit();" alt="Delete member" title="Delete member" />
+									<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/garbage.gif').' onclick="if (confirm(\'Are you sure you want to delete this member?\')) {setAction(\'deleteGroupMember\'); setFieldValue(\'groupUid\', \''.$group['uid'].'\'); setFieldValue(\'groupMemberUid\', \''.$member['beUserUid'].'\'); document.passwordmgr.submit();}" alt="Delete member" title="Delete member" />
 								</td>
 							</tr>
 						';
@@ -117,7 +117,7 @@ class tx_passwordmgr_view_overview extends tx_passwordmgr_view_default {
 								<td class="'.$bgColor.'">'.$userAndPasswordContent.'</td>
 								<td class="'.$bgColor.'">
 									<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/edit2.gif').' onclick="setFieldValue(\'view\', \'addEditPassword\'); setFieldValue(\'groupUid\', \''.$group['uid'].'\'); setFieldValue(\'passwordUid\', \''.$password['uid'].'\'); document.passwordmgr.submit();" alt="Edit password" title="Edit password" />
-									<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/garbage.gif').' onclick="setAction(\'deletePassword\'); setFieldValue(\'passwordUid\', \''.$password['uid'].'\'); document.passwordmgr.submit();" alt="Delete password" title="Delete passwod" />
+									<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/garbage.gif').' onclick="if (confirm(\'This action cannot be undone! Are you sure you want to delete this password?\')) {setAction(\'deletePassword\'); setFieldValue(\'passwordUid\', \''.$password['uid'].'\'); document.passwordmgr.submit();}" alt="Delete password" title="Delete password" />
 									<img style="cursor: pointer;" src="../res/decrypted.png" onclick="setAction(\'decryptPassword\'); setFieldValue(\'passwordUid\', \''.$password['uid'].'\'); passphrasePopUp();" alt="Decrypt password" title="Decrypt password" />
 								</td>
 							</tr>
@@ -136,7 +136,7 @@ class tx_passwordmgr_view_overview extends tx_passwordmgr_view_default {
 					<td class="bgColor2" colspan="3">Group: '.$group['name'].'</td>
 					<td class="bgColor2">
 						<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/edit2.gif').' onclick="setFieldValue(\'view\', \'addEditGroup\'); setFieldValue(\'groupUid\', \''.$group['uid'].'\'); document.passwordmgr.submit();" alt="Edit group" title="Edit group" />
-						<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/garbage.gif').' onclick="setAction(\'deleteGroup\'); setFieldValue(\'groupUid\', \''.$group['uid'].'\'); document.passwordmgr.submit();" alt="Delete group" title="Delete group" />
+						<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/garbage.gif').' onclick="if (confirm(\'This will also delete all passwords of this group! This action cannot be undone! Are you sure you want to delete this group?\')) {setAction(\'deleteGroup\'); setFieldValue(\'groupUid\', \''.$group['uid'].'\'); document.passwordmgr.submit();}" alt="Delete group" title="Delete group" />
 						'.$this->addNewGroupIcon().'
 					</td>
 				</tr>

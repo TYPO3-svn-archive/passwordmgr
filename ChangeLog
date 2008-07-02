@@ -1,5 +1,6 @@
 08-07-02 Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Feature 910: Add javascript confirmation popup to all delete actions in overview
 	* Removed hidden form elements and fixed javascript function setFieldValue to add form elements if necessary
 
 08-07-01 Christian Kuhn  <lolli@schwarzbu.ch>
