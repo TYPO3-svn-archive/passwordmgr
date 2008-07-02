@@ -123,7 +123,7 @@ class tx_passwordmgr_openssl {
 			throw new Exception('Can not decrypt data');
 		}
 
-		// Destroy private key resurce
+		// Destroy private key resource
 		openssl_pkey_free($privateKeyResource);
 
 		// Unserialize padded data array and return payload
@@ -131,6 +131,43 @@ class tx_passwordmgr_openssl {
 
 		// return decrypted data
 		return($cryptData['p']);
+	}
+
+	/**
+	 * Change passphrase of private key
+	 * - Use current passphrase to get private key resource
+	 * - Export new private key encrypted with new passphrase
+	 * - Destroy resource
+	 *
+	 * @param string Current encrypted private key
+	 * @param string Current passphrase
+	 * @param string New passphrase
+	 * @throws Exception if new private key can not be created
+	 * @return string New private key
+	 */
+	public static function changePassphrase($encryptedPrivateKey, $currentPassphrase, $newPassphrase) {
+		/**
+		 * @var array Configuration for new private keys
+		 */
+		$sslConfig = array(
+			'encrypt_key' => TRUE,
+			'private_key_bits' => 1024,
+		);
+
+		// Decrypt private key with passphrase and throw Exception if not successfull
+		$privateKeyResource = openssl_pkey_get_private($encryptedPrivateKey, $currentPassphrase);
+		if ( !$privateKeyResource ) {
+			tx_passwordmgr_helper::addLogEntry(3, 'decryptPrivateKey', 'Can not decrypt private key. Wrong password?');
+			throw new Exception('Can not decrypt private Key');
+		}
+		
+		// Export new private key encrypted with new passphrase
+		openssl_pkey_export($privateKeyResource, $newPrivateKey, $newPassphrase, $sslConfig);
+
+		// Destroy private key resource
+		openssl_pkey_free($privateKeyResource);
+
+		return($newPrivateKey);
 	}
 
 	/**

@@ -105,12 +105,14 @@ class tx_passwordmgr_module1 {
 		$this->include_once[] = $extPath . 'controller/class.tx_passwordmgr_action_editgroup.php';
 		$this->include_once[] = $extPath . 'controller/class.tx_passwordmgr_action_decryptpassword.php';
 		$this->include_once[] = $extPath . 'controller/class.tx_passwordmgr_action_fold.php';
+		$this->include_once[] = $extPath . 'controller/class.tx_passwordmgr_action_changepassphrase.php';
 		$this->include_once[] = $extPath . 'view/class.tx_passwordmgr_view_default.php';
 		$this->include_once[] = $extPath . 'view/class.tx_passwordmgr_view_overview.php';
 		$this->include_once[] = $extPath . 'view/class.tx_passwordmgr_view_initializekeypair.php';
 		$this->include_once[] = $extPath . 'view/class.tx_passwordmgr_view_addeditpassword.php';
 		$this->include_once[] = $extPath . 'view/class.tx_passwordmgr_view_addeditgroup.php';
 		$this->include_once[] = $extPath . 'view/class.tx_passwordmgr_view_addgroupmember.php';
+		$this->include_once[] = $extPath . 'view/class.tx_passwordmgr_view_changepassphrase.php';
 		// Default data list class, implements Iterator, Countable
 		$this->include_once[] = $extPath . 'model/class.tx_passwordmgr_model_list.php';
 		// Data list classes

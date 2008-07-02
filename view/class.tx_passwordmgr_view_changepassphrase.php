@@ -23,15 +23,15 @@
 ***************************************************************/
 
 /**
- * Class 'initializeKeyPair' for the 'passwordmgr' extension.
+ * Class 'changePassphrase' for the 'passwordmgr' extension.
  *
  * @author	Christian Kuhn <lolli@schwarzbu.ch>
  * @package	TYPO3
  * @subpackage	tx_passwordmgr
  */
-class tx_passwordmgr_view_initializeKeyPair extends tx_passwordmgr_view_default {
+class tx_passwordmgr_view_changePassphrase extends tx_passwordmgr_view_default {
 	/**
-	 * Build content for the initialize key pair view
+	 * Build content for the change master password view
 	 *
 	 * @return string html
 	 */
@@ -43,19 +43,25 @@ class tx_passwordmgr_view_initializeKeyPair extends tx_passwordmgr_view_default 
 		$content .= '
 			<table border="0" cellpadding="2" cellspacing="1">
 				<tr>
-					<td class="bgColor4"><strong>New master password:</strong><br />Minimum 6 Characters</td>
+					<td class="bgColor4">Current master password</td>
+					<td class="bgColor4">
+						<input type="password" name="DATA[tx_passwordmgr_passphrase]" />
+					</td>
+				</tr>
+				<tr>
+					<td class="bgColor4">New master password<br />Minimum 6 Characters</td>
 					<td class="bgColor4">
 						<input type="password" name="DATA[tx_passwordmgr_password1]" onkeyup="testPassword(this.value);" />
 					</td>
 				</tr>
 				<tr>
-					<td class="bgColor4"><strong>Confirm master password:</strong></td>
+					<td class="bgColor4">Confirm master password</td>
 					<td class="bgColor4">
 						<input type="password" name="DATA[tx_passwordmgr_password2]" />
 					</td>
 				</tr>
 				<tr>
-					<td class="bgColor4"><strong>Password strength:</strong></td>
+					<td class="bgColor4">Password strength</td>
 					<td class="bgColor4">
 						<p id="pwStrength"></p>
 					</td>
@@ -63,13 +69,13 @@ class tx_passwordmgr_view_initializeKeyPair extends tx_passwordmgr_view_default 
 				<tr>
 					<td class="bgColor4"></td>
 					<td class="bgColor4" align="right">
-						<input type="submit" name="mysubmit" value="Create your master password" onclick="setAction(\'initializeKeyPair\');" />
+						<input type="submit" name="mysubmit" value="Change master password" onclick="setAction(\'changePassphrase\');" />
 					</td>
 				</tr>
 			</table>
 		';
 
-		return($this->doc->section('Create your master password',$content,0,1));
+		return($this->doc->section('Change master password',$content,0,1));
 	}
 }
 ?>
