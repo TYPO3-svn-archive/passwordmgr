@@ -66,7 +66,6 @@ class tx_passwordmgr_view_initializeKeyPair extends tx_passwordmgr_view_default 
 					</td>
 				</tr>
 			</table>
-			<input type="hidden" name="DATA[tx_passwordmgr_action]" value="" />
 		';
 
 		return($this->doc->section('Create your master password',$content,0,1));

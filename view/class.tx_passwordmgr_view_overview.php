@@ -152,13 +152,6 @@ class tx_passwordmgr_view_overview extends tx_passwordmgr_view_default {
 			<table border="0" cellpadding="2" cellspacing="1">
 				'.implode($groupContent).'
 			</table>
-			<input type="hidden" name="DATA[tx_passwordmgr_action]" value="" />
-			<input type="hidden" name="DATA[tx_passwordmgr_foldType]" value="" />
-			<input type="hidden" name="DATA[tx_passwordmgr_foldState]" value="" />
-			<input type="hidden" name="DATA[tx_passwordmgr_groupUid]" value="" />
-			<input type="hidden" name="DATA[tx_passwordmgr_passwordUid]" value="" />
-			<input type="hidden" name="DATA[tx_passwordmgr_groupMemberUid]" value="" />
-			<input type="hidden" name="DATA[tx_passwordmgr_passphrase]" value="" />
 		';
 
 		return($this->doc->section('Groups and passwords',$content,0,1));

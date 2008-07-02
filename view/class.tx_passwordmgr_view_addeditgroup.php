@@ -81,8 +81,6 @@ class tx_passwordmgr_view_addEditGroup extends tx_passwordmgr_view_default {
 					<td></td>
 				</tr>
 			</table>
-			<input type="hidden" name="DATA[tx_passwordmgr_action]" value="" />
-			<input type="hidden" name="DATA[tx_passwordmgr_passwordUid]" value="" />
 		';
 
 		return($this->doc->section(($addMode ? 'Add group' : 'Update group'),$content,0,1));

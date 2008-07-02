@@ -6,9 +6,8 @@
 		<script type="text/javascript">
 			<!--
 			function sendFormData(form_object) {
-				remoteForm = opener.document.passwordmgr;
-				remoteForm.elements['DATA[tx_passwordmgr_passphrase]'].value = form_object.passphrase.value;
-				remoteForm.submit();
+				opener.setFieldValue('passphrase', form_object.passphrase.value);
+				opener.document.passwordmgr.submit();
 				window.close();
 			}
 			-->

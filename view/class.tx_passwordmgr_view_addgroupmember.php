@@ -114,9 +114,6 @@ class tx_passwordmgr_view_addGroupMember extends tx_passwordmgr_view_default {
 					<td></td>
 				</tr>
 			</table>
-			<input type="hidden" name="DATA[tx_passwordmgr_action]" value="" />
-			<input type="hidden" name="DATA[tx_passwordmgr_passphrase]" value="" />
-			<input type="hidden" name="DATA[tx_passwordmgr_passwordUid]" value="" />
 		';
 
 		return($this->doc->section('Add member',$content,0,1));

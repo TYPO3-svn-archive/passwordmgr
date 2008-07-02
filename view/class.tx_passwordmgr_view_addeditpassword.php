@@ -146,7 +146,6 @@ class tx_passwordmgr_view_addEditPassword extends tx_passwordmgr_view_default {
 					<td></td>
 				</tr>
 			</table>
-			<input type="hidden" name="DATA[tx_passwordmgr_action]" value="" />
 		';
 
 		return($this->doc->section(($addMode ? 'Add password' : 'Update password'),$content,0,1));

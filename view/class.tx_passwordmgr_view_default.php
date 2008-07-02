@@ -125,10 +125,27 @@ class tx_passwordmgr_view_default {
 					window.open(\'../res/passphrasepopup.html\',\'Enter master password popup\',\'height=300,width=500,status=0,menubar=0,scrollbars=1\');
 				}
 				function setAction(action) {
-					document.forms["passwordmgr"].elements["DATA[tx_passwordmgr_action]"].value = action;
+					setFieldValue(\'action\', action);
 				}
 				function setFieldValue(name, value) {
-					document.forms["passwordmgr"].elements["DATA[tx_passwordmgr_"+name+"]"].value = value;
+					// Check for existing element, enable it and set value. else add new element as hidden input element
+					if ( document.forms["passwordmgr"].elements["DATA[tx_passwordmgr_"+name+"]"] ) {
+						document.forms["passwordmgr"].elements["DATA[tx_passwordmgr_"+name+"]"].disabled = false;
+						document.forms["passwordmgr"].elements["DATA[tx_passwordmgr_"+name+"]"].value = value;
+					} else {
+						var newElement = document.createElement("input");
+						newElement.setAttribute("name", "DATA[tx_passwordmgr_"+name+"]");
+						newElement.setAttribute("type", "hidden");
+						newElement.setAttribute("value", value);
+						document.forms["passwordmgr"].appendChild(newElement);
+					}
+				}
+				function resetForm() {
+					// Disable all form elements, but not view
+					for ( var i=0; i<document.forms["passwordmgr"].length; i++ ) {
+						document.forms["passwordmgr"].elements[i].disabled = true;
+					}
+					document.forms["passwordmgr"].elements["DATA[tx_passwordmgr_view]"].disabled = false;
 				}
 			</script>
 		';
@@ -168,7 +185,7 @@ class tx_passwordmgr_view_default {
 		}
 
 		$content = '
-			<select name="DATA[tx_passwordmgr_view]" onchange="setFieldValue(\'groupUid\', \'\'); setFieldValue(\'passwordUid\', \'\'); document.passwordmgr.submit();">
+			<select name="DATA[tx_passwordmgr_view]" onchange="resetForm(); document.passwordmgr.submit();">
 				'.implode($menuItems).'
 			</select>
 		';
@@ -244,9 +261,6 @@ class tx_passwordmgr_view_default {
 	protected function noGroupContent() {
 		$content = '
 			<p style="color:red;">ERROR: Add a group first</p>
-			<input type="hidden" name="DATA[tx_passwordmgr_action]" value="" />
-			<input type="hidden" name="DATA[tx_passwordmgr_passwordUid]" value="" />
-			<input type="hidden" name="DATA[tx_passwordmgr_groupUid]" value="" />
 			<input type="submit" name="mysubmit" value="Add group" onclick="setFieldValue(\'view\', \'addEditGroup\'); document.passwordmgr.submit(); return false;" />
 		';
 		return($this->doc->section('No group found', $content, 0, 1));
