@@ -1,3 +1,7 @@
+08-07-03 Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Raised default ssl key length to 2048 bit
+
 08-07-02 Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Feature 911: Add change master password functionality

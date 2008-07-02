@@ -151,7 +151,7 @@ class tx_passwordmgr_openssl {
 		 */
 		$sslConfig = array(
 			'encrypt_key' => TRUE,
-			'private_key_bits' => 1024,
+			'private_key_bits' => 2048,
 		);
 
 		// Decrypt private key with passphrase and throw Exception if not successfull
@@ -188,14 +188,15 @@ class tx_passwordmgr_openssl {
 		 * @var array Configuration for new certificates
 		 */
 		$sslConfig = array(
-			'private_key_bits' => 1024,
+			'private_key_bits' => 2048,
+			'encrypt_key' => TRUE,
 		);
 
 		// Create new key pair
 		$keyResource = openssl_pkey_new($sslConfig);
 
 		// Extract private key string to $privateKey, encrypted with $passphrase
-		openssl_pkey_export($keyResource, $privateKey, $passphrase);
+		openssl_pkey_export($keyResource, $privateKey, $passphrase, $sslConfig);
 
 		// Set given certificate details extracted from be user information
 		$certificateDetails = array();
@@ -212,7 +213,7 @@ class tx_passwordmgr_openssl {
 		$csr = openssl_csr_new($certificateDetails, $keyResource);
 
 		// Self sign certificate signing request with default valid time and export certificate to $certificate
-		$certificateResource = openssl_csr_sign($csr, null, $keyResource, $certificateValidDays);
+		$certificateResource = openssl_csr_sign($csr, null, $keyResource, $certificateValidDays, $sslConfig);
 		openssl_x509_export($certificateResource, $certificate);
 
 		// Destroy resources
