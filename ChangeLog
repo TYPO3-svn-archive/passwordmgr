@@ -1,5 +1,6 @@
 08-07-03 Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Refactored model openItems to userData. This class now holds any module specific user uc data
 	* Feature 962: Sort items alphabetically
 	* Raised default ssl key length to 2048 bit
 

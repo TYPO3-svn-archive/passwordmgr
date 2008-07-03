@@ -135,7 +135,7 @@ class tx_passwordmgr_module1 {
 		$this->include_once[] = $extPath . 'model/class.tx_passwordmgr_model_functionmenu.php';
 		$this->include_once[] = $extPath . 'model/class.tx_passwordmgr_model_functionmenu_allitems.php';
 		$this->include_once[] = $extPath . 'model/class.tx_passwordmgr_model_functionmenu_usernotinitialized.php';
-		$this->include_once[] = $extPath . 'model/class.tx_passwordmgr_model_openitems.php';
+		$this->include_once[] = $extPath . 'model/class.tx_passwordmgr_model_userdata.php';
 		// Load all classes
 		foreach ($this->include_once as $incFile) {
 			include_once($incFile);

@@ -23,25 +23,23 @@
 ***************************************************************/
 
 /**
- * Class 'openItems' for the 'passwordmgr' extension.
+ * Class 'userData' for the 'passwordmgr' extension.
+ * Data class for be_user module data, stored in be_user uC
  *
  * @author	Christian Kuhn <lolli@schwarzbu.ch>
  * @package	TYPO3
  * @subpackage	tx_passwordmgr
  */
-class tx_passwordmgr_model_openItems {
+class tx_passwordmgr_model_userData extends tx_passwordmgr_model_data {
 	/**
-	 * @var array User specific module data of passwordmgr extension
+	 * @var array List of user data open / non collapsed items
 	 */
-	protected $moduleUc = array();
-
-	/**
-	 * @var array List of open / non collapsed items
-	 */
-	protected $open = array(
+	protected $data = array(
+		'view' => string, // Current view
 		'openGroup' => array(), // Open groups
 		'openMember' => array(), // Open member lists
 		'openPassword' => array(), // Open password lists
+//		'selectedPassword' => integer // Selected password, for moving
 	);
 
 	/**
@@ -50,22 +48,41 @@ class tx_passwordmgr_model_openItems {
 	 * @return void
 	 */
 	public function __construct() {
-		$this->moduleUc = $GLOBALS['BE_USER']->getModuleData('user_txpasswordmgrM1');
-		if ( is_string($this->moduleUc['openGroup']) ) {
-			$this->open['openGroup'] = unserialize($this->moduleUc['openGroup']);
+		$moduleUc = $GLOBALS['BE_USER']->getModuleData('user_txpasswordmgrM1');
+		$this['view'] = $moduleUc['view'];
+		if ( is_string($moduleUc['openGroup']) ) {
+			$this['openGroup'] = unserialize($moduleUc['openGroup']);
+		} else {
+			$this['openGroup'] = '';
 		}
-		if ( is_string($this->moduleUc['openMember']) ) {
-			$this->open['openMember'] = unserialize($this->moduleUc['openMember']);
+		if ( is_string($moduleUc['openMember']) ) {
+			$this['openMember'] = unserialize($moduleUc['openMember']);
+		} else {
+			$this['openMember'] = '';
 		}
-		if ( is_string($this->moduleUc['openPassword']) ) {
-			$this->open['openPassword'] = unserialize($this->moduleUc['openPassword']);
+		if ( is_string($moduleUc['openPassword']) ) {
+			$this['openPassword'] = unserialize($moduleUc['openPassword']);
+		} else {
+			$this['openPassword'] = '';
 		}
+//		$this['selectedPassword'] = $moduleUc['selectedPassword'];
 	}
 
 	/**
-	 * Mark an item as open and safe in user module data
+	 * Store view in user uc
 	 *
-	 * @param string 'openGroup', 'openMember' or 'openPassword'
+	 * @param string view
+	 * @return void
+	 */
+	public function updateView($view) {
+		$this['view'] = $view;
+		$this->update();
+	}
+
+	/**
+	 * Mark an item as open
+	 *
+	 * @param string 'group', 'member' or 'password'
 	 * @param integer id of group
 	 * @throws Exception if item open failed
 	 * @return void
@@ -73,16 +90,15 @@ class tx_passwordmgr_model_openItems {
 	public function open($type, $groupUid) {
 		try {
 			$type = $this->getTypeName($type);
-			$this->open[$type][$groupUid] = 1;
-			$this->moduleUc[$type] = serialize($this->open[$type]);
-			$GLOBALS['BE_USER']->pushModuleData('user_txpasswordmgrM1', $this->moduleUc);
+			$this->data[$type][$groupUid] = 1;
+			$this->update();
 		} catch (Exception $e) {
-			tx_passwordmgr_helper::addLogEntry(3, 'openItems', 'Can not open '.$type);
+			tx_passwordmgr_helper::addLogEntry(3, 'userData', 'Can not open '.$type);
 		}
 	}
 
 	/**
-	 * Mark an item as closed and safe in user module data
+	 * Mark an item as closed
 	 *
 	 * @param string 'group', 'member' or 'password'
 	 * @param integer id of group
@@ -92,11 +108,10 @@ class tx_passwordmgr_model_openItems {
 	public function close($type, $groupUid) {
 		try {
 			$type = $this->getTypeName($type);
-			unset($this->open[$type][$groupUid]);
-			$this->moduleUc[$type] = serialize($this->open[$type]);
-			$GLOBALS['BE_USER']->pushModuleData('user_txpasswordmgrM1', $this->moduleUc);
+			unset($this->data[$type][$groupUid]);
+			$this->update();
 		} catch (Exception $e) {
-			tx_passwordmgr_helper::addLogEntry(3, 'openItems', 'Can not close '.$type);
+			tx_passwordmgr_helper::addLogEntry(3, 'userData', 'Can not close '.$type);
 		}
 	}
 
@@ -111,11 +126,11 @@ class tx_passwordmgr_model_openItems {
 		$open = FALSE;
 		try {
 			$type = $this->getTypeName($type);
-			if ( isset($this->open[$type][$groupUid]) ) {
+			if ( isset($this->data[$type][$groupUid]) ) {
 				$open = TRUE;
 			}
 		} catch (Exception $e) {
-			tx_passwordmgr_helper::addLogEntry(3, 'openItems', 'Can not access '.$type);
+			tx_passwordmgr_helper::addLogEntry(3, 'userData', 'Can not access '.$type);
 		}
 		return($open);
 	}
@@ -126,6 +141,7 @@ class tx_passwordmgr_model_openItems {
 	 * @param string itemname
 	 * @throws Exception if type not one of 'group', 'member' or 'password'
 	 * @return string data array name
+	 * @todo Find better function name
 	 */
 	protected function getTypeName($type) {
 		switch ($type) {
@@ -138,6 +154,21 @@ class tx_passwordmgr_model_openItems {
 			default:
 				throw new Exception ('Access to non existing fold type');
 		}
+	}
+
+	/**
+	 * Store new user module data in db
+	 *
+	 * @return void
+	 */
+	protected function update() {
+		$moduleUc = array();
+		$moduleUc['view'] = $this['view'];
+		$moduleUc['openGroup'] = serialize($this['openGroup']);
+		$moduleUc['openPassword'] = serialize($this['openPassword']);
+		$moduleUc['openMember'] = serialize($this['openMember']);
+//		$moduleUc['selectedPassword'] = $this['selectedPassword'];
+		$GLOBALS['BE_USER']->pushModuleData('user_txpasswordmgrM1', $moduleUc);
 	}
 }
 ?>

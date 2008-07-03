@@ -42,18 +42,18 @@ class tx_passwordmgr_view_overview extends tx_passwordmgr_view_default {
 		$user->init($GLOBALS['BE_USER']->user['uid']);
 		$groupList = t3lib_div::makeInstance('tx_passwordmgr_model_grouplist');
 		$groupList->init($user['uid']);
-		$openItems = t3lib_div::makeInstance('tx_passwordmgr_model_openItems');
+		$userData = t3lib_div::makeInstance('tx_passwordmgr_model_userData');
 
 		$groupContent = array();
 		foreach ( $groupList as $group ) {
-			$isOpenGroup = $openItems->isOpen('group',$group['uid']);
+			$isOpenGroup = $userData->isOpen('group',$group['uid']);
 
 			$memberContent = array();
 			$passwordContent = array();
 
 			if ( $isOpenGroup ) {
 				// Member list
-				$isOpenMember = $openItems->isOpen('member',$group['uid']);
+				$isOpenMember = $userData->isOpen('member',$group['uid']);
 				$memberList = $group->getMemberList();
 				$memberContent[] = '
 					<tr>
@@ -84,7 +84,7 @@ class tx_passwordmgr_view_overview extends tx_passwordmgr_view_default {
 				} // End of if member list is open
 	
 				// Password list
-				$isOpenPassword = $openItems->isOpen('password',$group['uid']);
+				$isOpenPassword = $userData->isOpen('password',$group['uid']);
 				$passwordList = $group->getPasswordList();
 				$passwordContent[] = '
 					<tr>

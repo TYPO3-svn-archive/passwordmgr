@@ -37,11 +37,11 @@ class tx_passwordmgr_action_fold extends tx_passwordmgr_action_default {
 	 * @return void
 	 */
 	public function execute() {
-		$openItems = t3lib_div::makeInstance('tx_passwordmgr_model_openItems');
+		$userData = t3lib_div::makeInstance('tx_passwordmgr_model_userData');
 		if ( $GLOBALS['moduleData']['foldState'] == 1 ) {
-			$openItems->open($GLOBALS['moduleData']['foldType'], $GLOBALS['moduleData']['groupUid']);
+			$userData->open($GLOBALS['moduleData']['foldType'], $GLOBALS['moduleData']['groupUid']);
 		} else {
-			$openItems->close($GLOBALS['moduleData']['foldType'], $GLOBALS['moduleData']['groupUid']);
+			$userData->close($GLOBALS['moduleData']['foldType'], $GLOBALS['moduleData']['groupUid']);
 		}
 
 		$this->defaultView();

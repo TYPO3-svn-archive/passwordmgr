@@ -75,21 +75,19 @@ class tx_passwordmgr_action_default implements tx_passwordmgr_action_interface {
 		}
 
 		// Determine view
-		// If already set from post, compare with user uc and modify there.
+		// If already set from post, compare with user uc and modify if changed
 		// If no post, use last user uc value
 		// If no user uc value, use default and set user uc
-		$moduleUc = $GLOBALS['BE_USER']->getModuleData('user_txpasswordmgrM1');
+		$userData = t3lib_div::makeInstance('tx_passwordmgr_model_userData');
 		if ( strlen($GLOBALS['moduleData']['view']) > 0 ) {
-			if ( !(strcmp($moduleUc['view'],$GLOBALS['moduleData']['view'])==0) ) {
-				$moduleUc['view'] = $GLOBALS['moduleData']['view'];
-				$GLOBALS['BE_USER']->pushModuleData('user_txpasswordmgrM1', $moduleUc);
+			if ( !(strcmp($userData['view'],$GLOBALS['moduleData']['view'])==0) ) {
+				$userData->updateView($GLOBALS['moduleData']['view']);
 			}
-		} elseif ( isset($moduleUc['view']) && class_exists('tx_passwordmgr_view_'.$moduleUc['view']) ) {
-			$GLOBALS['moduleData']['view'] = $moduleUc['view'];
+		} elseif ( strlen($userData['view'])>0 && class_exists('tx_passwordmgr_view_'.$userData['view']) ) {
+			$GLOBALS['moduleData']['view'] = $userData['view'];
 		} else {
 			$GLOBALS['moduleData']['view'] = 'overview';
-			$moduleUc['view'] = 'overview';
-			$GLOBALS['BE_USER']->pushModuleData('user_txpasswordmgrM1', $moduleUc);
+			$userData->updateView($GLOBALS['moduleData']['view']);
 		}
 
 		// Istantiate and call view
