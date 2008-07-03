@@ -116,6 +116,7 @@ class tx_passwordmgr_model_list implements Iterator, Countable {
 	/**
 	 * Delete all Items of the List
 	 * Calls delete() of list items
+	 * This will delete the item form database in most cases
 	 *
 	 * @throws Exception If delete failed
 	 * @return void
@@ -129,6 +130,16 @@ class tx_passwordmgr_model_list implements Iterator, Countable {
 				throw new Exception ('Can not delete list item of class '.get_class($this));
 			}
 		}
+	}
+
+	/**
+	 * Add a item to the list
+	 *
+	 * @param object item
+	 * @return void
+	 */
+	public function addListItem($item) {
+		$this->list[] = $item;
 	}
 }
 ?>

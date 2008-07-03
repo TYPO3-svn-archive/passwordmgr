@@ -60,17 +60,26 @@ class tx_passwordmgr_model_groupMemberList extends tx_passwordmgr_model_list {
 			'',
 			'be_users.username' // ORDER
 		);
-		$i = 0;
 		while ( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
-			$this->list[$i] = t3lib_div::makeInstance('tx_passwordmgr_model_groupMember');
-			$this->list[$i]['groupUid'] = $this->groupUid;
-			$this->list[$i]['beUserUid'] = $row['uid'];
-			$this->list[$i]['name'] = $row['username'];
-			$this->list[$i]['certificate'] = $row['cert'];
-			$this->list[$i]['publicKey'] = tx_passwordmgr_openssl::extractPublicKeyFromCertificate($row['cert']);
-			$this->list[$i]['rights'] = $row['rights'];
-			$i++;
+			$groupMember = t3lib_div::makeInstance('tx_passwordmgr_model_groupMember');
+			$groupMember['groupUid'] = $this->groupUid;
+			$groupMember['beUserUid'] = $row['uid'];
+			$groupMember['name'] = $row['username'];
+			$groupMember['certificate'] = $row['cert'];
+			$groupMember['publicKey'] = tx_passwordmgr_openssl::extractPublicKeyFromCertificate($row['cert']);
+			$groupMember['rights'] = $row['rights'];
+			$this->addListItem($groupMember);
 		}
+	}
+
+	/**
+	 * Add group member to list
+	 *
+	 * @param tx_passwordmgr_model_groupMember
+	 * @return void
+	 */
+	public function addListItem(tx_passwordmgr_model_groupMember $groupMember) {
+		parent::addListItem($groupMember);
 	}
 }
 ?>

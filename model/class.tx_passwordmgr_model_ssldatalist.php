@@ -57,15 +57,24 @@ class tx_passwordmgr_model_sslDataList extends tx_passwordmgr_model_list {
 			'tx_passwordmgr_password.uid=tx_passwordmgr_ssldata.password_uid'. // Join Constraint
 				' AND tx_passwordmgr_password.uid='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->passwordUid,'tx_passwordmgr_password')
 		);
-		$i = 0;
 		while ( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
-			$this->list[$i] = t3lib_div::makeInstance('tx_passwordmgr_model_sslData');
-			$this->list[$i]['passwordUid'] = $row['password_uid'];
-			$this->list[$i]['beUserUid'] = $row['be_users_uid'];
-			$this->list[$i]['key'] = $row['sslkey'];
-			$this->list[$i]['data'] = $row['ssldata'];
-			$i++;
+			$sslData = t3lib_div::makeInstance('tx_passwordmgr_model_sslData');
+			$sslData['passwordUid'] = $row['password_uid'];
+			$sslData['beUserUid'] = $row['be_users_uid'];
+			$sslData['key'] = $row['sslkey'];
+			$sslData['data'] = $row['ssldata'];
+			$this->addListItem($sslData);
 		}
+	}
+
+	/**
+	 * Add sslData object to list
+	 *
+	 * @param tx_passwordmgr_model_sslData
+	 * @return void
+	 */
+	public function addListItem(tx_passwordmgr_model_sslData $sslData) {
+		parent::addListItem($sslData);
 	}
 }
 ?>

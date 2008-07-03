@@ -51,7 +51,6 @@ class tx_passwordmgr_model_userList extends tx_passwordmgr_model_list {
 			'',
 			'username' // ORDER
 		);
-		$i = 0;
 		while ( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
 			$user = t3lib_div::makeInstance('tx_passwordmgr_model_user');
 			$user['uid'] = $row['uid'];
@@ -60,12 +59,21 @@ class tx_passwordmgr_model_userList extends tx_passwordmgr_model_list {
 			$user['privateKey'] = $row['tx_passwordmgr_privkey'];
 			try {
 				$user['publicKey'] = tx_passwordmgr_openssl::extractPublicKeyFromCertificate($user['certificate']);
-				$this->list[$i] = $user;
-				$i++;
+				$this->addListItem($user);
 			} catch ( Exception $exception ) {
 				tx_passwordmgr_helper::addLogEntry(1, 'beUserList', 'Can not add user '.$user['uid'].' to userlist, not initialized');
 			}
 		}
+	}
+
+	/**
+	 * Add user object to list
+	 *
+	 * @param tx_passwordmgr_model_user
+	 * @return void
+	 */
+	public function addListItem(tx_passwordmgr_model_user $user) {
+		parent::addListItem($user);
 	}
 }
 ?>

@@ -1,3 +1,7 @@
+08-07-04 Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Refactored model: Introduced public method addListItem with type hinting to all list classes
+
 08-07-03 Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Feature 977: Added rights system to model, adapted addGroupMember controller, introduced editGroupMember controller, refactored addGroupMember view to addEditGroupMember, added show member rights to overview

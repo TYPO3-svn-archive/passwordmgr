@@ -59,16 +59,25 @@ class tx_passwordmgr_model_passwordList extends tx_passwordmgr_model_list {
 			'',
 			'name' // ORDER
 		);
-		$i = 0;
 		while ( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
-			$this->list[$i] = t3lib_div::makeInstance('tx_passwordmgr_model_password');
-			$this->list[$i]['uid'] = $row['uid'];
-			$this->list[$i]['groupUid'] = $row['group_uid'];
-			$this->list[$i]['name'] = $row['name'];
-			$this->list[$i]['link'] = $row['link'];
-			$this->list[$i]['user'] = $row['user'];
-			$i++;
+			$password = t3lib_div::makeInstance('tx_passwordmgr_model_password');
+			$password['uid'] = $row['uid'];
+			$password['groupUid'] = $row['group_uid'];
+			$password['name'] = $row['name'];
+			$password['link'] = $row['link'];
+			$password['user'] = $row['user'];
+			$this->addListItem($password);
 		}
+	}
+
+	/**
+	 * Add password object to list
+	 *
+	 * @param tx_passwordmgr_model_password
+	 * @return void
+	 */
+	public function addListItem(tx_passwordmgr_model_password $password) {
+		parent::addListItem($password);
 	}
 }
 ?>

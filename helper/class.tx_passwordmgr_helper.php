@@ -96,7 +96,7 @@ class tx_passwordmgr_helper {
 		$log['priority'] = $priority;
 		$log['module'] = $module;
 		$log['message'] = $message;
-		$GLOBALS['logList']->add($log);
+		$GLOBALS['logList']->addListItem($log);
 	}
 
 	public static function getRandomString($length) {

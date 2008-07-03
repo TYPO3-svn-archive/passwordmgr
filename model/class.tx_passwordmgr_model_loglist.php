@@ -31,12 +31,12 @@
  */
 class tx_passwordmgr_model_logList extends tx_passwordmgr_model_list {
 	/**
-	 * Add entry to log list
+	 * Add log object to list
 	 *
 	 * @param tx_passwordmgr_model_log Log object
 	 */
-	public function add(tx_passwordmgr_model_log $node) {
-		$this->list[] = $node;
+	public function addListItem(tx_passwordmgr_model_log $log) {
+		parent::addListItem($log);
 	}
 }
 ?>
