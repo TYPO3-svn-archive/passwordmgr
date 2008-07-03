@@ -56,7 +56,9 @@ class tx_passwordmgr_model_groupMemberList extends tx_passwordmgr_model_list {
 			'be_users.uid AS uid, be_users.username AS username, be_users.tx_passwordmgr_cert AS cert',
 			'tx_passwordmgr_group_be_users_mm, be_users',
 			'tx_passwordmgr_group_be_users_mm.be_users_uid=be_users.uid'. // Join Constraint
-				' AND tx_passwordmgr_group_be_users_mm.group_uid='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->groupUid,'tx_passwordmgr_group_be_users_mm')
+				' AND tx_passwordmgr_group_be_users_mm.group_uid='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->groupUid,'tx_passwordmgr_group_be_users_mm'),
+			'',
+			'be_users.username' // ORDER
 		);
 		$i = 0;
 		while ( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {

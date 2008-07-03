@@ -55,7 +55,9 @@ class tx_passwordmgr_model_passwordList extends tx_passwordmgr_model_list {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'uid, group_uid, name, link, user',
 			'tx_passwordmgr_password',
-			'tx_passwordmgr_password.group_uid=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->groupUid,'tx_passwordmgr_password')
+			'tx_passwordmgr_password.group_uid=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->groupUid,'tx_passwordmgr_password'),
+			'',
+			'name' // ORDER
 		);
 		$i = 0;
 		while ( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
