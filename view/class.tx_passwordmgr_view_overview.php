@@ -63,17 +63,25 @@ class tx_passwordmgr_view_overview extends tx_passwordmgr_view_default {
 						</td>
 						<td class="bgColor5" colspan="2">Member: '.count($memberList).'</td>
 						<td class="bgColor5">
-							<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/new_el.gif').' onclick="setFieldValue(\'groupUid\', \''.$group['uid'].'\'); setFieldValue(\'view\', \'addGroupMember\'); document.passwordmgr.submit();" alt="Add new member" title="Add new member" />
+							<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/new_el.gif').' onclick="setFieldValue(\'groupUid\', \''.$group['uid'].'\'); setFieldValue(\'view\', \'addEditGroupMember\'); document.passwordmgr.submit();" alt="Add new member" title="Add new member" />
 						</td>
 					</tr>
 				';
 				if ( $isOpenMember ) {
 					$bgColor = 'bgColor4';
 					foreach ( $memberList as $member ) {
+						if ( $member['rights'] == 0 ) {
+							$rightsContent = 'view';
+						} elseif ( $member['rights'] == 1 ) {
+							$rightsContent = 'edit';
+						} else {
+							$rightsContent = 'admin';
+						}
 						$memberContent[] = '
 							<tr>
 								<td colspan="2"></td>
-								<td class="'.$bgColor.'" colspan="2">'.$member['name'].'</td>
+								<td class="'.$bgColor.'">'.$member['name'].'</td>
+								<td class="'.$bgColor.'">'.$rightsContent.'</td>
 								<td class="'.$bgColor.'">
 									<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/garbage.gif').' onclick="if (confirm(\'Are you sure you want to delete this member?\')) {setAction(\'deleteGroupMember\'); setFieldValue(\'groupUid\', \''.$group['uid'].'\'); setFieldValue(\'groupMemberUid\', \''.$member['beUserUid'].'\'); document.passwordmgr.submit();}" alt="Delete member" title="Delete member" />
 								</td>

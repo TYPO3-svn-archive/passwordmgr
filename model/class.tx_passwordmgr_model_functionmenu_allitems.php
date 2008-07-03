@@ -37,7 +37,7 @@ class tx_passwordmgr_model_functionMenu_allItems extends tx_passwordmgr_model_da
 		'overview' => 'Password Overview',
 		'addEditPassword' => 'Add / edit password',
 		'addEditGroup' => 'Add / edit group',
-		'addGroupMember' => 'Add new member to group',
+		'addEditGroupMember' => 'Add / edit group membership',
 		'changePassphrase' => 'Change master password',
 	);
 }

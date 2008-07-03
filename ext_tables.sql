@@ -25,6 +25,7 @@ CREATE TABLE tx_passwordmgr_group (
 CREATE TABLE tx_passwordmgr_group_be_users_mm (
 	group_uid int(11) DEFAULT '0' NOT NULL,
 	be_users_uid int(11) DEFAULT '0' NOT NULL,
+	rights int(11) DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (group_uid,be_users_uid)
 );

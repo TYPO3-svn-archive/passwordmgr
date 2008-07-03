@@ -39,6 +39,7 @@ class tx_passwordmgr_action_addGroupMember extends tx_passwordmgr_action_default
 		// Get input data
 		$groupUid = $GLOBALS['moduleData']['groupUid'];
 		$newMemberUid = $GLOBALS['moduleData']['groupMemberUid'];
+		$rights = $GLOBALS['moduleData']['groupMemberRights'];
 		$passphrase = $GLOBALS['moduleData']['passphrase'];
 
 		try {
@@ -46,14 +47,19 @@ class tx_passwordmgr_action_addGroupMember extends tx_passwordmgr_action_default
 			tx_passwordmgr_helper::checkUserAccessToGroup($groupUid, $GLOBALS['BE_USER']->user['uid']);
 			// Check if new member is not already member of group
 			tx_passwordmgr_helper::checkUserNotMemberOfGroup($groupUid, $newMemberUid);
+			// Check if rights are within valid range
+			tx_passwordmgr_helper::checkRightsWithinRange($rights);
 
 			// Initialize current user object for decryption of passwords
 			$user = t3lib_div::makeInstance('tx_passwordmgr_model_user');
 			$user->init($GLOBALS['BE_USER']->user['uid']);
+			$user['publicKey'] = tx_passwordmgr_openssl::extractPublicKeyFromCertificate($user['certificate']);
 
 			// Initialize new member object
 			$newMember = t3lib_div::makeInstance('tx_passwordmgr_model_groupmember');
-			$newMember->init($newMemberUid, $groupUid);
+			$newMember['groupUid'] = $groupUid;
+			$newMember['beUserUid'] = $newMemberUid;
+			$newMember['rights'] = $rights;
 
 			// Get list of passwords of this group
 			$group = t3lib_div::makeInstance('tx_passwordmgr_model_group');
@@ -69,7 +75,7 @@ class tx_passwordmgr_action_addGroupMember extends tx_passwordmgr_action_default
 				unset($sslDataUser);
 
 				// Encrypt data for new member
-				$newMemberKeyAndData = tx_passwordmgr_openssl::encrypt($newMember['publicKey'], $plaintextData);
+				$newMemberKeyAndData = tx_passwordmgr_openssl::encrypt($user['publicKey'], $plaintextData);
 				unset($plaintextData);
 
 				// Add ssl data for new member

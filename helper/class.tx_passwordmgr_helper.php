@@ -64,6 +64,19 @@ class tx_passwordmgr_helper {
 		return ($groupInGroupList);
 	}
 
+	/**
+	 * Checks if rights value >=0 and <=2
+	 *
+	 * @param integer rights
+	 * @throws Exception if rights not within range
+	 */
+	public static function checkRightsWithinRange($rights) {
+		if ( $rights<0 || $rights>2 || !strlen($rights)>0 ) {
+			tx_passwordmgr_helper::addLogEntry(3, 'rightsWithinRange', 'Value of member rights wrong');
+			throw new Exception('Value of member rights wrong');
+		}
+	}
+
 	public static function checkIdenticalPasswords( $pw1, $pw2 ) {
 		if ( strcmp($pw1, $pw2) ) {
 			tx_passwordmgr_helper::addLogEntry(3, 'identicalPasswords', 'Passwords do not match');

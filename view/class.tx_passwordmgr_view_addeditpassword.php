@@ -69,8 +69,8 @@ class tx_passwordmgr_view_addEditPassword extends tx_passwordmgr_view_default {
 			if ( strlen($selectedGroupUid)==0 ) {
 				$selectedGroupUid = $group['uid'];
 			}
-			$selected = ($group['uid']==$selectedGroupUid) ? 'selected="selected"' : '';
-			$groupSelectOptions[] = '<option value="'.$group['uid'].'" '.$selected.'>'.$group['name'].'</option>';
+			$selected = ($group['uid']==$selectedGroupUid) ? ' selected="selected"' : '';
+			$groupSelectOptions[] = '<option value="'.$group['uid'].'"'.$selected.'>'.$group['name'].'</option>';
 		}
 		$groupSelectContent = '
 			<select name="DATA[tx_passwordmgr_groupUid]" onchange="setFieldValue(\'passwordUid\', \'new\'); document.passwordmgr.submit();">

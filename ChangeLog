@@ -1,5 +1,6 @@
 08-07-03 Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Feature 977: Added rights system to model, adapted addGroupMember controller, introduced editGroupMember controller, refactored addGroupMember view to addEditGroupMember, added show member rights to overview
 	* Feature 961: Move passwords between groups
 	* Refactored model openItems to userData. This class now holds any module specific user uc data
 	* Feature 962: Sort items alphabetically

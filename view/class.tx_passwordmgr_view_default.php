@@ -254,7 +254,7 @@ class tx_passwordmgr_view_default {
 
 	/**
 	 * Content if no group is existing for this user
-	 * This is used in the addGroupMember and addEditPassword Views
+	 * This is used in the addEditGroupMember and addEditPassword Views
 	 *
 	 * @return string html
 	 */

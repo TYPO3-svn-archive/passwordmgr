@@ -98,6 +98,7 @@ class tx_passwordmgr_module1 {
 		$this->include_once[] = $extPath . 'controller/class.tx_passwordmgr_action_addgroup.php';
 		$this->include_once[] = $extPath . 'controller/class.tx_passwordmgr_action_addpassword.php';
 		$this->include_once[] = $extPath . 'controller/class.tx_passwordmgr_action_addgroupmember.php';
+		$this->include_once[] = $extPath . 'controller/class.tx_passwordmgr_action_editgroupmember.php';
 		$this->include_once[] = $extPath . 'controller/class.tx_passwordmgr_action_deletepassword.php';
 		$this->include_once[] = $extPath . 'controller/class.tx_passwordmgr_action_deletegroup.php';
 		$this->include_once[] = $extPath . 'controller/class.tx_passwordmgr_action_deletegroupmember.php';
@@ -114,7 +115,7 @@ class tx_passwordmgr_module1 {
 		$this->include_once[] = $extPath . 'view/class.tx_passwordmgr_view_initializekeypair.php';
 		$this->include_once[] = $extPath . 'view/class.tx_passwordmgr_view_addeditpassword.php';
 		$this->include_once[] = $extPath . 'view/class.tx_passwordmgr_view_addeditgroup.php';
-		$this->include_once[] = $extPath . 'view/class.tx_passwordmgr_view_addgroupmember.php';
+		$this->include_once[] = $extPath . 'view/class.tx_passwordmgr_view_addeditgroupmember.php';
 		$this->include_once[] = $extPath . 'view/class.tx_passwordmgr_view_changepassphrase.php';
 		// Default data list class, implements Iterator, Countable
 		$this->include_once[] = $extPath . 'model/class.tx_passwordmgr_model_list.php';

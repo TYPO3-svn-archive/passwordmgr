@@ -38,7 +38,8 @@ class tx_passwordmgr_model_groupMember extends tx_passwordmgr_model_data {
 		'groupUid' => integer,
 		'name' => string,
 		'publicKey' => string,
-		'certificate' => string
+		'certificate' => string,
+		'rights' => integer // 0 = view passwords; 1 = + edit / add passwords; 2 = + add / edit / delete member, edit / delete group
 	);
 
 	/**
@@ -61,14 +62,17 @@ class tx_passwordmgr_model_groupMember extends tx_passwordmgr_model_data {
 	 */
 	protected function fetchDetails() {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-			'username, tx_passwordmgr_cert',
-			'be_users',
-			'uid='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this['beUserUid'], 'be_users')
+			'be_users.uid AS uid, be_users.username AS username, be_users.tx_passwordmgr_cert AS cert, tx_passwordmgr_group_be_users_mm.rights AS rights',
+			'be_users, tx_passwordmgr_group_be_users_mm',
+			'tx_passwordmgr_group_be_users_mm.be_users_uid=be_users.uid' . // Join Constraint
+				' AND be_users.uid='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this['beUserUid'], 'be_users') .
+				' AND tx_passwordmgr_group_be_users_mm.group_uid='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this['groupUid'], 'tx_passwordmgr_group_be_users_mm')
 		);
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-		$this['name'] = ($row['username']);
-		$this['certificate'] = $row['tx_passwordmgr_cert'];
+		$this['name'] = $row['username'];
+		$this['certificate'] = $row['cert'];
 		$this['publicKey'] = tx_passwordmgr_openssl::extractPublicKeyFromCertificate($this['certificate']);
+		$this['rights'] = $row['rights'];
 	}
 
 	/**
@@ -80,7 +84,8 @@ class tx_passwordmgr_model_groupMember extends tx_passwordmgr_model_data {
 	public function add() {
 		$data = array (
 			'be_users_uid' => $this['beUserUid'],
-			'group_uid' => $this['groupUid']
+			'group_uid' => $this['groupUid'],
+			'rights' => $this['rights']
 		);
 		$res = $GLOBALS['TYPO3_DB']->exec_INSERTquery(
 			'tx_passwordmgr_group_be_users_mm',
@@ -91,6 +96,31 @@ class tx_passwordmgr_model_groupMember extends tx_passwordmgr_model_data {
 		} else {
 			tx_passwordmgr_helper::addLogEntry(3, 'addMembership', 'Can not add user '.$data['be_users_uid'].' to group '.$data['group_uid']);
 			throw new Exception ('Error adding user '.$data['be_users_uid'].' to group');
+		}
+	}
+
+	/**
+	 * Update member rights
+	 *
+	 * @throws Exception if update failed
+	 * @return void
+	 */
+	public function update() {
+		$data = array(
+			'rights' => $this['rights']
+		);
+		$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+			'tx_passwordmgr_group_be_users_mm',
+			'group_uid='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this['groupUid'], 'tx_passwordmgr_group_be_users_mm') .
+				' AND be_users_uid='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this['beUserUid'], 'tx_passwordmgr_group_be_users_mm'),
+			$data
+		);
+		$affectedRows = (integer)$GLOBALS['TYPO3_DB']->sql_affected_rows();
+		if ( $affectedRows == 1 ) {
+			tx_passwordmgr_helper::addLogEntry(1, 'editMember', 'Updated member rights of member '.$this['beUserUid'].' of group '.$this['groupUid']);
+		} else {
+			tx_passwordmgr_helper::addLogEntry(3, 'editMember', 'Error updating rights of member '.$this['beUserUid'].' of group '.$this['groupUid']);
+			throw new Exception ('Error updating member '.$this['beUserUid'].' of group '.$this['groupUid']);
 		}
 	}
 

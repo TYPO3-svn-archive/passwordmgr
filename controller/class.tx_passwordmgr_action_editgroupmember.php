@@ -23,50 +23,41 @@
 ***************************************************************/
 
 /**
- * Class 'moduleData' for the 'passwordmgr' extension.
+ * Class 'editGroupMember' for the 'passwordmgr' extension.
+ * Update rights of existing group member
  *
  * @author	Christian Kuhn <lolli@schwarzbu.ch>
  * @package	TYPO3
  * @subpackage	tx_passwordmgr
  */
-class tx_passwordmgr_model_moduleData extends tx_passwordmgr_model_data {
+class tx_passwordmgr_action_editGroupMember extends tx_passwordmgr_action_default {
 	/**
-	 * @var array Data array of possible form post vars
-	 */
-	protected $data = array(
-		'view' => '',
-		'action' => '',
-		'foldType' => '',
-		'foldState' => '',
-		'groupUid' => '',
-		'passwordUid' => '',
-		'groupMemberUid' => '',
-		'groupMemberRights' => '',
-		'groupName' => '',
-		'passphrase' => '',
-		'passwordName' => '',
-		'passwordLink' => '',
-		'passwordUser' => '',
-		'passwordPassword' => '',
-		'password1' => '',
-		'password2' => '',
-	);
-
-	/**
-	 * Fill data array with given post values
+	 * Edit rights of a group member
 	 *
 	 * @return void
 	 */
-	public function __construct() {
-		// Stuff every post value into data array
-		// This will fail if a non defined array key is accessed
-		$formData = t3lib_div::_GP('DATA');
-		if ( is_array($formData) ) {
-			foreach ( $formData as $key=>$value ) {
-				$key = substr($key, strlen('tx_passwordmgr_'));
-				$this[$key] = $value;
-			}
+	public function execute() {
+		// Get input data
+		$groupUid = $GLOBALS['moduleData']['groupUid'];
+		$memberUid = $GLOBALS['moduleData']['groupMemberUid'];
+		$rights = $GLOBALS['moduleData']['groupMemberRights'];
+
+		try {
+			// Check if be user has access to group
+			tx_passwordmgr_helper::checkUserAccessToGroup($groupUid, $GLOBALS['BE_USER']->user['uid']);
+			// Check if rights are within valid range
+			tx_passwordmgr_helper::checkRightsWithinRange($rights);
+
+			// Initialize new member object
+			$member = t3lib_div::makeInstance('tx_passwordmgr_model_groupmember');
+			$member->init($memberUid, $groupUid);
+			$member['rights'] = $rights;
+			$member->update();
+		} catch ( Exception $e ) {
+			tx_passwordmgr_helper::addLogEntry(3, 'editGroupMember', 'Can not edit group member');
 		}
+
+		$this->defaultView();
 	}
 }
 ?>
