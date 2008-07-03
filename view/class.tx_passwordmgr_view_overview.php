@@ -86,6 +86,14 @@ class tx_passwordmgr_view_overview extends tx_passwordmgr_view_default {
 				// Password list
 				$isOpenPassword = $userData->isOpen('password',$group['uid']);
 				$passwordList = $group->getPasswordList();
+
+				// Paste (move) password button
+				if ( strlen($userData['selectedPassword'])>0 ) {
+					$pastePasswordContent = '<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/clip_pasteafter.gif').' onclick="setAction(\'movePassword\'); setFieldValue(\'groupUid\', \''.$group['uid'].'\'); passphrasePopUp();" alt="Paste password" title="Paste password" />';
+				} else {
+					$pastePasswordContent = '';
+				}
+
 				$passwordContent[] = '
 					<tr>
 						<td></td>
@@ -95,6 +103,7 @@ class tx_passwordmgr_view_overview extends tx_passwordmgr_view_default {
 						<td class="bgColor5" colspan="2">Passwords: '.count($passwordList).'</td>
 						<td class="bgColor5">
 							<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/new_el.gif').' onclick="setFieldValue(\'groupUid\', \''.$group['uid'].'\'); setFieldValue(\'view\', \'addEditPassword\'); document.passwordmgr.submit();" alt="Add new password" title="Add new password" />
+							'.$pastePasswordContent.'
 						</td>
 					</tr>
 				';
@@ -110,6 +119,9 @@ class tx_passwordmgr_view_overview extends tx_passwordmgr_view_default {
 						if ( isset($this->data['plaintextPassword'][$password['uid']]) ) {
 							$userAndPasswordContent .= '<br />Password: '.$this->data['plaintextPassword'][$password['uid']];
 						}
+						// Determine if the password is selected in user data uc
+						$isSel = $userData->isSelectedPassword($password['uid']);
+
 						$passwordContent[] = '
 							<tr>
 								<td colspan="2"></td>
@@ -117,6 +129,7 @@ class tx_passwordmgr_view_overview extends tx_passwordmgr_view_default {
 								<td class="'.$bgColor.'">'.$userAndPasswordContent.'</td>
 								<td class="'.$bgColor.'">
 									<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/edit2.gif').' onclick="setFieldValue(\'view\', \'addEditPassword\'); setFieldValue(\'groupUid\', \''.$group['uid'].'\'); setFieldValue(\'passwordUid\', \''.$password['uid'].'\'); document.passwordmgr.submit();" alt="Edit password" title="Edit password" />
+									<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/clip_cut'.($isSel?'_h':'').'.gif').' onclick="setAction(\''.($isSel?'de':'').'selectPassword\'); setFieldValue(\'passwordUid\', \''.$password['uid'].'\'); document.passwordmgr.submit();" alt="'.($isSel?'':'Cut password').'" title="'.($isSel?'':'Cut password').'" />
 									<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/garbage.gif').' onclick="if (confirm(\'This action cannot be undone! Are you sure you want to delete this password?\')) {setAction(\'deletePassword\'); setFieldValue(\'passwordUid\', \''.$password['uid'].'\'); document.passwordmgr.submit();}" alt="Delete password" title="Delete password" />
 									<img style="cursor: pointer;" src="../res/decrypted.png" onclick="setAction(\'decryptPassword\'); setFieldValue(\'passwordUid\', \''.$password['uid'].'\'); passphrasePopUp();" alt="Decrypt password" title="Decrypt password" />
 								</td>

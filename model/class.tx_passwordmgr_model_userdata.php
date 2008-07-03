@@ -39,7 +39,7 @@ class tx_passwordmgr_model_userData extends tx_passwordmgr_model_data {
 		'openGroup' => array(), // Open groups
 		'openMember' => array(), // Open member lists
 		'openPassword' => array(), // Open password lists
-//		'selectedPassword' => integer // Selected password, for moving
+		'selectedPassword' => integer // Selected password, for moving
 	);
 
 	/**
@@ -65,7 +65,7 @@ class tx_passwordmgr_model_userData extends tx_passwordmgr_model_data {
 		} else {
 			$this['openPassword'] = '';
 		}
-//		$this['selectedPassword'] = $moduleUc['selectedPassword'];
+		$this['selectedPassword'] = $moduleUc['selectedPassword'];
 	}
 
 	/**
@@ -136,6 +136,41 @@ class tx_passwordmgr_model_userData extends tx_passwordmgr_model_data {
 	}
 
 	/**
+	 * Mark a password as selected. Needed for cut+paste
+	 *
+	 * @param integer Password uid
+	 * @return void
+	 */
+	public function selectPassword($passwordUid) {
+		$this['selectedPassword'] = $passwordUid;
+		$this->update();
+	}
+
+	/**
+	 * Deselect selected password. Needed for cut+paste
+	 *
+	 * @return void
+	 */
+	public function deselectPassword() {
+		$this['selectedPassword'] = '';
+		$this->update();
+	}
+
+	/**
+	 * Wether or not given password uid is selected
+	 *
+	 * @param integer Password uid
+	 * @return boolean TRUE if password is selected
+	 */
+	public function isSelectedPassword($passwordUid) {
+		$isSel = FALSE;
+		if ( $this['selectedPassword'] == $passwordUid ) {
+			$isSel = TRUE;
+		}
+		return($isSel);
+	}
+
+	/**
 	 * Helper function to translate $type to corresponding data array name
 	 *
 	 * @param string itemname
@@ -167,7 +202,7 @@ class tx_passwordmgr_model_userData extends tx_passwordmgr_model_data {
 		$moduleUc['openGroup'] = serialize($this['openGroup']);
 		$moduleUc['openPassword'] = serialize($this['openPassword']);
 		$moduleUc['openMember'] = serialize($this['openMember']);
-//		$moduleUc['selectedPassword'] = $this['selectedPassword'];
+		$moduleUc['selectedPassword'] = $this['selectedPassword'];
 		$GLOBALS['BE_USER']->pushModuleData('user_txpasswordmgrM1', $moduleUc);
 	}
 }

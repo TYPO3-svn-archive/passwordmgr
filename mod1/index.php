@@ -106,6 +106,9 @@ class tx_passwordmgr_module1 {
 		$this->include_once[] = $extPath . 'controller/class.tx_passwordmgr_action_decryptpassword.php';
 		$this->include_once[] = $extPath . 'controller/class.tx_passwordmgr_action_fold.php';
 		$this->include_once[] = $extPath . 'controller/class.tx_passwordmgr_action_changepassphrase.php';
+		$this->include_once[] = $extPath . 'controller/class.tx_passwordmgr_action_selectpassword.php';
+		$this->include_once[] = $extPath . 'controller/class.tx_passwordmgr_action_deselectpassword.php';
+		$this->include_once[] = $extPath . 'controller/class.tx_passwordmgr_action_movepassword.php';
 		$this->include_once[] = $extPath . 'view/class.tx_passwordmgr_view_default.php';
 		$this->include_once[] = $extPath . 'view/class.tx_passwordmgr_view_overview.php';
 		$this->include_once[] = $extPath . 'view/class.tx_passwordmgr_view_initializekeypair.php';
