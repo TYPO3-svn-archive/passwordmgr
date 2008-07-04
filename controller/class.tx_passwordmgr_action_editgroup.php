@@ -36,10 +36,12 @@ class tx_passwordmgr_action_editGroup extends tx_passwordmgr_action_default {
 	 * @return void
 	 */
 	public function execute() {
+		$groupUid = $GLOBALS['moduleData']['groupUid'];
 		try {
 			// Input checks
 			tx_passwordmgr_helper::checkLengthGreaterZero($GLOBALS['moduleData']['groupName'], 'name');
-			tx_passwordmgr_helper::checkUserAccessToGroup($GLOBALS['moduleData']['groupUid']);
+			tx_passwordmgr_helper::checkUserAccessToGroup($groupUid);
+			tx_passwordmgr_helper::checkMemberAccessGroupAdmin($groupUid, $GLOBALS['BE_USER']->user['uid']);
 
 			// Get current group data
 			$group = t3lib_div::makeInstance('tx_passwordmgr_model_group');

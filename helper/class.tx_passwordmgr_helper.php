@@ -81,6 +81,22 @@ class tx_passwordmgr_helper {
 	}
 
 	/**
+	 * Checks if a group member has group admin rights (rights = 2)
+	 *
+	 * @param integer Uid of group
+	 * @param integer Uid of member
+	 * @throws Exception if rights not sufficient
+	 */
+	public static function checkMemberAccessGroupAdmin($groupUid, $memberUid) {
+		$member = t3lib_div::makeInstance('tx_passwordmgr_model_groupmember');
+		$member->init($memberUid, $groupUid);
+		if ( !($member['rights']>1) ) {
+			tx_passwordmgr_helper::addLogEntry(3, 'groupAdminCheck', 'Insufficient rights');
+			throw new Exception('Insufficient rights');
+		}
+	}
+
+	/**
 	 * Checks if rights value >=0 and <=2
 	 *
 	 * @param integer rights

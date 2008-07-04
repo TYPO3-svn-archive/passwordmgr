@@ -51,8 +51,12 @@ class tx_passwordmgr_view_addEditGroup extends tx_passwordmgr_view_default {
 		$groupList->init($GLOBALS['BE_USER']->user['uid']);
 		$selectedGroupUid = $GLOBALS['moduleData']['groupUid'];
 		foreach ( $groupList as $group ) {
-			$selected = ($group['uid']==$selectedGroupUid) ? 'selected="selected"' : '';
-			$groupSelectOptions[] = '<option value="'.$group['uid'].'" '.$selected.'>'.$group['name'].'</option>';
+			$member = t3lib_div::makeInstance('tx_passwordmgr_model_groupmember');
+			$member->init($GLOBALS['BE_USER']->user['uid'], $group['uid']);
+			if ( $member['rights'] > 1 ) {
+				$selected = ($group['uid']==$selectedGroupUid) ? 'selected="selected"' : '';
+				$groupSelectOptions[] = '<option value="'.$group['uid'].'" '.$selected.'>'.$group['name'].'</option>';
+			}
 		}
 		$groupSelectContent = '
 			<select name="DATA[tx_passwordmgr_groupUid]" onchange="document.passwordmgr.submit();">

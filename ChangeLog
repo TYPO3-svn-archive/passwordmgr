@@ -1,6 +1,7 @@
 08-07-04 Christian Kuhn  <lolli@schwarzbu.ch>
 
-	* Feature 977: Added member rights checks to addPassword and editPasswordController, adapted addEditPassword view to show only groups with sufficient rights
+	* Feature 977: Added rights checks to editGroup controller, adapted addEditGroup view
+	* Feature 977: Added member rights checks to addPassword and editPassword controller, adapted addEditPassword view to show only groups with sufficient rights
 	* Introduced helper method to check for sufficient add / edit password rights of a group member
 	* Refactored model: Introduced public method addListItem with type hinting to all list classes
 
