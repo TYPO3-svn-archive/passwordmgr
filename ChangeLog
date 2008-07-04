@@ -1,5 +1,6 @@
 08-07-04 Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug in addGroupMember controller
 	* Feature 977: Fixed a bug in movePassword access check
 	* Feature 913: Added missing ext_conf_template.txt
 	* Added edit group member icon to overview
