@@ -83,6 +83,7 @@ class tx_passwordmgr_view_overview extends tx_passwordmgr_view_default {
 								<td class="'.$bgColor.'">'.$member['name'].'</td>
 								<td class="'.$bgColor.'">'.$rightsContent.'</td>
 								<td class="'.$bgColor.'">
+									<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/edit2.gif').' onclick="setFieldValue(\'view\', \'addEditGroupMember\'); setFieldValue(\'groupUid\', \''.$group['uid'].'\'); setFieldValue(\'groupMemberUid\', \''.$member['beUserUid'].'\'); document.passwordmgr.submit();" alt="Edit member" title="Edit member" />
 									<img style="cursor: pointer;" '.t3lib_iconWorks::skinImg($backPath, 'gfx/garbage.gif').' onclick="if (confirm(\'Are you sure you want to delete this member?\')) {setAction(\'deleteGroupMember\'); setFieldValue(\'groupUid\', \''.$group['uid'].'\'); setFieldValue(\'groupMemberUid\', \''.$member['beUserUid'].'\'); document.passwordmgr.submit();}" alt="Delete member" title="Delete member" />
 								</td>
 							</tr>
