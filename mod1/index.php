@@ -154,13 +154,6 @@ class tx_passwordmgr_module1 {
 	 * @return void
 	 */
 	public function execute() {
-/*
-		foreach ( $GLOBALS['moduleData'] as $key=>$value ) {
-			if ( strlen($value)>0 ) {
-				debug($key.'  '.$value);
-			}
-		}
-*/
 		// Get absolute path of extension directory
 		$extPath = t3lib_extMgm::extPath(tx_passwordmgr_module1::extKey);
 
