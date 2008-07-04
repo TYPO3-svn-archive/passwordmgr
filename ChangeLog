@@ -1,5 +1,6 @@
 08-07-04 Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Feature 977: Added access checks to addPassword and editPasswordController, adapted addEditPassword view to only show	passwords with edit rights for this member
 	* Refactored model: Introduced public method addListItem with type hinting to all list classes
 
 08-07-03 Christian Kuhn  <lolli@schwarzbu.ch>

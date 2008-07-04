@@ -32,16 +32,18 @@
 class tx_passwordmgr_action_editPassword extends tx_passwordmgr_action_default {
 	/**
 	 * Edit password data
-	 * - Check if a password field changed an update
-	 * - Check if ssldata changed an update for all group member
+	 * - Check if member rights are sufficient to update
+	 * - Check if a password field changed and update if changed
+	 * - Check if ssldata changed an update for all group members if changed
 	 *
 	 * @return void
 	 */
 	public function execute() {
 		try {
-			// Input checks
+			// Input and access checks
 			tx_passwordmgr_helper::checkLengthGreaterZero($GLOBALS['moduleData']['passwordName'], 'name');
 			tx_passwordmgr_helper::checkUserAccessToGroup($GLOBALS['moduleData']['groupUid']);
+			tx_passwordmgr_helper::checkMemberAccessModifyPasswordList($GLOBALS['moduleData']['groupUid'], $GLOBALS['BE_USER']->user['uid']);
 
 			// Get current password data
 			$password = t3lib_div::makeInstance('tx_passwordmgr_model_password');

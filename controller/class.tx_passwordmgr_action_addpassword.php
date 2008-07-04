@@ -32,18 +32,19 @@
 class tx_passwordmgr_action_addPassword extends tx_passwordmgr_action_default {
 	/**
 	 * Add a password to a group
-	 * - Add password
+	 * - Add password if user rights are sufficient for this group
 	 * - Calculate ssldata for each member of the group and add to db
 	 *
 	 * @return void
 	 */
 	public function execute() {
 		try {
-			// Input checks
+			// Input and access checks
 			tx_passwordmgr_helper::checkLengthGreaterZero($GLOBALS['moduleData']['passwordName'], "name");
 			tx_passwordmgr_helper::checkLengthGreaterZero($GLOBALS['moduleData']['password1'], "password");
 			tx_passwordmgr_helper::checkIdenticalPasswords($GLOBALS['moduleData']['password1'], $GLOBALS['moduleData']['password2']);
 			tx_passwordmgr_helper::checkUserAccessToGroup($GLOBALS['moduleData']['groupUid']);
+			tx_passwordmgr_helper::checkMemberAccessModifyPasswordList($GLOBALS['moduleData']['groupUid'], $GLOBALS['BE_USER']->user['uid']);
 
 			// Add password
 			$password = t3lib_div::makeInstance('tx_passwordmgr_model_password');

@@ -65,6 +65,22 @@ class tx_passwordmgr_helper {
 	}
 
 	/**
+	 * Checks if group member is allowed to edit / add passwords of a group (rights >=1)
+	 *
+	 * @param integer Uid of group to check
+	 * @param integer Uid of member
+	 * @throws Exception if rights not sufficient
+	 */
+	public static function checkMemberAccessModifyPasswordList($groupUid, $memberUid) {
+		$member = t3lib_div::makeInstance('tx_passwordmgr_model_groupmember');
+		$member->init($memberUid, $groupUid);
+		if ( !($member['rights']>0) ) {
+			tx_passwordmgr_helper::addLogEntry(3, 'modifyPasswordRightsCheck', 'Insufficient rights to edit this password');
+			throw new Exception('Insufficient rights to edit this password');
+		}
+	}
+
+	/**
 	 * Checks if rights value >=0 and <=2
 	 *
 	 * @param integer rights

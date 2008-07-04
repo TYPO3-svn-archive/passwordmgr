@@ -36,12 +36,25 @@ class tx_passwordmgr_view_addEditPassword extends tx_passwordmgr_view_default {
 	 * @return string html
 	 */
 	protected function innerContent() {
-		$groupList = t3lib_div::makeInstance('tx_passwordmgr_model_grouplist');
-		$groupList->init($GLOBALS['BE_USER']->user['uid']);
+		$memberUid = $GLOBALS['BE_USER']->user['uid'];
 
-		// If group contains at least one group, render content, else render error page
-		if ( count($groupList) > 0 ) {
-			$content = $this->addEditPasswordContent($groupList);
+		// Get list of groups this user is member of
+		$groupList = t3lib_div::makeInstance('tx_passwordmgr_model_grouplist');
+		$groupList->init($memberUid);
+
+		// Get list of groups where user has edit password rights
+		$groupListWithEditRights = t3lib_div::makeInstance('tx_passwordmgr_model_grouplist');
+		foreach ( $groupList as $group ) {
+			$member = t3lib_div::makeInstance('tx_passwordmgr_model_groupmember');
+			$member->init($memberUid, $group['uid']);
+			if ( $member['rights'] > 0 ) { // 1 = edit passwords; 2 = group admin
+				$groupListWithEditRights->addListItem($group);
+			}
+		}
+
+		// If user is member of least one group with add / edit rights, render content, else render error page
+		if ( count($groupListWithEditRights) > 0 ) {
+			$content = $this->addEditPasswordContent($groupListWithEditRights);
 		} else { // No group existing for this user
 			$content = $this->noGroupContent();
 		}
