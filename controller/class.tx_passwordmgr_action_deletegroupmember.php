@@ -48,20 +48,39 @@ class tx_passwordmgr_action_deleteGroupMember extends tx_passwordmgr_action_defa
 			tx_passwordmgr_helper::checkUserAccessToGroup($group['uid']);
 			tx_passwordmgr_helper::checkMemberAccessGroupAdmin($group['uid'], $GLOBALS['BE_USER']->user['uid']);
 
-			// Remove ssl data of all passwords of this group for this user
-			$passwordList = $group->getPasswordList();
-			foreach ( $passwordList as $password ) {
-				$sslDataOfGroupMember = t3lib_div::makeInstance('tx_passwordmgr_model_ssldata');
-				$sslDataOfGroupMember->init($password['uid'], $groupMemberUid);
-				$sslDataOfGroupMember->delete();
-			}
-
-			// Delete groupmembership
 			$member = t3lib_div::makeInstance('tx_passwordmgr_model_groupMember');
 			$member->init($groupMemberUid, $group['uid']);
-			$member->delete();
+
+			// Only delete an admin member if there is another member with group admin rights
+			$numberOfGroupAdmins = 0;
+			if ( $member['rights'] == 2 ) {
+				$memberList = $group->getMemberList();
+				foreach ( $memberList as $groupMember ) {
+					if ( $groupMember['rights'] == 2 ) {
+						$numberOfGroupAdmins++;
+					}
+				}
+			} else {
+				$numberOfGroupAdmins = 2;
+			}
+
+			// Remove ssl data of all passwords of this group for this user
+			if ( $numberOfGroupAdmins >=2 ) {
+				$passwordList = $group->getPasswordList();
+				foreach ( $passwordList as $password ) {
+					$sslDataOfGroupMember = t3lib_div::makeInstance('tx_passwordmgr_model_ssldata');
+					$sslDataOfGroupMember->init($password['uid'], $groupMemberUid);
+					$sslDataOfGroupMember->delete();
+				}
+
+				// Delete groupmembership
+				$member->delete();
+			} else {
+				tx_passwordmgr_helper::addLogEntry(3, 'deleteGroupMemebr', 'Can not delete last group admin from group '.$group['uid']);
+			}
+
 		} catch ( Exception $e ) {
-			tx_passwordmgr_helper::addLogEntry(3, 'deleteGroup', 'Error deleting group '.$group['uid']);
+			tx_passwordmgr_helper::addLogEntry(3, 'deleteGroupMember', 'Error deleting group member '.$group['uid']);
 		}
 
 		$this->defaultView();

@@ -40,20 +40,40 @@ class tx_passwordmgr_action_editGroupMember extends tx_passwordmgr_action_defaul
 		// Get input data
 		$groupUid = $GLOBALS['moduleData']['groupUid'];
 		$memberUid = $GLOBALS['moduleData']['groupMemberUid'];
-		$rights = $GLOBALS['moduleData']['groupMemberRights'];
+		$newRights = $GLOBALS['moduleData']['groupMemberRights'];
 
 		try {
 			// Check if be user has access to group
 			tx_passwordmgr_helper::checkUserAccessToGroup($groupUid, $GLOBALS['BE_USER']->user['uid']);
 			tx_passwordmgr_helper::checkMemberAccessGroupAdmin($groupUid, $GLOBALS['BE_USER']->user['uid']);
 			// Check if rights are within valid range
-			tx_passwordmgr_helper::checkRightsWithinRange($rights);
+			tx_passwordmgr_helper::checkRightsWithinRange($newRights);
 
 			// Initialize new member object
 			$member = t3lib_div::makeInstance('tx_passwordmgr_model_groupmember');
 			$member->init($memberUid, $groupUid);
-			$member['rights'] = $rights;
-			$member->update();
+
+			// Only take admin rights from a member if there is another member with admin rights
+			$numberOfGroupAdmins = 0;
+			if ( $member['rights'] == 2 && $newRights < 2 ) {
+				$memberList = t3lib_div::makeInstance('tx_passwordmgr_model_groupMemberList');
+				$memberList->init($groupUid);
+				foreach ( $memberList as $groupMember ) {
+					if ( $groupMember['rights'] == 2 ) {
+						$numberOfGroupAdmins++;
+					}
+				}
+			} else {
+				$numberOfGroupAdmins = 2;
+			}
+
+			// Edit member
+			if ( $numberOfGroupAdmins >= 2 ) {
+				$member['rights'] = $newRights;
+				$member->update();
+			} else {
+				tx_passwordmgr_helper::addLogEntry(3, 'editGroupMember', 'Can not take group admin rights from last admin member');
+			}
 		} catch ( Exception $e ) {
 			tx_passwordmgr_helper::addLogEntry(3, 'editGroupMember', 'Can not edit group member');
 		}
