@@ -1,5 +1,6 @@
 08-07-04 Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Feature 913: Added missing ext_conf_template.txt
 	* Added edit group member icon to overview
 	* Feature 977: Respect minimum number of group admins in editGroupMember and deleteGroupMember controller
 	* Feature 977: Added rights checks to remaining controller, fixed addEditGroupMember view
