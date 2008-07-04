@@ -1,5 +1,6 @@
 08-07-04 Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Changed remaining password input fields from input type text to password
 	* Updated manual
 	* Feature 977: Respect rights in overview
 	* Fixed bug in addGroupMember controller

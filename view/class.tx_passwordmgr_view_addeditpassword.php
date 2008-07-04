@@ -142,11 +142,11 @@ class tx_passwordmgr_view_addEditPassword extends tx_passwordmgr_view_default {
 				</tr>
 				<tr>
 					<td>Password'.($addMode ? '' : '<br />Leave blank if not changed').'</td>
-					<td><input type="text" value="" name="DATA[tx_passwordmgr_password1]" size="30" onkeyup="testPassword(this.value);" /></td>
+					<td><input type="password" value="" name="DATA[tx_passwordmgr_password1]" size="30" onkeyup="testPassword(this.value);" /></td>
 				</tr>
 				<tr>
 					<td>Retype Password</td>
-					<td><input type="text" value="" name="DATA[tx_passwordmgr_password2]" size="30" /></td>
+					<td><input type="password" value="" name="DATA[tx_passwordmgr_password2]" size="30" /></td>
 				</tr>
 				<tr>
 					<td>Password strength</td>
