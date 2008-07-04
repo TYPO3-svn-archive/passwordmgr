@@ -49,6 +49,8 @@ class tx_passwordmgr_action_addGroupMember extends tx_passwordmgr_action_default
 			tx_passwordmgr_helper::checkUserNotMemberOfGroup($groupUid, $newMemberUid);
 			// Check if rights are within valid range
 			tx_passwordmgr_helper::checkRightsWithinRange($rights);
+			// Check if member rights are sufficient
+			tx_passwordmgr_helper::checkMemberAccessGroupAdmin($groupUid, $GLOBALS['BE_USER']->user['uid']);
 
 			// Initialize current user object for decryption of passwords
 			$user = t3lib_div::makeInstance('tx_passwordmgr_model_user');

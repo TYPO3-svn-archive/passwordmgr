@@ -55,11 +55,13 @@ class tx_passwordmgr_action_movePassword extends tx_passwordmgr_action_default {
 			$oldGroup = t3lib_div::makeInstance('tx_passwordmgr_model_group');
 			$oldGroup->init($password['groupUid']);
 			tx_passwordmgr_helper::checkUserAccessToGroup($oldGroup['uid'], $user['uid']);
+			tx_passwordmgr_helper::checkMemberAccessGroupAdmin($oldGroup['uid'], $user['uid']);
 
 			// Init new group and check user access
 			$newGroup = t3lib_div::makeInstance('tx_passwordmgr_model_group');
 			$newGroup->init($GLOBALS['moduleData']['groupUid']);
 			tx_passwordmgr_helper::checkUserAccessToGroup($newGroup['uid'], $user['uid']);
+			tx_passwordmgr_helper::checkMemberAccessGroupAdmin($newGroup['uid'], $user['uid']);
 
 			// Init current sslData of password of this user for decryption
 			$sslData = t3lib_div::makeInstance('tx_passwordmgr_model_sslData');

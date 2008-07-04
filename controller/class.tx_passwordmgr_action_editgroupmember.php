@@ -45,6 +45,7 @@ class tx_passwordmgr_action_editGroupMember extends tx_passwordmgr_action_defaul
 		try {
 			// Check if be user has access to group
 			tx_passwordmgr_helper::checkUserAccessToGroup($groupUid, $GLOBALS['BE_USER']->user['uid']);
+			tx_passwordmgr_helper::checkMemberAccessGroupAdmin($groupUid, $GLOBALS['BE_USER']->user['uid']);
 			// Check if rights are within valid range
 			tx_passwordmgr_helper::checkRightsWithinRange($rights);
 

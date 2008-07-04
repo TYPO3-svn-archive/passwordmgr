@@ -47,6 +47,7 @@ class tx_passwordmgr_action_deleteGroup extends tx_passwordmgr_action_default {
 		try {
 			// Check if user is allowed to access this group
 			tx_passwordmgr_helper::checkUserAccessToGroup($group['uid']);
+			tx_passwordmgr_helper::checkMemberAccessGroupAdmin($group['uid'], $GLOBALS['BE_USER']->user['uid']);
 
 			// Delete groupmembership
 			$memberList = $group->getMemberList();
