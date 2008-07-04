@@ -63,6 +63,12 @@ class tx_passwordmgr_action_addGroupMember extends tx_passwordmgr_action_default
 			$newMember['beUserUid'] = $newMemberUid;
 			$newMember['rights'] = $rights;
 
+			// Add new member to group
+			$newMember->add();
+
+			// Re init new member to get his public key for encryption
+			$newMember->init($newMemberUid, $groupUid);
+
 			// Get list of passwords of this group
 			$group = t3lib_div::makeInstance('tx_passwordmgr_model_group');
 			$group['uid'] = $groupUid;
@@ -71,13 +77,13 @@ class tx_passwordmgr_action_addGroupMember extends tx_passwordmgr_action_default
 			// Add ssl data for each password of new user
 			foreach ( $passwordList as $password ) {
 				// Decrypt ssl data of password of current user
-				$sslDataUser = t3lib_div::makeInstance('tx_passwordmgr_model_sslData');
-				$sslDataUser->init($password['uid'], $user['uid']);
-				$plaintextData = tx_passwordmgr_openssl::decrypt($user['privateKey'], $passphrase, $sslDataUser['key'], $sslDataUser['data']);
-				unset($sslDataUser);
+				$sslData = t3lib_div::makeInstance('tx_passwordmgr_model_sslData');
+				$sslData->init($password['uid'], $user['uid']);
+				$plaintextData = tx_passwordmgr_openssl::decrypt($user['privateKey'], $passphrase, $sslData['key'], $sslData['data']);
+				unset($sslData);
 
 				// Encrypt data for new member
-				$newMemberKeyAndData = tx_passwordmgr_openssl::encrypt($user['publicKey'], $plaintextData);
+				$newMemberKeyAndData = tx_passwordmgr_openssl::encrypt($newMember['publicKey'], $plaintextData);
 				unset($plaintextData);
 
 				// Add ssl data for new member
@@ -91,8 +97,6 @@ class tx_passwordmgr_action_addGroupMember extends tx_passwordmgr_action_default
 				$sslDataNewMember->add();
 			}
 
-			// Add new member to group
-			$newMember->add();
 		} catch ( Exception $e ) {
 			tx_passwordmgr_helper::addLogEntry(3, 'addGroupMember', 'Can not add member to group');
 		}
