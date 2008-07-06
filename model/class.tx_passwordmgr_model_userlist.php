@@ -47,7 +47,7 @@ class tx_passwordmgr_model_userList extends tx_passwordmgr_model_list {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'uid, username, tx_passwordmgr_cert, tx_passwordmgr_privkey',
 			'be_users',
-			'1',
+			'1 ' . t3lib_BEfunc::BEenableFields('be_users') . t3lib_BEfunc::deleteClause('be_users'),
 			'',
 			'username' // ORDER
 		);

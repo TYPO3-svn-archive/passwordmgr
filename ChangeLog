@@ -1,5 +1,6 @@
 08-07-06 Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Model: Do not fetch disabled or deleted users
 	* Updated manual
 
 08-07-04 Christian Kuhn  <lolli@schwarzbu.ch>
