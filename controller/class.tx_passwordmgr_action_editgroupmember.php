@@ -37,16 +37,17 @@ class tx_passwordmgr_action_editGroupMember extends tx_passwordmgr_action_defaul
 	 * @return void
 	 */
 	public function execute() {
-		// Get input data
-		$groupUid = $GLOBALS['moduleData']['groupUid'];
-		$memberUid = $GLOBALS['moduleData']['groupMemberUid'];
-		$newRights = $GLOBALS['moduleData']['groupMemberRights'];
-
 		try {
-			// Check if be user has access to group
-			tx_passwordmgr_helper::checkUserAccessToGroup($groupUid, $GLOBALS['BE_USER']->user['uid']);
-			tx_passwordmgr_helper::checkMemberAccessGroupAdmin($groupUid, $GLOBALS['BE_USER']->user['uid']);
-			// Check if rights are within valid range
+			// Get input data
+			$userUid = $GLOBALS['BE_USER']->user['uid'];
+			$groupUid = $GLOBALS['moduleData']['groupUid'];
+			$memberUid = $GLOBALS['moduleData']['groupMemberUid'];
+			$newRights = $GLOBALS['moduleData']['groupMemberRights'];
+
+			// Check if user has admin rights in group
+			tx_passwordmgr_helper::checkMemberRights( $userUid, $groupUid, 2 );
+
+			// Check if new rights value is within valid range
 			tx_passwordmgr_helper::checkRightsWithinRange($newRights);
 
 			// Initialize new member object

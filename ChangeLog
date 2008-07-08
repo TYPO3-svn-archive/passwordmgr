@@ -1,3 +1,7 @@
+08-07-09 Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Refactored group member access checks in helper class, cleanup and fixes in controller classes for new helper function checkMemberRights()
+
 08-07-08 Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Model: groupMember->fetchDetails() throws exception if membership not found

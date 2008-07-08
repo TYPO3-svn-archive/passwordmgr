@@ -30,69 +30,68 @@
  * @subpackage	tx_passwordmgr
  */
 class tx_passwordmgr_helper {
+	/**
+	 * Check if length of a given string is > 0
+	 *
+	 * @throws Exception if string length not > 0
+	 * @return void
+	 */
 	public static function checkLengthGreaterZero( $string, $name ) {
-		if ( strlen($string)>0 ) {
-			return TRUE;
-		} else {
+		if ( !(strlen($string) > 0) ) {
 			tx_passwordmgr_helper::addLogEntry(3, 'Input check', "Length of $name not greater than zero");
 			throw new Exception("String $name not greater than 0");
 		}
 	}
 
-	public static function checkUserNotMemberOfGroup( $groupUid, $userUid=FALSE ) {
-		$userUid ? $targetUserUid=$userUid : $targetUserUid=$GLOBALS['BE_USER']->user['uid'];
+	/**
+	 * Verify a user is not member of a group
+	 *
+	 * @throws Exception if user is member of group
+	 * @return void
+	 */
+	public static function checkUserNotMemberOfGroup( $userUid, $groupUid ) {
 		try {
-			tx_passwordmgr_helper::checkUserAccessToGroup($groupUid, $targetUserUid);
+			$member = t3lib_div::makeInstance('tx_passwordmgr_model_groupmember');
+			$member->init($userUid, $groupUid);
 		} catch ( Exception $e ) {
-			return TRUE;
+			// groupMember-init() throws an Exception if user is not member of group, this should happen
+			return;
 		}
 		throw new Exception('User is member of group');
 	}
 
-	public static function checkUserAccessToGroup( $groupUid, $userUid=FALSE ) {
-		$groupInGroupList = FALSE;
-		$groupList = t3lib_div::makeInstance('tx_passwordmgr_model_grouplist');
-		$userUid ? $groupList->init($userUid) : $groupList->init($GLOBALS['BE_USER']->user['uid']);
-		foreach ( $groupList as $group ) {
-			if ( $group['uid'] == (integer)$groupUid ) {
-				$groupInGroupList = TRUE;
-			}
-		}
-		if ( !$groupInGroupList ) {
-			throw new Exception("Access violation of user to group");
-		}
-		return ($groupInGroupList);
-	}
-
 	/**
-	 * Checks if group member is allowed to edit / add passwords of a group (rights >=1)
+	 * Check if a user has sufficient rights in a group
 	 *
-	 * @param integer Uid of group to check
 	 * @param integer Uid of member
-	 * @throws Exception if rights not sufficient
-	 */
-	public static function checkMemberAccessModifyPasswordList($groupUid, $memberUid) {
-		$member = t3lib_div::makeInstance('tx_passwordmgr_model_groupmember');
-		$member->init($memberUid, $groupUid);
-		if ( !($member['rights']>0) ) {
-			tx_passwordmgr_helper::addLogEntry(3, 'modifyPasswordRightsCheck', 'Insufficient rights to edit this password');
-			throw new Exception('Insufficient rights to edit this password');
-		}
-	}
-
-	/**
-	 * Checks if a group member has group admin rights (rights = 2)
-	 *
 	 * @param integer Uid of group
-	 * @param integer Uid of member
-	 * @throws Exception if rights not sufficient
+	 * @param integer Minimum group rights: 0=view, 1=edit, 2=group admin
+	 * @throws Exception if rights are not sufficient
+	 * @return void
 	 */
-	public static function checkMemberAccessGroupAdmin($groupUid, $memberUid) {
+	public static function checkMemberRights( $userUid, $groupUid, $rights ) {
 		$member = t3lib_div::makeInstance('tx_passwordmgr_model_groupmember');
-		$member->init($memberUid, $groupUid);
-		if ( !($member['rights']>1) ) {
-			tx_passwordmgr_helper::addLogEntry(3, 'groupAdminCheck', 'Insufficient rights');
-			throw new Exception('Insufficient rights');
+
+		// Initialize group member, throws exception if user not member of group
+		$member->init($userUid, $groupUid);
+
+		// Check rights
+		switch( $rights ) {
+			case 0: // Initialized member has at least view rights
+			break;
+			case 1: // Check for edit rights
+				if ( $member['rights'] < 1 ) {
+					throw new Exception ('Insufficient rights of user ' . $userUid . ' to group' . $groupUid);
+				}
+			break;
+			case 2: // Check for admin rights
+				if ( $member['rights'] < 2 ) {
+					throw new Exception ('Insufficient rights of user ' . $userUid . ' to group' . $groupUid);
+				}
+			break;
+			default: // Should not happen
+				throw new Exception ('Programming error member rights check user ' . $userUid . ' to group' . $groupUid);
+			break;
 		}
 	}
 
@@ -109,6 +108,14 @@ class tx_passwordmgr_helper {
 		}
 	}
 
+	/**
+	 * Check if string one is identical to string two
+	 *
+	 * @param string
+	 * @param string
+	 * @throws Exception if strings are not identical
+	 * @return void
+	 */
 	public static function checkIdenticalPasswords( $pw1, $pw2 ) {
 		if ( strcmp($pw1, $pw2) ) {
 			tx_passwordmgr_helper::addLogEntry(3, 'identicalPasswords', 'Passwords do not match');
@@ -116,6 +123,12 @@ class tx_passwordmgr_helper {
 		}
 	}
 
+	/**
+	 * Check if length of a string is greater than 5
+	 *
+	 * @throws Exception if string length is shorter than 6
+	 * @return void
+	 */
 	public static function checkPasswordMinimumLength( $pw ) {
 		if ( strlen($pw) < 6 ) {
 			tx_passwordmgr_helper::addLogEntry(3, 'passwordMinimumLength', 'Password not long enough');
@@ -123,6 +136,14 @@ class tx_passwordmgr_helper {
 		}
 	}
 
+	/**
+	 * Initialize new log object with given information and add object to log list
+	 *
+	 * @param integer priority
+	 * @param string module identifier
+	 * @param string log message
+	 * @return void
+	 */
 	public static function addLogEntry($priority, $module, $message) {
 		$log = t3lib_div::makeInstance('tx_passwordmgr_model_log');
 		$log['priority'] = $priority;
@@ -131,6 +152,12 @@ class tx_passwordmgr_helper {
 		$GLOBALS['logList']->addListItem($log);
 	}
 
+	/**
+	 * Calculate a random string of characters
+	 *
+	 * @param integer length of random string
+	 * @return string random string
+	 */
 	public static function getRandomString($length) {
 		$characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 		$string = '';

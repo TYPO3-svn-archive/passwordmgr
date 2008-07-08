@@ -37,9 +37,10 @@ class tx_passwordmgr_action_decryptPassword extends tx_passwordmgr_action_defaul
 	 * @return void
 	 */
 	public function execute() {
-		$passwordUid = $GLOBALS['moduleData']['passwordUid'];
-
 		try {
+			// Get input data
+			$passwordUid = $GLOBALS['moduleData']['passwordUid'];
+
 			// Initialize user object
 			$user = t3lib_div::makeInstance('tx_passwordmgr_model_user');
 			$user->init($GLOBALS['BE_USER']->user['uid']);

@@ -36,25 +36,26 @@ class tx_passwordmgr_action_addGroupMember extends tx_passwordmgr_action_default
 	 * @return void
 	 */
 	public function execute() {
-		// Get input data
-		$groupUid = $GLOBALS['moduleData']['groupUid'];
-		$newMemberUid = $GLOBALS['moduleData']['groupMemberUid'];
-		$rights = $GLOBALS['moduleData']['groupMemberRights'];
-		$passphrase = $GLOBALS['moduleData']['passphrase'];
-
 		try {
-			// Check if be user has access to group
-			tx_passwordmgr_helper::checkUserAccessToGroup($groupUid, $GLOBALS['BE_USER']->user['uid']);
+			// Get input data
+			$userUid = $GLOBALS['BE_USER']->user['uid'];
+			$groupUid = $GLOBALS['moduleData']['groupUid'];
+			$newMemberUid = $GLOBALS['moduleData']['groupMemberUid'];
+			$rights = $GLOBALS['moduleData']['groupMemberRights'];
+			$passphrase = $GLOBALS['moduleData']['passphrase'];
+
+			// Check if user has admin rights in group
+			tx_passwordmgr_helper::checkMemberRights( $userUid, $groupUid, 2 );
+
 			// Check if new member is not already member of group
-			tx_passwordmgr_helper::checkUserNotMemberOfGroup($groupUid, $newMemberUid);
+			tx_passwordmgr_helper::checkUserNotMemberOfGroup( $newMemberUid, $groupUid );
+
 			// Check if rights are within valid range
 			tx_passwordmgr_helper::checkRightsWithinRange($rights);
-			// Check if member rights are sufficient
-			tx_passwordmgr_helper::checkMemberAccessGroupAdmin($groupUid, $GLOBALS['BE_USER']->user['uid']);
 
 			// Initialize current user object for decryption of passwords
 			$user = t3lib_div::makeInstance('tx_passwordmgr_model_user');
-			$user->init($GLOBALS['BE_USER']->user['uid']);
+			$user->init($userUid);
 			$user['publicKey'] = tx_passwordmgr_openssl::extractPublicKeyFromCertificate($user['certificate']);
 
 			// Initialize new member object
@@ -96,7 +97,6 @@ class tx_passwordmgr_action_addGroupMember extends tx_passwordmgr_action_default
 				$sslDataNewMember['data'] = $newMemberKeyAndData['data'];
 				$sslDataNewMember->add();
 			}
-
 		} catch ( Exception $e ) {
 			tx_passwordmgr_helper::addLogEntry(3, 'addGroupMember', 'Can not add member to group');
 		}

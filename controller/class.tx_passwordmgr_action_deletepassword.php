@@ -39,13 +39,16 @@ class tx_passwordmgr_action_deletePassword extends tx_passwordmgr_action_default
 	 */
 	public function execute() {
 		try {
+			// Get input data
+			$userUid = $GLOBALS['BE_USER']->user['uid'];
+			$passwordUid = $GLOBALS['moduleData']['passwordUid'];
+
 			// Instantiate password object
 			$password = t3lib_div::makeInstance('tx_passwordmgr_model_password');
-			$password->init($GLOBALS['moduleData']['passwordUid']);
+			$password->init($passwordUid);
 
-			// Check if user is allowed to access this password
-			tx_passwordmgr_helper::checkUserAccessToGroup($password['groupUid']);
-			tx_passwordmgr_helper::checkMemberAccessModifyPasswordList($password['groupUid'], $GLOBALS['BE_USER']->user['uid']);
+			// Check if user has password remove rights in this group
+			tx_passwordmgr_helper::checkMemberRights( $userUid, $password['groupUid'], 1 );
 
 			// Delete password
 			$password->delete();

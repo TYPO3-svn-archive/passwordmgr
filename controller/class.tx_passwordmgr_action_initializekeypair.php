@@ -41,11 +41,14 @@ class tx_passwordmgr_action_initializeKeyPair extends tx_passwordmgr_action_defa
 	 * @return void
 	 */
 	public function execute() {
-		// Instantiate user object
-		$user =  t3lib_div::makeInstance('tx_passwordmgr_model_user');
-		$user->init($GLOBALS['BE_USER']->user['uid']);
-
 		try {
+			// Get input data
+			$userUid = $GLOBALS['BE_USER']->user['uid'];
+
+			// Initialize user object
+			$user = t3lib_div::makeInstance('tx_passwordmgr_model_user');
+			$user->init($userUid);
+
 			// Check non valid certificate and public key
 			tx_passwordmgr_openssl::checkNoExtractPublicKeyFromCertificate($user['certificate']);
 

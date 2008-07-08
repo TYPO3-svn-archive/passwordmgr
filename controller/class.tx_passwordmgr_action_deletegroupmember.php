@@ -39,18 +39,19 @@ class tx_passwordmgr_action_deleteGroupMember extends tx_passwordmgr_action_defa
 	 * @return void
 	 */
 	public function execute() {
-		$groupMemberUid = $GLOBALS['moduleData']['groupMemberUid'];
-
-		// Instantiate group object and set its uid
-		$group = t3lib_div::makeInstance('tx_passwordmgr_model_group');
-		$group['uid'] = $GLOBALS['moduleData']['groupUid'];
-
-	
 		try {
-			// Check if user is allowed to access this group
-			tx_passwordmgr_helper::checkUserAccessToGroup($group['uid']);
-			tx_passwordmgr_helper::checkMemberAccessGroupAdmin($group['uid'], $GLOBALS['BE_USER']->user['uid']);
+			// Get input data
+			$groupMemberUid = $GLOBALS['moduleData']['groupMemberUid'];
+			$userUid = $GLOBALS['BE_USER']->user['uid'];
 
+			// Instantiate group object and set its uid
+			$group = t3lib_div::makeInstance('tx_passwordmgr_model_group');
+			$group['uid'] = $GLOBALS['moduleData']['groupUid'];
+
+			// Check if user has admin rights in group
+			tx_passwordmgr_helper::checkMemberRights( $userUid, $group['uid'], 2 );
+
+			// Instantiate group member object
 			$member = t3lib_div::makeInstance('tx_passwordmgr_model_groupMember');
 			$member->init($groupMemberUid, $group['uid']);
 
@@ -67,14 +68,13 @@ class tx_passwordmgr_action_deleteGroupMember extends tx_passwordmgr_action_defa
 				$numberOfGroupAdmins = 2;
 			}
 
-			// Remove ssl data of all passwords of this group for this user
+			// Delete member from group
 			if ( $numberOfGroupAdmins >=2 ) {
 				// Delete groupmembership
 				$member->delete();
 			} else {
 				tx_passwordmgr_helper::addLogEntry(3, 'deleteGroupMemebr', 'Can not delete last group admin from group '.$group['uid']);
 			}
-
 		} catch ( Exception $e ) {
 			tx_passwordmgr_helper::addLogEntry(3, 'deleteGroupMember', 'Error deleting group member '.$group['uid']);
 		}

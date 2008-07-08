@@ -38,19 +38,22 @@ class tx_passwordmgr_action_deleteGroup extends tx_passwordmgr_action_default {
 	 * @return void
 	 */
 	public function execute() {
-		// Instantiate group object and set its uid
-		$group = t3lib_div::makeInstance('tx_passwordmgr_model_group');
-		$group['uid'] = $GLOBALS['moduleData']['groupUid'];
-
 		try {
-			// Check if user is allowed to access this group
-			tx_passwordmgr_helper::checkUserAccessToGroup($group['uid']);
-			tx_passwordmgr_helper::checkMemberAccessGroupAdmin($group['uid'], $GLOBALS['BE_USER']->user['uid']);
+			// Get input data
+			$userUid = $GLOBALS['BE_USER']->user['uid'];
+			$groupUid = $GLOBALS['moduleData']['groupUid'];
+
+			// Check if user has admin rights in group
+			tx_passwordmgr_helper::checkMemberRights( $userUid, $groupUid, 2 );
+
+			// Instantiate group object and set its uid
+			$group = t3lib_div::makeInstance('tx_passwordmgr_model_group');
+			$group['uid'] = $groupUid;
 
 			// Delete group
 			$group->delete();
 		} catch ( Exception $e ) {
-			tx_passwordmgr_helper::addLogEntry(3, 'deleteGroup', 'Error deleting group '.$group['uid']);
+			tx_passwordmgr_helper::addLogEntry(3, 'deleteGroup', 'Error deleting group ' . $groupUid);
 		}
 
 		$this->defaultView();

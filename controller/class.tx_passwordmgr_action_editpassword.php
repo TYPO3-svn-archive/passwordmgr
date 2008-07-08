@@ -40,14 +40,20 @@ class tx_passwordmgr_action_editPassword extends tx_passwordmgr_action_default {
 	 */
 	public function execute() {
 		try {
-			// Input and access checks
+			// Get input data
+			$userUid = $GLOBALS['BE_USER']->user['uid'];
+			$groupUid = $GLOBALS['moduleData']['groupUid'];
+			$passwordUid = $GLOBALS['moduleData']['passwordUid'];
+
+			// Check input data
 			tx_passwordmgr_helper::checkLengthGreaterZero($GLOBALS['moduleData']['passwordName'], 'name');
-			tx_passwordmgr_helper::checkUserAccessToGroup($GLOBALS['moduleData']['groupUid']);
-			tx_passwordmgr_helper::checkMemberAccessModifyPasswordList($GLOBALS['moduleData']['groupUid'], $GLOBALS['BE_USER']->user['uid']);
+
+			// Check if user has password change rights in group
+			tx_passwordmgr_helper::checkMemberRights( $userUid, $groupUid, 1 );
 
 			// Get current password data
 			$password = t3lib_div::makeInstance('tx_passwordmgr_model_password');
-			$password->init($GLOBALS['moduleData']['passwordUid']);
+			$password->init($passwordUid);
 
 			// Set changed password fields
 			$changed = FALSE;
@@ -76,7 +82,7 @@ class tx_passwordmgr_action_editPassword extends tx_passwordmgr_action_default {
 				$sslList = $password->getSslList();
 				foreach ( $sslList as $ssl ) {
 					$member = t3lib_div::makeInstance('tx_passwordmgr_model_groupmember');
-					$member->init($ssl['beUserUid'],$GLOBALS['moduleData']['groupUid']);
+					$member->init($ssl['beUserUid'],$groupUid);
 					$keyAndData = tx_passwordmgr_openssl::encrypt($member['publicKey'], $GLOBALS['moduleData']['password1']);
 					$ssl['timeStamp'] = time();
 					$ssl['key'] = $keyAndData['key'];

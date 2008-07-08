@@ -37,31 +37,37 @@ class tx_passwordmgr_action_movePassword extends tx_passwordmgr_action_default {
 	 * @return void
 	 */
 	public function execute() {
-		$userData = t3lib_div::makeInstance('tx_passwordmgr_model_userData');
-
-		$passwordUid = $userData['selectedPassword'];
-		$passphrase = $GLOBALS['moduleData']['passphrase'];
-
 		try {
+			// Initialize userData object
+			$userData = t3lib_div::makeInstance('tx_passwordmgr_model_userData');
+
+			// Get input data
+			$userUid = $GLOBALS['BE_USER']->user['uid'];
+			$passwordUid = $userData['selectedPassword'];
+			$passphrase = $GLOBALS['moduleData']['passphrase'];
+			$newGroupUid = $GLOBALS['moduleData']['groupUid'];
+
 			// Initialize user object
 			$user = t3lib_div::makeInstance('tx_passwordmgr_model_user');
-			$user->init($GLOBALS['BE_USER']->user['uid']);
+			$user->init($userUid);
 
 			// Init password
 			$password = t3lib_div::makeInstance('tx_passwordmgr_model_password');
 			$password->init($passwordUid);
 
-			// Init old group and check user access
+			// Init old group
 			$oldGroup = t3lib_div::makeInstance('tx_passwordmgr_model_group');
 			$oldGroup->init($password['groupUid']);
-			tx_passwordmgr_helper::checkUserAccessToGroup($oldGroup['uid'], $user['uid']);
-			tx_passwordmgr_helper::checkMemberAccessModifyPasswordList($oldGroup['uid'], $user['uid']);
 
-			// Init new group and check user access
+			// Check if user has password remove rights in old group
+			tx_passwordmgr_helper::checkMemberRights( $userUid, $oldGroup['uid'], 1 );
+
+			// Init new group
 			$newGroup = t3lib_div::makeInstance('tx_passwordmgr_model_group');
-			$newGroup->init($GLOBALS['moduleData']['groupUid']);
-			tx_passwordmgr_helper::checkUserAccessToGroup($newGroup['uid'], $user['uid']);
-			tx_passwordmgr_helper::checkMemberAccessModifyPasswordList($newGroup['uid'], $user['uid']);
+			$newGroup->init($newGroupUid);
+
+			// Check if user has password add rights in new group
+			tx_passwordmgr_helper::checkMemberRights( $userUid, $newGroupUid, 1 );
 
 			// Init current sslData of password of this user for decryption
 			$sslData = t3lib_div::makeInstance('tx_passwordmgr_model_sslData');

@@ -39,12 +39,17 @@ class tx_passwordmgr_action_addPassword extends tx_passwordmgr_action_default {
 	 */
 	public function execute() {
 		try {
-			// Input and access checks
+			// Get input data
+			$userUid =  $GLOBALS['BE_USER']->user['uid'];
+			$groupUid = $GLOBALS['moduleData']['groupUid'];
+
+			// Input checks
 			tx_passwordmgr_helper::checkLengthGreaterZero($GLOBALS['moduleData']['passwordName'], "name");
 			tx_passwordmgr_helper::checkLengthGreaterZero($GLOBALS['moduleData']['password1'], "password");
 			tx_passwordmgr_helper::checkIdenticalPasswords($GLOBALS['moduleData']['password1'], $GLOBALS['moduleData']['password2']);
-			tx_passwordmgr_helper::checkUserAccessToGroup($GLOBALS['moduleData']['groupUid']);
-			tx_passwordmgr_helper::checkMemberAccessModifyPasswordList($GLOBALS['moduleData']['groupUid'], $GLOBALS['BE_USER']->user['uid']);
+
+			// Check if user has add password rights in this group
+			tx_passwordmgr_helper::checkMemberRights( $userUid, $groupUid, 1 );
 
 			// Add password
 			$password = t3lib_div::makeInstance('tx_passwordmgr_model_password');
@@ -58,7 +63,7 @@ class tx_passwordmgr_action_addPassword extends tx_passwordmgr_action_default {
 
 			// Get list of members of this group
 			$group = t3lib_div::makeInstance('tx_passwordmgr_model_group');
-			$group['uid'] = $GLOBALS['moduleData']['groupUid'];
+			$group['uid'] = $groupUid;
 			$memberList = $group->getMemberList();
 
 			// Encrypt password for each member and add ssl data to db
