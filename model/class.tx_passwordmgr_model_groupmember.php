@@ -58,6 +58,7 @@ class tx_passwordmgr_model_groupMember extends tx_passwordmgr_model_data {
 	/**
 	 * Fetch group member details
 	 *
+	 * @throws Exception if membership not found
 	 * @return void
 	 */
 	protected function fetchDetails() {
@@ -68,11 +69,16 @@ class tx_passwordmgr_model_groupMember extends tx_passwordmgr_model_data {
 				' AND be_users.uid='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this['beUserUid'], 'be_users') .
 				' AND tx_passwordmgr_group_be_users_mm.group_uid='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this['groupUid'], 'tx_passwordmgr_group_be_users_mm')
 		);
-		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-		$this['name'] = $row['username'];
-		$this['certificate'] = $row['cert'];
-		$this['publicKey'] = tx_passwordmgr_openssl::extractPublicKeyFromCertificate($this['certificate']);
-		$this['rights'] = $row['rights'];
+		if ( $GLOBALS['TYPO3_DB']->sql_num_rows($res) == 1 ) {
+			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+			$this['name'] = $row['username'];
+			$this['certificate'] = $row['cert'];
+			$this['publicKey'] = tx_passwordmgr_openssl::extractPublicKeyFromCertificate($this['certificate']);
+			$this['rights'] = $row['rights'];
+		} else {
+			tx_passwordmgr_helper::addLogEntry(3, 'groupMemberFetchDetails', 'User '.$this['beUserUid'].' not member of group '.$this['groupUid']);
+			throw new Exception ('Error getting group member details '.$this['beUserUid'].' group '.$this['groupUid']);
+		}
 	}
 
 	/**
