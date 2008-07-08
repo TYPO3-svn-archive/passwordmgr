@@ -31,7 +31,10 @@
  */
 class tx_passwordmgr_action_deleteGroupMember extends tx_passwordmgr_action_default {
 	/**
-	 * Delete a member and his ssl data for all passwords from a group
+	 * Delete a member from a group
+	 * - Check access of current BE user
+	 * - Check member rights and ensure that not the last admin member is deleted
+	 * - Delete member from group
 	 *
 	 * @return void
 	 */
@@ -66,13 +69,6 @@ class tx_passwordmgr_action_deleteGroupMember extends tx_passwordmgr_action_defa
 
 			// Remove ssl data of all passwords of this group for this user
 			if ( $numberOfGroupAdmins >=2 ) {
-				$passwordList = $group->getPasswordList();
-				foreach ( $passwordList as $password ) {
-					$sslDataOfGroupMember = t3lib_div::makeInstance('tx_passwordmgr_model_ssldata');
-					$sslDataOfGroupMember->init($password['uid'], $groupMemberUid);
-					$sslDataOfGroupMember->delete();
-				}
-
 				// Delete groupmembership
 				$member->delete();
 			} else {

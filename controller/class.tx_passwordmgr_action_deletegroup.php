@@ -32,9 +32,7 @@
 class tx_passwordmgr_action_deleteGroup extends tx_passwordmgr_action_default {
 	/**
 	 * Delete a group
-	 * - Delete all ssldata of this group
-	 * - Delete all passwords
-	 * - Delete all member
+	 * - Check access rights of current BE user
 	 * - Delete group
 	 *
 	 * @return void
@@ -48,20 +46,6 @@ class tx_passwordmgr_action_deleteGroup extends tx_passwordmgr_action_default {
 			// Check if user is allowed to access this group
 			tx_passwordmgr_helper::checkUserAccessToGroup($group['uid']);
 			tx_passwordmgr_helper::checkMemberAccessGroupAdmin($group['uid'], $GLOBALS['BE_USER']->user['uid']);
-
-			// Delete groupmembership
-			$memberList = $group->getMemberList();
-			$memberList->deleteListItems();
-
-			// Remove ssl data of all passwords
-			$passwordList = $group->getPasswordList();
-			foreach ( $passwordList as $password ) {
-				$sslList = $password->getSslList();
-				$sslList->deleteListItems();
-			}
-
-			// Delete passwords
-			$passwordList->deleteListItems();
 
 			// Delete group
 			$group->delete();

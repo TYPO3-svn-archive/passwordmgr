@@ -137,12 +137,19 @@ class tx_passwordmgr_model_password extends tx_passwordmgr_model_data {
 	}
 
 	/**
-	 * Delete password in db
+	 * Delete password
+	 * - Delete sslData of this password for every user
+	 * - Delete password
 	 *
 	 * @throws Exception if delete failed
 	 * @return void
 	 */
 	public function delete() {
+		// Get sslData for every member with access to this password and delete it
+		$sslDataList = $this->getSslList();
+		$sslDataList->deleteListItems();
+
+		// Delete password
 		$res = $GLOBALS['TYPO3_DB']->exec_DELETEquery(
 			'tx_passwordmgr_password',
 			'uid='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this['uid'], 'tx_passwordmgr_password')

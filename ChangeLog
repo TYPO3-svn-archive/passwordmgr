@@ -1,5 +1,6 @@
 08-07-08 Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* MVC cleanup: Moved delete logic of dependent database rows from controller to model
 	* Model: Fixed minor bug in group->getPassworList()
 	* Bug 914: Proof read manual (Thanks to Mike McAlpine)
 

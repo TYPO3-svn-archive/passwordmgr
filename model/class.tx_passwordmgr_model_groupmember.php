@@ -126,11 +126,25 @@ class tx_passwordmgr_model_groupMember extends tx_passwordmgr_model_data {
 
 	/**
 	 * Delete membership of user from group
+	 * - Delete sslData of every password of this group for this member
+	 * - Delete member from group
 	 *
 	 * @throws Eception if user can not be deleted
 	 * @return void
 	 */
 	public function delete() {
+		// Get list of passwords of this group
+		$passwordList = t3lib_div::makeInstance('tx_passwordmgr_model_passwordList');
+		$passwordList->init($this['groupUid']);
+
+		// Delete sslData of member of passwords in this group
+		foreach ( $passwordList as $password ) {
+			$sslDataOfMember = t3lib_div::makeInstance('tx_passwordmgr_model_ssldata');
+			$sslDataOfMember->init($password['uid'], $this['beUserUid']);
+			$sslDataOfMember->delete();
+		}
+
+		// Delete membership
 		$res = $GLOBALS['TYPO3_DB']->exec_DELETEquery(
 			'tx_passwordmgr_group_be_users_mm',
 			'group_uid='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this['groupUid'], 'tx_passwordmgr_group_be_users_mm') .

@@ -32,24 +32,20 @@
 class tx_passwordmgr_action_deletePassword extends tx_passwordmgr_action_default {
 	/**
 	 * Delete a password from a group
-	 * - Delete all ssl data of this password for all group members
+	 * - Check access rights of current BE user
 	 * - Delete password
 	 *
 	 * @return void
 	 */
 	public function execute() {
 		try {
-			// Instantiate group object
+			// Instantiate password object
 			$password = t3lib_div::makeInstance('tx_passwordmgr_model_password');
 			$password->init($GLOBALS['moduleData']['passwordUid']);
 
 			// Check if user is allowed to access this password
 			tx_passwordmgr_helper::checkUserAccessToGroup($password['groupUid']);
 			tx_passwordmgr_helper::checkMemberAccessModifyPasswordList($password['groupUid'], $GLOBALS['BE_USER']->user['uid']);
-
-			// Delete ssl data
-			$sslDataList = $password->getSslList();
-			$sslDataList->deleteListItems();
 
 			// Delete password
 			$password->delete();

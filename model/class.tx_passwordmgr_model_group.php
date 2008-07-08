@@ -161,12 +161,24 @@ class tx_passwordmgr_model_group extends tx_passwordmgr_model_data {
 	}
 
 	/**
-	 * Delete group in database
+	 * Delete group
+	 * - Delete passwords and its sslData
+	 * - Delete members
+	 * - Delete group
 	 *
 	 * @throws Exception if delete failed
 	 * @return void
 	 */
 	public function delete() {
+		// Delete passwords and all ssl data of this group
+		$passwordList = $this->getPasswordList();
+		$passwordList->deleteListItems();
+
+		// Delete members from group
+		$memberList = $this->getMemberList();
+		$memberList->deleteListItems();
+
+		// Delete group
 		$res = $GLOBALS['TYPO3_DB']->exec_DELETEquery(
 			'tx_passwordmgr_group',
 			'uid='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this['uid'], 'tx_passwordmgr_group')
