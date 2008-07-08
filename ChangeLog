@@ -1,5 +1,6 @@
 08-07-08 Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Model: Fixed minor bug in group->getPassworList()
 	* Bug 914: Proof read manual (Thanks to Mike McAlpine)
 
 08-07-06 Christian Kuhn  <lolli@schwarzbu.ch>

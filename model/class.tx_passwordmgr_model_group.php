@@ -101,7 +101,7 @@ class tx_passwordmgr_model_group extends tx_passwordmgr_model_data {
 	public function getPasswordList() {
 		if ( !is_object($this->passwordList) ) {
 			$this->passwordList = t3lib_div::makeInstance('tx_passwordmgr_model_passwordList');
-			$this->passwordList->init($this['uid'],$GLOBALS['BE_USER']->user['uid']);
+			$this->passwordList->init($this['uid']);
 		}
 		return($this->passwordList);
 	}
