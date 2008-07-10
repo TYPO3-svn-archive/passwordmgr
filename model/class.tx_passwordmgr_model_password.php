@@ -127,13 +127,8 @@ class tx_passwordmgr_model_password extends tx_passwordmgr_model_data {
 			'uid='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this['uid'],'tx_passwordmgr_password'),
 			$data
 		);
-		$affectedRows = (integer)$GLOBALS['TYPO3_DB']->sql_affected_rows();
-		if ( $affectedRows == 1 ) {
-			tx_passwordmgr_helper::addLogEntry(1, 'editPassword', 'Update password '.$data['name'].' uid '.$this['uid']);
-		} else {
-			tx_passwordmgr_helper::addLogEntry(3, 'editPassword', 'Can not update password '.$this['name']);
-			throw new Exception ('Error updating password '.$data['name']);
-		}
+		$this->checkAffectedRows('updatePassword', 1);
+		tx_passwordmgr_helper::addLogEntry(1, 'updatePassword', 'Update password '.$data['name'].' uid '.$this['uid']);
 	}
 
 	/**
@@ -154,13 +149,8 @@ class tx_passwordmgr_model_password extends tx_passwordmgr_model_data {
 			'tx_passwordmgr_password',
 			'uid='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this['uid'], 'tx_passwordmgr_password')
 		);
-		$affectedRows = (integer)$GLOBALS['TYPO3_DB']->sql_affected_rows();
-		if ( $affectedRows == 1 ) {
-			tx_passwordmgr_helper::addLogEntry(1, 'deletePassword', 'Removed password '.$this['uid']);
-		} else {
-			tx_passwordmgr_helper::addLogEntry(3, 'deletePassword', 'Wrong number of affected rows removing password '.$this['uid']);
-			throw new Exception('Error deleting password '.$this['uid']);
-		}
+		$this->checkAffectedRows('deletePassword', 1);
+		tx_passwordmgr_helper::addLogEntry(1, 'deletePassword', 'Removed password '.$this['uid']);
 	}
 
 	/**

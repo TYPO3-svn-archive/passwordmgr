@@ -123,5 +123,20 @@ class tx_passwordmgr_model_data implements ArrayAccess, IteratorAggregate {
 	public function getIterator() {
 		return( new ArrayIterator($this->data) );
 	}
+
+	/**
+	 * Helper function to compare number of affected rows in last db query with expected affected rows.
+	 * This is a serious error: Database integrity might be broken.
+	 *
+	 * @param string Name of operation
+	 * @param integer Number of expected affected rows
+	 * @throws Exception if number of affected rows was not equal to expected affected rows
+	 */
+	protected function checkAffectedRows( $identifier, $num ) {
+		$affectedRows = (integer)$GLOBALS['TYPO3_DB']->sql_affected_rows();
+		if ( $affectedRows != $num ) {
+			throw new Exception ('Database integrity might be broken, wrong number of affected rows. Please report this error. section / affected / expected: ' . $identifier . ' ' . $affectedRows . ' ' . $num);
+		}
+	}
 }
 ?>

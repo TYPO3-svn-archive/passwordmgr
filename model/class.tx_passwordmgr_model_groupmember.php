@@ -121,13 +121,8 @@ class tx_passwordmgr_model_groupMember extends tx_passwordmgr_model_data {
 				' AND be_users_uid='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this['beUserUid'], 'tx_passwordmgr_group_be_users_mm'),
 			$data
 		);
-		$affectedRows = (integer)$GLOBALS['TYPO3_DB']->sql_affected_rows();
-		if ( $affectedRows == 1 ) {
-			tx_passwordmgr_helper::addLogEntry(1, 'editMember', 'Updated member rights of member '.$this['beUserUid'].' of group '.$this['groupUid']);
-		} else {
-			tx_passwordmgr_helper::addLogEntry(3, 'editMember', 'Error updating rights of member '.$this['beUserUid'].' of group '.$this['groupUid']);
-			throw new Exception ('Error updating member '.$this['beUserUid'].' of group '.$this['groupUid']);
-		}
+		$this->checkAffectedRows('updateGroupMember', 1);
+		tx_passwordmgr_helper::addLogEntry(1, 'updateGroupMember', 'Updated member rights of member '.$this['beUserUid'].' of group '.$this['groupUid']);
 	}
 
 	/**
@@ -156,13 +151,8 @@ class tx_passwordmgr_model_groupMember extends tx_passwordmgr_model_data {
 			'group_uid='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this['groupUid'], 'tx_passwordmgr_group_be_users_mm') .
 				' AND be_users_uid='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this['beUserUid'], 'tx_passwordmgr_group_be_users_mm')
 		);
-		$affectedRows = (integer)$GLOBALS['TYPO3_DB']->sql_affected_rows();
-		if ( $affectedRows == 1 ) {
-			tx_passwordmgr_helper::addLogEntry(1, 'deleteMembership', 'Removed user '.$this['beUserUid'].' from group '.$groupUid);
-		} else {
-			tx_passwordmgr_helper::addLogEntry(3, 'deleteMembership', 'Wrong number of affected rows removing user '.$this['beUserUid'].' from group '.$groupUid);
-			throw new Exception('Error removing user '.$this['beUserUid'].' from group '.$groupUid);
-		}
+		$this->checkAffectedRows('deleteGroupMember', 1);
+		tx_passwordmgr_helper::addLogEntry(1, 'deleteGroupMember', 'Removed user '.$this['beUserUid'].' from group '.$groupUid);
 	}
 }
 ?>

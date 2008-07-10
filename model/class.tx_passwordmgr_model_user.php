@@ -109,7 +109,6 @@ class tx_passwordmgr_model_user extends tx_passwordmgr_model_data {
 	/**
 	 * Update fields in be_users table
 	 *
-	 * @throws Exception if more or less than one row was affected
 	 * @return void
 	 */
 	protected function updateFields($fields) {
@@ -118,13 +117,8 @@ class tx_passwordmgr_model_user extends tx_passwordmgr_model_data {
 			'uid='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this['uid'], 'be_users'),
 			$fields
 		);
-		$affectedRows = (integer)$GLOBALS['TYPO3_DB']->sql_affected_rows();
-		if ( $affectedRows == 1 ) {
-			tx_passwordmgr_helper::addLogEntry(1, 'updateBeUserFields', 'Updated fields of user '.$this['uid']);
-		} else {
-			tx_passwordmgr_helper::addLogEntry(3, 'updateBeUserFields', 'Wrong number of affected rows updating fields of user '.$this['uid']);
-			throw new Exception('Error updating user '.$this['uid']);
-		}
+		$this->checkAffectedRows('updateUser', 1);
+		tx_passwordmgr_helper::addLogEntry(1, 'updateUser', 'Updated fields of user '.$this['uid']);
 	}
 }
 ?>

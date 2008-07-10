@@ -120,13 +120,8 @@ class tx_passwordmgr_model_sslData extends tx_passwordmgr_model_data {
 				' AND be_users_uid='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this['beUserUid'], 'be_users'),
 			$data
 		);
-		$affectedRows = (integer)$GLOBALS['TYPO3_DB']->sql_affected_rows();
-		if ( $affectedRows == 1 ) {
-			tx_passwordmgr_helper::addLogEntry(1, 'updateSsl', 'Updated ssl data for user '.$this['beUserUid'].', password '.$this['passwordUid']);
-		} else {
-			tx_passwordmgr_helper::addLogEntry(3, 'updateSsl', 'Can not update ssl data for user '.$this['beUserUid'].', password '.$this['passwordUid']);
-			throw new Exception('Error updating ssl data for user '.$data['beUserUid'].' and password uid '.$data['passwordUid']);
-		}
+		$this->checkAffectedRows('updateSslData', 1);
+		tx_passwordmgr_helper::addLogEntry(1, 'updateSslData', 'Updated ssl data for user '.$this['beUserUid'].', password '.$this['passwordUid']);
 	}
 
 	/**
@@ -141,13 +136,8 @@ class tx_passwordmgr_model_sslData extends tx_passwordmgr_model_data {
 			'password_uid='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this['passwordUid'], 'tx_passwordmgr_ssldata') .
 				' AND be_users_uid='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this['beUserUid'], 'tx_passwordmgr_ssldata')
 		);
-		$affectedRows = (integer)$GLOBALS['TYPO3_DB']->sql_affected_rows();
-		if ( $affectedRows == 1 ) {
-			tx_passwordmgr_helper::addLogEntry(1, 'deleteSsl', 'Removed ssl data for user '.$this['beUserUid'].', password '.$this['passwordUid']);
-		} else {
-			tx_passwordmgr_helper::addLogEntry(3, 'deleteSsl', 'Wrong number of affected rows removing ssl data for user '.$this['beUserUid'].', password '.$this['passwordUid']);
-			throw new Exception('Error deleting ssl data for user '.$this['beUserUid'].' and password uid '.$this['passwordUid']);
-		}
+		$this->checkAffectedRows('deleteSslData', 1);
+		tx_passwordmgr_helper::addLogEntry(1, 'deleteSslData', 'Removed ssl data for user '.$this['beUserUid'].', password '.$this['passwordUid']);
 	}
 }
 ?>

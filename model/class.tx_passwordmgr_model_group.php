@@ -151,13 +151,8 @@ class tx_passwordmgr_model_group extends tx_passwordmgr_model_data {
 			'uid=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this['uid'],'tx_passwordmgr_group'),
 			$data
 		);
-		$affectedRows = (integer)$GLOBALS['TYPO3_DB']->sql_affected_rows();
-		if ( $affectedRows == 1 ) {
-			tx_passwordmgr_helper::addLogEntry(1, 'editGroup', 'Update group '.$data['name'].' uid '.$this['uid']);
-		} else {
-			tx_passwordmgr_helper::addLogEntry(3, 'editGroup', 'Can not update group '.$this['name']);
-			throw new Exception ('Error updating group '.$data['name']);
-		}
+		$this->checkAffectedRows('updateGroup', 1);
+		tx_passwordmgr_helper::addLogEntry(1, 'updateGroup', 'Update group '.$data['name'].' uid '.$this['uid']);
 	}
 
 	/**
@@ -183,13 +178,8 @@ class tx_passwordmgr_model_group extends tx_passwordmgr_model_data {
 			'tx_passwordmgr_group',
 			'uid='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this['uid'], 'tx_passwordmgr_group')
 		);
-		$affectedRows = (integer)$GLOBALS['TYPO3_DB']->sql_affected_rows();
-		if ( $affectedRows == 1 ) {
-			tx_passwordmgr_helper::addLogEntry(1, 'deleteGroup', 'Removed group '.$this['uid']);
-		} else {
-			tx_passwordmgr_helper::addLogEntry(3, 'deleteGroup', 'Wrong number of affected rows removing group '.$this['uid']);
-			throw new Exception('Error deleting group '.$this['uid']);
-		}
+		$this->checkAffectedRows('deleteGroup', 1);
+		tx_passwordmgr_helper::addLogEntry(1, 'deleteGroup', 'Removed group '.$this['uid']);
 	}
 }
 ?>
