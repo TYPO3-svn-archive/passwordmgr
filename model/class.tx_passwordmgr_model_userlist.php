@@ -47,7 +47,9 @@ class tx_passwordmgr_model_userList extends tx_passwordmgr_model_list {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'uid, username, tx_passwordmgr_cert, tx_passwordmgr_privkey',
 			'be_users',
-			'1 ' . t3lib_BEfunc::BEenableFields('be_users') . t3lib_BEfunc::deleteClause('be_users'),
+			'tx_passwordmgr_cert != "" ' .
+				t3lib_BEfunc::BEenableFields('be_users') .
+				t3lib_BEfunc::deleteClause('be_users'),
 			'',
 			'username' // ORDER
 		);
@@ -61,7 +63,7 @@ class tx_passwordmgr_model_userList extends tx_passwordmgr_model_list {
 				$user['publicKey'] = tx_passwordmgr_openssl::extractPublicKeyFromCertificate($user['certificate']);
 				$this->addListItem($user);
 			} catch ( Exception $e ) {
-				tx_passwordmgr_helper::addLogEntry(1, 'beUserList', 'Can not add user to userlist, not initialized: ' . $user['uid']);
+				tx_passwordmgr_helper::addLogEntry(3, 'userList', 'Can not add user to userlist, certificate given but initialization was not successfull. uid / name: ' . $user['uid'] . ' ' . $user['name']);
 			}
 		}
 	}
