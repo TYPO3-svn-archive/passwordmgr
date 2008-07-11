@@ -98,7 +98,7 @@ class tx_passwordmgr_action_addGroupMember extends tx_passwordmgr_action_default
 				$sslDataNewMember->add();
 			}
 		} catch ( Exception $e ) {
-			tx_passwordmgr_helper::addLogEntry(3, 'addGroupMember', 'Can not add member to group');
+			tx_passwordmgr_helper::addLogEntry(3, 'addGroupMember', $e->getMessage());
 		}
 
 		$this->defaultView();

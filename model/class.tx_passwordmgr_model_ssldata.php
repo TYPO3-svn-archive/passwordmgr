@@ -96,15 +96,13 @@ class tx_passwordmgr_model_sslData extends tx_passwordmgr_model_data {
 		if ( $res ) {
 			tx_passwordmgr_helper::addLogEntry(1, 'addSsl', 'Added ssl data for user '.$this['beUserUid'].', password '.$this['passwordUid']);
 		} else {
-			tx_passwordmgr_helper::addLogEntry(1, 'addSsl', 'Can not add ssl data for user '.$this['beUserUid'].', password '.$this['passwordUid']);
-			throw new Exception('Error adding ssl data for user '.$data['beUserUid'].' and password uid '.$data['passwordUid']);
+			throw new Exception('Error adding ssl data for user. user / password: ' . $data['beUserUid'] . ' ' . $data['passwordUid']);
 		}
 	}
 
 	/**
 	 * Update ssldata entry in db
 	 *
-	 * @throws Exception if db update failed
 	 * @return void
 	 */
 	public function update() {
@@ -127,7 +125,6 @@ class tx_passwordmgr_model_sslData extends tx_passwordmgr_model_data {
 	/**
 	 * Delete an item from db
 	 *
-	 * @throws Exception if delete failed
 	 * @return void
 	 */
 	public function delete() {

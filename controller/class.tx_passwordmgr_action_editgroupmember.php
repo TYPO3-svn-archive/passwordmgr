@@ -73,10 +73,10 @@ class tx_passwordmgr_action_editGroupMember extends tx_passwordmgr_action_defaul
 				$member['rights'] = $newRights;
 				$member->update();
 			} else {
-				tx_passwordmgr_helper::addLogEntry(3, 'editGroupMember', 'Can not take group admin rights from last admin member');
+				tx_passwordmgr_helper::addLogEntry(3, 'editGroupMember', 'Can not remove group admin rights from last admin member');
 			}
 		} catch ( Exception $e ) {
-			tx_passwordmgr_helper::addLogEntry(3, 'editGroupMember', 'Can not edit group member');
+			tx_passwordmgr_helper::addLogEntry(3, 'editGroupMember', $e->getMessage());
 		}
 
 		$this->defaultView();

@@ -53,7 +53,7 @@ class tx_passwordmgr_action_deleteGroup extends tx_passwordmgr_action_default {
 			// Delete group
 			$group->delete();
 		} catch ( Exception $e ) {
-			tx_passwordmgr_helper::addLogEntry(3, 'deleteGroup', 'Error deleting group ' . $groupUid);
+			tx_passwordmgr_helper::addLogEntry(3, 'deleteGroup', $e->getMessage());
 		}
 
 		$this->defaultView();

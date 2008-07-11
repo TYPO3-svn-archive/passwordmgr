@@ -38,7 +38,7 @@ class tx_passwordmgr_action_addGroup extends tx_passwordmgr_action_default {
 	public function execute() {
 		try {
 			// Input check
-			tx_passwordmgr_helper::checkLengthGreaterZero($GLOBALS['moduleData']['groupName'], 'name');
+			tx_passwordmgr_helper::checkLengthGreaterZero($GLOBALS['moduleData']['groupName'], 'Group name');
 
 			// Add group
 			$group = t3lib_div::makeInstance('tx_passwordmgr_model_group');
@@ -54,8 +54,8 @@ class tx_passwordmgr_action_addGroup extends tx_passwordmgr_action_default {
 			$groupMember['beUserUid'] = $GLOBALS['BE_USER']->user['uid'];
 			$groupMember['rights'] = 2;
 			$groupMember->add();
-		} catch ( Exception $exception ) {
-			tx_passwordmgr_helper::addLogEntry(3, 'addGroup', 'Error adding group '.$group['name']);
+		} catch ( Exception $e ) {
+			tx_passwordmgr_helper::addLogEntry(3, 'addGroup', $e->getMessage());
 		}
 
 		$this->defaultView();

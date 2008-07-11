@@ -127,8 +127,7 @@ class tx_passwordmgr_model_group extends tx_passwordmgr_model_data {
 			$this['uid'] = $GLOBALS['TYPO3_DB']->sql_insert_id($res);
 			tx_passwordmgr_helper::addLogEntry(1, 'addGroup', 'Added Group '.$data['name']);
 		} else {
-			tx_passwordmgr_helper::addLogEntry(3, 'addGroup', 'Error adding group '.$data['name']);
-			throw new Exception('Error adding group '.$data['name'].' to db');
+			throw new Exception('Error adding group: ' . $data['name']);
 		}
 		return($this['uid']);
 	}
@@ -136,7 +135,6 @@ class tx_passwordmgr_model_group extends tx_passwordmgr_model_data {
 	/**
 	 * Update group details in database
 	 *
-	 * @throws Exception if update failed
 	 * @return void
 	 */
 	public function update() {
@@ -161,7 +159,6 @@ class tx_passwordmgr_model_group extends tx_passwordmgr_model_data {
 	 * - Delete members
 	 * - Delete group
 	 *
-	 * @throws Exception if delete failed
 	 * @return void
 	 */
 	public function delete() {

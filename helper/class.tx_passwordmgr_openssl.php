@@ -42,9 +42,10 @@ class tx_passwordmgr_openssl {
 		try {
 			tx_passwordmgr_openssl::extractPublicKeyFromCertificate($certificate);
 		} catch ( Exception $e ) {
+			// Should happen
 			return;
 		}
-		tx_passwordmgr_helper::addLogEntry(3, 'checkNoExtractPublicKeyFromCertificate', 'Extraction of public key from certificate successfull.');
+		// Throw Exception if initialization was successfull
 		throw new Exception('Extraction of public key from certificate successfull');
 	}
 
@@ -55,8 +56,8 @@ class tx_passwordmgr_openssl {
 	 * @return string Public key
 	 */
 	public static function extractPublicKeyFromCertificate($certificate) {
-		if ($res = openssl_pkey_get_public($certificate) ) {
-			if ($detailArray = openssl_pkey_get_details($res)) {
+		if ( $res = openssl_pkey_get_public($certificate) ) {
+			if ( $detailArray = openssl_pkey_get_details($res) ) {
 				return($detailArray['key']);
 			} else {
 				throw new Exception('Can not extract public key from certificate');
@@ -107,8 +108,7 @@ class tx_passwordmgr_openssl {
 		// Decrypt private key with passphrase and throw Exception if not successfull
 		$privateKeyResource = openssl_pkey_get_private($encryptedPrivateKey, $passphrase);
 		if ( !$privateKeyResource ) {
-			tx_passwordmgr_helper::addLogEntry(3, 'decryptPrivateKey', 'Can not decrypt private key. Wrong password?');
-			throw new Exception('Can not decrypt private Key');
+			throw new Exception('Can not decrypt private Key. You probably submitted a wrong master password!');
 		}
 
 		// Decrypt data
@@ -157,8 +157,7 @@ class tx_passwordmgr_openssl {
 		// Decrypt private key with passphrase and throw Exception if not successfull
 		$privateKeyResource = openssl_pkey_get_private($encryptedPrivateKey, $currentPassphrase);
 		if ( !$privateKeyResource ) {
-			tx_passwordmgr_helper::addLogEntry(3, 'decryptPrivateKey', 'Can not decrypt private key. Wrong password?');
-			throw new Exception('Can not decrypt private Key');
+			throw new Exception('Can not decrypt private Key. You probably submitted a wrong master password!');
 		}
 		
 		// Export new private key encrypted with new passphrase

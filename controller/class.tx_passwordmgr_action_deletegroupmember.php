@@ -76,7 +76,7 @@ class tx_passwordmgr_action_deleteGroupMember extends tx_passwordmgr_action_defa
 				tx_passwordmgr_helper::addLogEntry(3, 'deleteGroupMemebr', 'Can not delete last group admin from group '.$group['uid']);
 			}
 		} catch ( Exception $e ) {
-			tx_passwordmgr_helper::addLogEntry(3, 'deleteGroupMember', 'Error deleting group member '.$group['uid']);
+			tx_passwordmgr_helper::addLogEntry(3, 'deleteGroupMember', $e->getMessage());
 		}
 
 		$this->defaultView();

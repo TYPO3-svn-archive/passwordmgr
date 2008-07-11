@@ -38,8 +38,7 @@ class tx_passwordmgr_helper {
 	 */
 	public static function checkLengthGreaterZero( $string, $name ) {
 		if ( !(strlen($string) > 0) ) {
-			tx_passwordmgr_helper::addLogEntry(3, 'Input check', "Length of $name not greater than zero");
-			throw new Exception("String $name not greater than 0");
+			throw new Exception('Input was required but not given. Required input: ' . $name);
 		}
 	}
 
@@ -54,10 +53,10 @@ class tx_passwordmgr_helper {
 			$member = t3lib_div::makeInstance('tx_passwordmgr_model_groupmember');
 			$member->init($userUid, $groupUid);
 		} catch ( Exception $e ) {
-			// groupMember-init() throws an Exception if user is not member of group, this should happen
+			// groupMember->init() throws an Exception if user is not member of group, this should happen
 			return;
 		}
-		throw new Exception('User is member of group');
+		throw new Exception('User is already member of group. group / member: ' . $groupUid . ' ' . $userUid);
 	}
 
 	/**
@@ -81,16 +80,16 @@ class tx_passwordmgr_helper {
 			break;
 			case 1: // Check for edit rights
 				if ( $member['rights'] < 1 ) {
-					throw new Exception ('Insufficient rights of user ' . $userUid . ' to group' . $groupUid);
+					throw new Exception ('Insufficient rights of user in group. user / group / rights / expected rights: ' . $userUid . ' ' . $groupUid . ' ' . $member['rights'] . ' ' . $rights);
 				}
 			break;
 			case 2: // Check for admin rights
 				if ( $member['rights'] < 2 ) {
-					throw new Exception ('Insufficient rights of user ' . $userUid . ' to group' . $groupUid);
+					throw new Exception ('Insufficient rights of user in group. user / group / rights / expected rights: ' . $userUid . ' ' . $groupUid . ' ' . $member['rights'] . ' ' . $rights);
 				}
 			break;
 			default: // Should not happen
-				throw new Exception ('Programming error member rights check user ' . $userUid . ' to group' . $groupUid);
+				throw new Exception ('Insufficient rights of user in group. user / group / rights / expected rights: ' . $userUid . ' ' . $groupUid . ' ' . $member['rights'] . ' ' . $rights);
 			break;
 		}
 	}
@@ -103,8 +102,7 @@ class tx_passwordmgr_helper {
 	 */
 	public static function checkRightsWithinRange($rights) {
 		if ( $rights<0 || $rights>2 || !strlen($rights)>0 ) {
-			tx_passwordmgr_helper::addLogEntry(3, 'rightsWithinRange', 'Value of member rights wrong');
-			throw new Exception('Value of member rights wrong');
+			throw new Exception('Value of member rights wrong. rights: ' . $rights);
 		}
 	}
 
@@ -118,8 +116,7 @@ class tx_passwordmgr_helper {
 	 */
 	public static function checkIdenticalPasswords( $pw1, $pw2 ) {
 		if ( strcmp($pw1, $pw2) ) {
-			tx_passwordmgr_helper::addLogEntry(3, 'identicalPasswords', 'Passwords do not match');
-			throw new Exception('Passwords do not match');
+			throw new Exception('Given passwords do not match');
 		}
 	}
 
@@ -131,7 +128,6 @@ class tx_passwordmgr_helper {
 	 */
 	public static function checkPasswordMinimumLength( $pw ) {
 		if ( strlen($pw) < 6 ) {
-			tx_passwordmgr_helper::addLogEntry(3, 'passwordMinimumLength', 'Password not long enough');
 			throw new Exception('Password not long enough');
 		}
 	}

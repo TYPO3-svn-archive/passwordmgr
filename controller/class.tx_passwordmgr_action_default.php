@@ -99,7 +99,7 @@ class tx_passwordmgr_action_default implements tx_passwordmgr_action_interface {
 			$this->view = t3lib_div::makeInstance('tx_passwordmgr_view_'.$viewKey);
 			$this->view->render($this->data);
 		} else {
-			throw new Exception ('View '.$viewKey.' not found');
+			throw new Exception ('View not found: ' . $viewKey);
 		}
 	}
 

@@ -76,8 +76,7 @@ class tx_passwordmgr_model_groupMember extends tx_passwordmgr_model_data {
 			$this['publicKey'] = tx_passwordmgr_openssl::extractPublicKeyFromCertificate($this['certificate']);
 			$this['rights'] = $row['rights'];
 		} else {
-			tx_passwordmgr_helper::addLogEntry(3, 'groupMemberFetchDetails', 'User '.$this['beUserUid'].' not member of group '.$this['groupUid']);
-			throw new Exception ('Error getting group member details '.$this['beUserUid'].' group '.$this['groupUid']);
+			throw new Exception ('Error getting group member details. user / group: ' . $this['beUserUid'] . ' ' . $this['groupUid']);
 		}
 	}
 
@@ -100,15 +99,13 @@ class tx_passwordmgr_model_groupMember extends tx_passwordmgr_model_data {
 		if ( $res ) {
 			tx_passwordmgr_helper::addLogEntry(1, 'addMembership', 'Added user '.$data['be_users_uid'].' to group '.$data['group_uid']);
 		} else {
-			tx_passwordmgr_helper::addLogEntry(3, 'addMembership', 'Can not add user '.$data['be_users_uid'].' to group '.$data['group_uid']);
-			throw new Exception ('Error adding user '.$data['be_users_uid'].' to group');
+			throw new Exception ('Error adding user. user / group: ' . $data['be_users_uid'] . ' ' . $data['group_uid']);
 		}
 	}
 
 	/**
 	 * Update member rights
 	 *
-	 * @throws Exception if update failed
 	 * @return void
 	 */
 	public function update() {
@@ -130,7 +127,6 @@ class tx_passwordmgr_model_groupMember extends tx_passwordmgr_model_data {
 	 * - Delete sslData of every password of this group for this member
 	 * - Delete member from group
 	 *
-	 * @throws Eception if user can not be deleted
 	 * @return void
 	 */
 	public function delete() {

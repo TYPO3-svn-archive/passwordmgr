@@ -64,7 +64,7 @@ class tx_passwordmgr_action_editGroup extends tx_passwordmgr_action_default {
 				$group->update();
 			}
 		} catch ( Exception $e ) {
-			tx_passwordmgr_helper::addLogEntry(3, 'editPassword', 'Can not update password '.$password['name']);
+			tx_passwordmgr_helper::addLogEntry(3, 'editGroup', $e->getMessage());
 		}
 
 		$this->defaultView();

@@ -1,3 +1,7 @@
+08-07-11 Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* MVC cleanup: Do not add a log entry prior to a thrown exception but add exception message to log entries in catch blocks
+
 08-07-10 Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Model: Introduced function checkAffectedRows() in data class, fixed extending classes

@@ -32,7 +32,7 @@
 class tx_passwordmgr_action_decryptPassword extends tx_passwordmgr_action_default {
 	/**
 	 * Decrypt ssl data of a password with a users private key and his passphrase
-	 * Sets plaintext password in $this->data['passwordUid']
+	 * Set plaintext password in $this->data['passwordUid']
 	 *
 	 * @return void
 	 */
@@ -53,7 +53,7 @@ class tx_passwordmgr_action_decryptPassword extends tx_passwordmgr_action_defaul
 			$passphrase = $GLOBALS['moduleData']['passphrase'];
 			$this->data['plaintextPassword'][$passwordUid] = tx_passwordmgr_openssl::decrypt($user['privateKey'], $passphrase, $sslData['key'], $sslData['data']);
 		} catch ( Exception $e ) {
-			tx_passwordmgr_helper::addLogEntry(3, 'decryptPassword', 'Can not decrypt password '.$passwordUid);
+			tx_passwordmgr_helper::addLogEntry(3, 'decryptPassword', $e->getMessage());
 		}
 
 		$this->defaultView();

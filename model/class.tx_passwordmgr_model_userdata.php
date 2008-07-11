@@ -93,7 +93,7 @@ class tx_passwordmgr_model_userData extends tx_passwordmgr_model_data {
 			$this->data[$type][$groupUid] = 1;
 			$this->update();
 		} catch (Exception $e) {
-			tx_passwordmgr_helper::addLogEntry(3, 'userData', 'Can not open '.$type);
+			throw $e;
 		}
 	}
 
@@ -111,7 +111,7 @@ class tx_passwordmgr_model_userData extends tx_passwordmgr_model_data {
 			unset($this->data[$type][$groupUid]);
 			$this->update();
 		} catch (Exception $e) {
-			tx_passwordmgr_helper::addLogEntry(3, 'userData', 'Can not close '.$type);
+			throw $e;
 		}
 	}
 
@@ -120,6 +120,7 @@ class tx_passwordmgr_model_userData extends tx_passwordmgr_model_data {
 	 *
 	 * @param string 'group', 'member' or 'password'
 	 * @param integer id of group
+	 * @throws Exception if type is not within valid values
 	 * @return bool
 	 */
 	public function isOpen($type, $groupUid) {
@@ -130,7 +131,7 @@ class tx_passwordmgr_model_userData extends tx_passwordmgr_model_data {
 				$open = TRUE;
 			}
 		} catch (Exception $e) {
-			tx_passwordmgr_helper::addLogEntry(3, 'userData', 'Can not access '.$type);
+			throw $e;
 		}
 		return($open);
 	}
@@ -187,7 +188,7 @@ class tx_passwordmgr_model_userData extends tx_passwordmgr_model_data {
 			case 'member':
 				return('openMember');
 			default:
-				throw new Exception ('Access to non existing fold type');
+				throw new Exception ('Access to non existing fold type: ' . $type);
 		}
 	}
 

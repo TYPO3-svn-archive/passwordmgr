@@ -69,7 +69,7 @@ class tx_passwordmgr_action_initializeKeyPair extends tx_passwordmgr_action_defa
 			// Modify view to switch to addGroup view after successfull initialization
 			$GLOBALS['moduleData']['view'] = 'addEditGroup';
 		} catch ( Exception $e ) {
-			tx_passwordmgr_helper::addLogEntry(3, 'initializeKeyPair', 'Can not initialize certificate and private key');
+			tx_passwordmgr_helper::addLogEntry(3, 'initializeKeyPair', $e->getMessage());
 		}
 
 		$this->defaultView();

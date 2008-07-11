@@ -59,8 +59,7 @@ class tx_passwordmgr_model_data implements ArrayAccess, IteratorAggregate {
 		if ( array_key_exists($key, $this->data) ) {
 			$this->data[$key] = $value;
 		} else {
-			tx_passwordmgr_helper::addLogEntry(3, 'data', 'Access to not existing Key '.$key.' of class '.get_class($this));
-			throw new Exception('Array key not defined');
+			throw new Exception('Access to not defined array key. class / key: ' . $get_class($this) . ' ' . $key);
 		}
 	}
 
@@ -74,8 +73,7 @@ class tx_passwordmgr_model_data implements ArrayAccess, IteratorAggregate {
 	 */
 	public function offsetGet($key) {
 		if ( !array_key_exists($key, $this->data) ) {
-			tx_passwordmgr_helper::addLogEntry(3, 'data', 'Access to not existing Key '.$key.' of class '.get_class($this));
-			throw new Exception('Array key not defined');
+			throw new Exception('Access to not defined array key. class / key: ' . $get_class($this) . ' ' . $key);
 		}
 		return($this->data[$key]);
 	}
@@ -92,8 +90,7 @@ class tx_passwordmgr_model_data implements ArrayAccess, IteratorAggregate {
 		if (array_key_exists ($key, $this->data)) {
 			unset($this->data[$key]);
 		} else {
-			tx_passwordmgr_helper::addLogEntry(3, 'data', 'Access to not existing Key '.$key.' of class '.get_class($this));
-			throw new Exception('Array key not defined');
+			throw new Exception('Access to not defined array key. class / key: ' . $get_class($this) . ' ' . $key);
 		}
 	}
 
@@ -109,8 +106,7 @@ class tx_passwordmgr_model_data implements ArrayAccess, IteratorAggregate {
 		if ( array_key_exists($key, $this->data) ) {
 			return(TRUE);
 		} else {
-			tx_passwordmgr_helper::addLogEntry(3, 'data', 'Access to not existing Key '.$key.' of class '.get_class($this));
-			throw new Exception('Array key not defined');
+			throw new Exception('Access to not defined array key. class / key: ' . $get_class($this) . ' ' . $key);
 		}
 	}
 
