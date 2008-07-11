@@ -100,7 +100,7 @@ class tx_passwordmgr_action_movePassword extends tx_passwordmgr_action_default {
 			// Deselect selected password
 			$userData->deselectPassword();
 		} catch ( Exception $e ) {
-			tx_passwordmgr_helper::addLogEntry(3, 'movePassword', $e->getMessage());
+			tx_passwordmgr_helper::addLogEntry(2, 'movePassword', $e->getMessage());
 		}
 
 		$this->defaultView();

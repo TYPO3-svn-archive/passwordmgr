@@ -63,7 +63,7 @@ class tx_passwordmgr_model_userList extends tx_passwordmgr_model_list {
 				$user['publicKey'] = tx_passwordmgr_openssl::extractPublicKeyFromCertificate($user['certificate']);
 				$this->addListItem($user);
 			} catch ( Exception $e ) {
-				tx_passwordmgr_helper::addLogEntry(3, 'userList', 'Can not add user to userlist, certificate given but initialization was not successfull. uid / name: ' . $user['uid'] . ' ' . $user['name']);
+				tx_passwordmgr_helper::addLogEntry(2, 'userList', 'Can not add user to userlist, certificate given but initialization was not successfull. uid / name: ' . $user['uid'] . ' ' . $user['name']);
 			}
 		}
 	}

@@ -55,7 +55,7 @@ class tx_passwordmgr_action_addGroup extends tx_passwordmgr_action_default {
 			$groupMember['rights'] = 2;
 			$groupMember->add();
 		} catch ( Exception $e ) {
-			tx_passwordmgr_helper::addLogEntry(3, 'addGroup', $e->getMessage());
+			tx_passwordmgr_helper::addLogEntry(2, 'addGroup', $e->getMessage());
 		}
 
 		$this->defaultView();

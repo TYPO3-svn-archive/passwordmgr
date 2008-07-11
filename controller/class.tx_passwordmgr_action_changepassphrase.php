@@ -55,7 +55,7 @@ class tx_passwordmgr_action_changePassphrase extends tx_passwordmgr_action_defau
 			// Store new private key in db
 			$user->updatePrivateKey();
 		} catch ( Exception $e ) {
-			tx_passwordmgr_helper::addLogEntry(3, 'changePassphrase', $e->getMessage());
+			tx_passwordmgr_helper::addLogEntry(2, 'changePassphrase', $e->getMessage());
 		}
 
 		$this->defaultView();

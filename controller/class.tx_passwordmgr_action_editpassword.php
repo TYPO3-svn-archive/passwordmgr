@@ -91,7 +91,7 @@ class tx_passwordmgr_action_editPassword extends tx_passwordmgr_action_default {
 				}
 			}
 		} catch ( Exception $e ) {
-			tx_passwordmgr_helper::addLogEntry(3, 'editPassword', $e->getMessage());
+			tx_passwordmgr_helper::addLogEntry(2, 'editPassword', $e->getMessage());
 		}
 
 		$this->defaultView();

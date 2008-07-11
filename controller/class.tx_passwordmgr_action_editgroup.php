@@ -64,7 +64,7 @@ class tx_passwordmgr_action_editGroup extends tx_passwordmgr_action_default {
 				$group->update();
 			}
 		} catch ( Exception $e ) {
-			tx_passwordmgr_helper::addLogEntry(3, 'editGroup', $e->getMessage());
+			tx_passwordmgr_helper::addLogEntry(2, 'editGroup', $e->getMessage());
 		}
 
 		$this->defaultView();

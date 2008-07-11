@@ -53,7 +53,7 @@ class tx_passwordmgr_action_deletePassword extends tx_passwordmgr_action_default
 			// Delete password
 			$password->delete();
 		} catch ( Exception $e ) {
-			tx_passwordmgr_helper::addLogEntry(3, 'deletePassword', $e->getMessage());
+			tx_passwordmgr_helper::addLogEntry(2, 'deletePassword', $e->getMessage());
 		}
 
 		$this->defaultView();

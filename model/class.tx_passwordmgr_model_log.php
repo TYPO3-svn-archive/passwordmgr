@@ -34,7 +34,7 @@ class tx_passwordmgr_model_log extends tx_passwordmgr_model_data {
 	 * @var array Details of log entry
 	 */
 	protected $data = array(
-		'priority' => integer, // 1 = log, 2 = warning, 3 = error
+		'priority' => integer, // 1 = info, 2 = error
 		'module' => string, // Identifier
 		'message' => string // The log message
 	);

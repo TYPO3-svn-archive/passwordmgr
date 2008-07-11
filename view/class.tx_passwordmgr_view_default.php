@@ -209,11 +209,10 @@ class tx_passwordmgr_view_default {
 						$style='style="color:green;"';
 					break;
 					case 2:
-						$style='style="color:yellow;"';
-					break;
-					case 3:
 						$style='style="color:red;"';
 					break;
+					default:
+						throw new Exception('Unkown log priority: ' . $logItem['priority']);
 				}
 				$content[] = '<p '.$style. '/>'.$logItem['module'].': '.$logItem['message'].'</p>';
 			}
