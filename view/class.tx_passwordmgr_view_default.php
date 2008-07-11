@@ -72,8 +72,9 @@ class tx_passwordmgr_view_default {
 		$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['passwordmgr']);
 		if ( t3lib_div::getIndpEnv('TYPO3_SSL') || $extConf['disableHTTPSCheck'] ) {
 			$bodyContent.= $this->developmentWarning();
+			$innerContent = $this->innerContent();
 			$bodyContent.= $this->logContent();
-			$bodyContent.= $this->innerContent();
+			$bodyContent.= $innerContent;
 		} else {
 			$bodyContent.= $this->backendNotHttpsEnabledContent();
 		}
