@@ -23,23 +23,29 @@
 ***************************************************************/
 
 /**
- * Class 'functionmenu_allItems' for the 'passwordmgr' extension.
+ * Class 'updateSettings' for the 'passwordmgr' extension.
  *
  * @author	Christian Kuhn <lolli@schwarzbu.ch>
  * @package	TYPO3
  * @subpackage	tx_passwordmgr
  */
-class tx_passwordmgr_model_functionMenu_allItems extends tx_passwordmgr_model_data {
+class tx_passwordmgr_action_updateSettings extends tx_passwordmgr_action_default {
 	/**
-	 * @var array Define possible views if user is initialized
+	 * Update settings in user uC if changed:
+	 * - "Display log on error only"
+	 *
+	 * @return void
 	 */
-	protected $data = array(
-		'overview' => 'Password Overview',
-		'addEditPassword' => 'Add / edit password',
-		'addEditGroup' => 'Add / edit group',
-		'addEditGroupMember' => 'Add / edit group membership',
-		'changePassphrase' => 'Change master password',
-		'settings' => 'Settings',
-	);
+	public function execute() {
+		$userData = t3lib_div::makeInstance('tx_passwordmgr_model_userData');
+
+		if ( $GLOBALS['moduleData']['displayLogOnErrorOnly'] && !$userData['displayLogOnErrorOnly'] ) {
+			$userData->changeDisplayLogOnErrorOnly(1);
+		} elseif ( !$GLOBALS['moduleData']['displayLogOnErrorOnly'] && $userData['displayLogOnErrorOnly'] ) {
+			$userData->changeDisplayLogOnErrorOnly(0);
+		}
+
+		$this->defaultView();
+	}
 }
 ?>

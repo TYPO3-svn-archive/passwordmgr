@@ -39,7 +39,8 @@ class tx_passwordmgr_model_userData extends tx_passwordmgr_model_data {
 		'openGroup' => array(), // Open groups
 		'openMember' => array(), // Open member lists
 		'openPassword' => array(), // Open password lists
-		'selectedPassword' => integer // Selected password, for moving
+		'selectedPassword' => integer, // Selected password, for moving
+		'displayLogOnErrorOnly' => integer // If 1 display only errors in the log row and do not show info logs. Else show both
 	);
 
 	/**
@@ -49,23 +50,38 @@ class tx_passwordmgr_model_userData extends tx_passwordmgr_model_data {
 	 */
 	public function __construct() {
 		$moduleUc = $GLOBALS['BE_USER']->getModuleData('user_txpasswordmgrM1');
+
+		// Latest chosen view
 		$this['view'] = $moduleUc['view'];
+
+		// List of open group items
 		if ( is_string($moduleUc['openGroup']) ) {
 			$this['openGroup'] = unserialize($moduleUc['openGroup']);
 		} else {
 			$this['openGroup'] = '';
 		}
+
+		// List of open member items
 		if ( is_string($moduleUc['openMember']) ) {
 			$this['openMember'] = unserialize($moduleUc['openMember']);
 		} else {
 			$this['openMember'] = '';
 		}
+
+		// List of open password items
 		if ( is_string($moduleUc['openPassword']) ) {
 			$this['openPassword'] = unserialize($moduleUc['openPassword']);
 		} else {
 			$this['openPassword'] = '';
 		}
 		$this['selectedPassword'] = $moduleUc['selectedPassword'];
+
+		// Wether or not to show only errors in log row
+		if ( isset($moduleUc['displayLogOnErrorOnly']) && $moduleUc['displayLogOnErrorOnly'] == 1 ) {
+			$this['displayLogOnErrorOnly'] = 1;
+		} else {
+			$this['displayLogOnErrorOnly'] = 0;
+		}
 	}
 
 	/**
@@ -172,6 +188,17 @@ class tx_passwordmgr_model_userData extends tx_passwordmgr_model_data {
 	}
 
 	/**
+	 * Change setting of display log on Error only
+	 *
+	 * @param boolean TRUE if only errors should be shown
+	 * @return void
+	 */
+	public function changeDisplayLogOnErrorOnly($newValue) {
+		$this['displayLogOnErrorOnly'] = $newValue;
+		$this->update();
+	}
+
+	/**
 	 * Helper function to translate $type to corresponding data array name
 	 *
 	 * @param string itemname
@@ -204,6 +231,7 @@ class tx_passwordmgr_model_userData extends tx_passwordmgr_model_data {
 		$moduleUc['openPassword'] = serialize($this['openPassword']);
 		$moduleUc['openMember'] = serialize($this['openMember']);
 		$moduleUc['selectedPassword'] = $this['selectedPassword'];
+		$moduleUc['displayLogOnErrorOnly'] = $this['displayLogOnErrorOnly'];
 		$GLOBALS['BE_USER']->pushModuleData('user_txpasswordmgrM1', $moduleUc);
 	}
 }

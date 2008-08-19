@@ -23,23 +23,36 @@
 ***************************************************************/
 
 /**
- * Class 'functionmenu_allItems' for the 'passwordmgr' extension.
+ * Class 'settings' for the 'passwordmgr' extension.
  *
  * @author	Christian Kuhn <lolli@schwarzbu.ch>
  * @package	TYPO3
  * @subpackage	tx_passwordmgr
  */
-class tx_passwordmgr_model_functionMenu_allItems extends tx_passwordmgr_model_data {
+class tx_passwordmgr_view_settings extends tx_passwordmgr_view_default {
 	/**
-	 * @var array Define possible views if user is initialized
+	 * Build content for the settings page
+	 *
+	 * @return string html
 	 */
-	protected $data = array(
-		'overview' => 'Password Overview',
-		'addEditPassword' => 'Add / edit password',
-		'addEditGroup' => 'Add / edit group',
-		'addEditGroupMember' => 'Add / edit group membership',
-		'changePassphrase' => 'Change master password',
-		'settings' => 'Settings',
-	);
+	protected function innerContent() {
+		// Get current user Data
+		$userData = t3lib_div::makeInstance('tx_passwordmgr_model_userData');
+
+		$content = '
+			<table border="0" cellpadding="2" cellspacing="1">
+				<tr>
+					<td>Display log only if an error occurred</td>
+					<td><input type="checkbox" name="DATA[tx_passwordmgr_displayLogOnErrorOnly]" ' . ($userData['displayLogOnErrorOnly'] ? 'checked="checked"' : '')  . '/></td>
+				</tr>
+				<tr>
+					<td><input type="submit" value="Save settings" name="mysubmit" onclick="setAction(\'updateSettings\');" /></td>
+					<td></td>
+				</tr>
+			</table>
+		';
+
+		return($this->doc->section('Settings', $content, 0, 1));
+	}
 }
 ?>

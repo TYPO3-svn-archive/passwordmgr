@@ -201,21 +201,26 @@ class tx_passwordmgr_view_default {
 	 * @return string log html
 	 */
 	protected function logContent() {
+		$userData = t3lib_div::makeInstance('tx_passwordmgr_model_userData');
+		$content = array();
 		if ( count($GLOBALS['logList']) ) {
-			$content = array();
 			foreach( $GLOBALS['logList'] as $logItem ) {
 				switch ( $logItem['priority'] ) {
 					case 1:
-						$style='style="color:green;"';
+						// Check if info log should be displayed
+						if ( !$userData['displayLogOnErrorOnly'] ) {
+							$content[] = '<p style="color: green;" />'.$logItem['module'].': '.$logItem['message'].'</p>';
+						}
 					break;
 					case 2:
-						$style='style="color:red;"';
+							$content[] = '<p style="color: red;" />'.$logItem['module'].': '.$logItem['message'].'</p>';
 					break;
 					default:
 						throw new Exception('Unkown log priority: ' . $logItem['priority']);
 				}
-				$content[] = '<p '.$style. '/>'.$logItem['module'].': '.$logItem['message'].'</p>';
 			}
+		}
+		if ( count($content) ) {
 			return($this->doc->section('Log',implode($content),0,1));
 		} else {
 			return('');

@@ -50,6 +50,7 @@ class tx_passwordmgr_model_moduleData extends tx_passwordmgr_model_data {
 		'passwordPassword' => '',
 		'password1' => '',
 		'password2' => '',
+		'displayLogOnErrorOnly' => '',
 	);
 
 	/**
