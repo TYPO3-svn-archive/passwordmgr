@@ -42,6 +42,7 @@ class tx_passwordmgr_model_userData extends tx_passwordmgr_model_data {
 		'selectedPassword' => integer, // Selected password, for moving
 		'displayLogOnErrorOnly' => integer, // If 1 display only errors in the log row and do not show info logs. Else show both
 		'defaultGroupUid' => integer, // Uid of default group to add new passwords to
+		'defaultRights' => integer, // 0 <= value <= 2: Default rights for new members of groups, default 0
 	);
 
 	/**
@@ -88,6 +89,13 @@ class tx_passwordmgr_model_userData extends tx_passwordmgr_model_data {
 
 		// Default group
 		$this['defaultGroupUid'] = $moduleUc['defaultGroupUid'];
+
+		// Default rights for new members of groups
+		if ( isset($moduleUc['defaultRights']) ) {
+			$this['defaultRights'] = $moduleUc['defaultRights'];
+		} else {
+			$this['defaultRights'] = 0;
+		}
 	}
 
 	/**
@@ -216,6 +224,17 @@ class tx_passwordmgr_model_userData extends tx_passwordmgr_model_data {
 	}
 
 	/**
+	 * Update default rights
+	 *
+	 * @param integer 0 <= value <= 2
+	 * @return void
+	 */
+	public function updateDefaultRights($rights) {
+		$this['defaultRights'] = $rights;
+		$this->update();
+	}
+
+	/**
 	 * Helper function to translate $type to corresponding data array name
 	 *
 	 * @param string itemname
@@ -250,6 +269,7 @@ class tx_passwordmgr_model_userData extends tx_passwordmgr_model_data {
 		$moduleUc['selectedPassword'] = $this['selectedPassword'];
 		$moduleUc['displayLogOnErrorOnly'] = $this['displayLogOnErrorOnly'];
 		$moduleUc['defaultGroupUid'] = $this['defaultGroupUid'];
+		$moduleUc['defaultRights'] = $this['defaultRights'];
 		$GLOBALS['BE_USER']->pushModuleData('user_txpasswordmgrM1', $moduleUc);
 	}
 }

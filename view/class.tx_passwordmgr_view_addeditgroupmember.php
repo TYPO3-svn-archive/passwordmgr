@@ -67,6 +67,9 @@ class tx_passwordmgr_view_addEditGroupMember extends tx_passwordmgr_view_default
 	 * @return string html
 	 */
 	protected function addEditGroupMemberContent(tx_passwordmgr_model_groupList $groupList) {
+		// Instantiate userData to get default rights for new members
+		$userData = t3lib_div::makeInstance('tx_passwordmgr_model_userData');
+
 		// Post vars
 		$selectedGroupUid = $GLOBALS['moduleData']['groupUid'];
 		$selectedMemberUid = $GLOBALS['moduleData']['groupMemberUid'];
@@ -143,6 +146,8 @@ class tx_passwordmgr_view_addEditGroupMember extends tx_passwordmgr_view_default
 			$member = t3lib_div::makeInstance('tx_passwordmgr_model_groupMember');
 			$member->init($selectedMemberUid, $currentGroupUid);
 			$selected[$member['rights']] = ' selected="selected"';
+		} else {
+			$selected[$userData['defaultRights']] = ' selected="selected"';
 		}
 
 		// Member rights selector

@@ -39,6 +39,21 @@ class tx_passwordmgr_view_settings extends tx_passwordmgr_view_default {
 		// Get current user Data
 		$userData = t3lib_div::makeInstance('tx_passwordmgr_model_userData');
 
+		// Compile default rights selector
+		$selected = array(
+			'0' => '',
+			'1' => '',
+			'2' => '',
+		);
+		$selected[$userData['defaultRights']] = ' selected="selected"';
+		$defaultRightsContent = '
+			<select name="DATA[tx_passwordmgr_groupMemberRights]">
+				<option value="0"'.$selected[0].'>View passwords</option>
+				<option value="1"'.$selected[1].'>View / add / edit passwords</option>
+				<option value="2"'.$selected[2].'>Group admin</option>
+			</select>
+		';
+
 		// Compile default group selector
 		$defaultGroupSelectOptions = array();
 		$groupList = t3lib_div::makeInstance('tx_passwordmgr_model_grouplist');
@@ -59,6 +74,10 @@ class tx_passwordmgr_view_settings extends tx_passwordmgr_view_default {
 
 		$content = '
 			<table border="0" cellpadding="2" cellspacing="1">
+				<tr>
+					<td>Default rights of new group members</td>
+					<td>' . $defaultRightsContent . '</td>
+				</tr>
 				<tr>
 					<td>Default group for new passwords</td>
 					<td>' . $defaultGroupSelectContent . '</td>

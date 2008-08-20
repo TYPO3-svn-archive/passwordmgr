@@ -51,6 +51,11 @@ class tx_passwordmgr_action_updateSettings extends tx_passwordmgr_action_default
 			$userData->updateDefaultGroupUid($GLOBALS['moduleData']['groupUid']);
 		}
 
+		// Update default rights
+		if ( $GLOBALS['moduleData']['groupMemberRights'] != $userData['defaultRights'] ) {
+			$userData->updateDefaultRights($GLOBALS['moduleData']['groupMemberRights']);
+		}
+
 		$this->defaultView();
 	}
 }
