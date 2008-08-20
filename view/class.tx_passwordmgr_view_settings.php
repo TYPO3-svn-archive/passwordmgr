@@ -39,8 +39,30 @@ class tx_passwordmgr_view_settings extends tx_passwordmgr_view_default {
 		// Get current user Data
 		$userData = t3lib_div::makeInstance('tx_passwordmgr_model_userData');
 
+		// Compile default group selector
+		$defaultGroupSelectOptions = array();
+		$groupList = t3lib_div::makeInstance('tx_passwordmgr_model_grouplist');
+		$groupList->init($GLOBALS['BE_USER']->user['uid']);
+		foreach ( $groupList as $group ) {
+			$member = t3lib_div::makeInstance('tx_passwordmgr_model_groupmember');
+			$member->init($GLOBALS['BE_USER']->user['uid'], $group['uid']);
+			if ( $member['rights'] > 1 ) {
+				$selected = $userData['defaultGroupUid'] == $group['uid'] ? ' selected="selected"' : '';
+				$defaultGroupSelectOptions[] = '<option value="' . $group['uid'] . '" ' . $selected . '>' . $group['name'] . '</option>';
+			}
+		}
+		$defaultGroupSelectContent = '
+			<select name="DATA[tx_passwordmgr_groupUid]">
+				' . implode($defaultGroupSelectOptions) . '
+			</select>
+		';
+
 		$content = '
 			<table border="0" cellpadding="2" cellspacing="1">
+				<tr>
+					<td>Default group for new passwords</td>
+					<td>' . $defaultGroupSelectContent . '</td>
+				</tr>
 				<tr>
 					<td>Display log only if an error occurred</td>
 					<td><input type="checkbox" name="DATA[tx_passwordmgr_displayLogOnErrorOnly]" ' . ($userData['displayLogOnErrorOnly'] ? 'checked="checked"' : '')  . '/></td>

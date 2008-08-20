@@ -68,6 +68,9 @@ class tx_passwordmgr_view_addEditPassword extends tx_passwordmgr_view_default {
 	 * @return string html
 	 */
 	protected function addEditPasswordContent(tx_passwordmgr_model_grouplist $groupList) {
+		// Instantiate userData to get preselected group
+		$userData = t3lib_div::makeInstance('tx_passwordmgr_model_userData');
+
 		// Determine view or edit mode
 		if ( $GLOBALS['moduleData']['passwordUid']=='new' || strlen($GLOBALS['moduleData']['passwordUid'])==0 ) {
 			$addMode = TRUE;
@@ -75,10 +78,18 @@ class tx_passwordmgr_view_addEditPassword extends tx_passwordmgr_view_default {
 			$addMode = FALSE;
 		}
 
+		// Determine selected group
+		if ( strlen($GLOBALS['moduleData']['groupUid']) ) {
+			// Group is set by post
+			$selectedGroupUid = $GLOBALS['moduleData']['groupUid'];
+		} elseif ( strlen($userData['defaultGroupUid']) ) {
+			// Else choose preselected group from userdata
+			$selectedGroupUid = $userData['defaultGroupUid'];
+		}
 		// Compile group selector
-		$selectedGroupUid = $GLOBALS['moduleData']['groupUid'];
 		$groupSelectOptions = array();
 		foreach ( $groupList as $group ) {
+			// Select first group if none has been set
 			if ( strlen($selectedGroupUid)==0 ) {
 				$selectedGroupUid = $group['uid'];
 			}

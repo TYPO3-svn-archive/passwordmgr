@@ -40,7 +40,8 @@ class tx_passwordmgr_model_userData extends tx_passwordmgr_model_data {
 		'openMember' => array(), // Open member lists
 		'openPassword' => array(), // Open password lists
 		'selectedPassword' => integer, // Selected password, for moving
-		'displayLogOnErrorOnly' => integer // If 1 display only errors in the log row and do not show info logs. Else show both
+		'displayLogOnErrorOnly' => integer, // If 1 display only errors in the log row and do not show info logs. Else show both
+		'defaultGroupUid' => integer, // Uid of default group to add new passwords to
 	);
 
 	/**
@@ -74,6 +75,8 @@ class tx_passwordmgr_model_userData extends tx_passwordmgr_model_data {
 		} else {
 			$this['openPassword'] = '';
 		}
+
+		// Selected / marked password
 		$this['selectedPassword'] = $moduleUc['selectedPassword'];
 
 		// Wether or not to show only errors in log row
@@ -82,6 +85,9 @@ class tx_passwordmgr_model_userData extends tx_passwordmgr_model_data {
 		} else {
 			$this['displayLogOnErrorOnly'] = 0;
 		}
+
+		// Default group
+		$this['defaultGroupUid'] = $moduleUc['defaultGroupUid'];
 	}
 
 	/**
@@ -199,6 +205,17 @@ class tx_passwordmgr_model_userData extends tx_passwordmgr_model_data {
 	}
 
 	/**
+	 * Update default group
+	 *
+	 * @param integer Group uid
+	 * @return void
+	 */
+	public function updateDefaultGroupUid($groupUid) {
+		$this['defaultGroupUid'] = $groupUid;
+		$this->update();
+	}
+
+	/**
 	 * Helper function to translate $type to corresponding data array name
 	 *
 	 * @param string itemname
@@ -232,6 +249,7 @@ class tx_passwordmgr_model_userData extends tx_passwordmgr_model_data {
 		$moduleUc['openMember'] = serialize($this['openMember']);
 		$moduleUc['selectedPassword'] = $this['selectedPassword'];
 		$moduleUc['displayLogOnErrorOnly'] = $this['displayLogOnErrorOnly'];
+		$moduleUc['defaultGroupUid'] = $this['defaultGroupUid'];
 		$GLOBALS['BE_USER']->pushModuleData('user_txpasswordmgrM1', $moduleUc);
 	}
 }

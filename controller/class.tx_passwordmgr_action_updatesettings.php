@@ -39,10 +39,16 @@ class tx_passwordmgr_action_updateSettings extends tx_passwordmgr_action_default
 	public function execute() {
 		$userData = t3lib_div::makeInstance('tx_passwordmgr_model_userData');
 
+		// Update log error flag
 		if ( $GLOBALS['moduleData']['displayLogOnErrorOnly'] && !$userData['displayLogOnErrorOnly'] ) {
 			$userData->changeDisplayLogOnErrorOnly(1);
 		} elseif ( !$GLOBALS['moduleData']['displayLogOnErrorOnly'] && $userData['displayLogOnErrorOnly'] ) {
 			$userData->changeDisplayLogOnErrorOnly(0);
+		}
+
+		// Update default group
+		if ( $GLOBALS['moduleData']['groupUid'] != $userData['defaultGroupUid'] ) {
+			$userData->updateDefaultGroupUid($GLOBALS['moduleData']['groupUid']);
 		}
 
 		$this->defaultView();
