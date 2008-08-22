@@ -233,7 +233,7 @@ class tx_passwordmgr_view_default {
 	 * @return string html
 	 */
 	protected function developmentWarning() {
-		$content = '<p style="color:red;">WARNING: This extension is in early development state. DO NOT ADD IMPORTANT OR REAL DATA!</p>';
+		$content = '<p style="color:red;">WARNING: This extension is in early development state. Future version of this extension will probably switch to encrypted passwords with PKCS#7 (S/MIME). This will break backwards compatibility to the current format. DO NOT ADD IMPORTANT OR REAL DATA!</p>';
 		return($this->doc->section('Development warning',$content,0,1));
 	}
 
